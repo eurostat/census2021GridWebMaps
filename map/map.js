@@ -276,40 +276,22 @@ const update = () => {
         })
 
         //legend
-        /*
-                            const legend = new gridviz.ColorDiscreteLegend({
-                                title: "Elevation, in meters",
-                                colors: () => colors,
-                                breaks: (viewScale) => viewScale?.breaks.map((b) => Math.round(b)),
-                                width: legendWidth,
-                                //labelFormat: (text, i) => (+text).toFixed(0)
-                            })
-        */
         const legend = new gridviz.ColorDiscreteLegend({
             title: "Population",
             width: Math.min(window.innerWidth - 40, 400),
             colors: () => colors,
-            /*breaks: (viewScale) => {
-                console.log(viewScale)
-                return viewScale?.breaks
-            }*/
             breaks: (viewScale) => viewScale?.breaks.map((b) => gridviz.nice(b)),
             labelFormat: formatLarge,
         })
-        /*new gridviz.ColorLegend({
-            title: "Population",
-            colorScale: d3.interpolateYlOrRd,
-            width: 350,
-            ticks: 5,
-            textScale: (t, max) => formatLarge(Math.round(textScale(t) * max)),
-        }),*/
 
+        //link legend, style and layer
         totPopStyle.legends = [legend];
-
         gridLayer.styles = [
             totPopStyle,
             new gridviz.StrokeStyle({ visible: (z) => z < 50 }),
         ];
+
+        //set layer parameters
         gridLayer.minPixelsPerCell = 0.7;
         gridLayer.cellInfoHTML = (c) => "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 1 ? "" : "s");
 
