@@ -14,14 +14,14 @@ const nuts2jsonURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/nuts2json
 const euronymURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/euronym/v2/UTF/";
 const bgLayerURL = "https://ec.europa.eu/eurostat/cache/GISCO/mbkg/elevation_shading/";
 
-const DEFAULTMAPSETTINGS = { x: 4096489, y: 2829097, z: 2000, backgroundColor: "white" };
-
 /*/urls for development
   const tiledGridsURL = "http://127.0.0.1:5500/"
   const nuts2jsonURL = undefined
   const euronymURL = undefined
   const bgLayerURL = 'https://raw.githubusercontent.com/jgaffuri/mbxyz/main/pub/elevation_shading/'
 */
+
+const DEFAULTMAPSETTINGS = { x: 4096489, y: 2829097, z: 2000, backgroundColor: "white" };
 
 /*
   "T" >= Total population
