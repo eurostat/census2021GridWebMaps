@@ -229,6 +229,46 @@ const confidentialStyle =
     })*/
 
 //
+
+
+// total population style
+
+//get colors
+const colors = []
+const classNumber = 8;
+for (let i = 0; i <= (classNumber - 1); i++) colors.push(d3.interpolateYlOrRd(i / (classNumber - 1)))
+const scaleTPop = gridviz.exponentialScale(7) //exponentialScale logarithmicScale
+
+//style
+const totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
+    viewScale: cells => {
+        [min, max] = d3.extent(cells, c => c.T)
+        const breaks = []
+        for (let i = 1; i < classNumber; i++) {
+            let t = i / classNumber
+            t = scaleTPop(t)
+            breaks.push(min + (max - min) * t)
+        }
+        return gridviz.classifier(breaks)
+    },
+    code: (c, r, z, classifier) => classifier(c.T),
+    color: { ...colors },
+    blendOperation: (z) => (z < 100 ? "multiply" : "source-over"),
+})
+
+//legend
+const totPopLegend = new gridviz.ColorDiscreteLegend({
+    title: "Population",
+    width: Math.min(window.innerWidth - 40, 400),
+    colors: () => colors,
+    breaks: (viewScale) => viewScale?.breaks.map((b) => gridviz.nice(b)),
+    labelFormat: formatLarge,
+})
+totPopStyle.legends = [totPopLegend];
+
+
+
+
 const update = () => {
     //read GUI selection
     const layCode = document.querySelector('input[name="layer"]:checked').value;
@@ -252,40 +292,10 @@ const update = () => {
     if (layCode === "pop") {
         //total population
 
-        //get colors
-        const colors = []
-        const classNumber = 8;
-        for (let i = 0; i <= (classNumber - 1); i++) colors.push(d3.interpolateYlOrRd(i / (classNumber - 1)))
-        const scaleTPop = gridviz.exponentialScale(7) //exponentialScale logarithmicScale
+        // update legend width
+        totPopLegend.width = Math.min(window.innerWidth - 40, 400),
 
-        //style
-        const totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
-            viewScale: cells => {
-                [min, max] = d3.extent(cells, c => c.T)
-                const breaks = []
-                for (let i = 1; i < classNumber; i++) {
-                    let t = i / classNumber
-                    t = scaleTPop(t)
-                    breaks.push(min + (max - min) * t)
-                }
-                return gridviz.classifier(breaks)
-            },
-            code: (c, r, z, classifier) => classifier(c.T),
-            color: { ...colors },
-            blendOperation: (z) => (z < 100 ? "multiply" : "source-over"),
-        })
-
-        //legend
-        const legend = new gridviz.ColorDiscreteLegend({
-            title: "Population",
-            width: Math.min(window.innerWidth - 40, 400),
-            colors: () => colors,
-            breaks: (viewScale) => viewScale?.breaks.map((b) => gridviz.nice(b)),
-            labelFormat: formatLarge,
-        })
-
-        //link legend, style and layer
-        totPopStyle.legends = [legend];
+        // link legend, style and layer
         gridLayer.styles = [
             totPopStyle,
             new gridviz.StrokeStyle({ visible: (z) => z < 50 }),
