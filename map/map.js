@@ -250,52 +250,69 @@ const update = () => {
 
     //set style
     if (layCode === "pop") {
-        //const nbClasses = 6;
-        //const colors = d3.schemeYlOrRd[nbClasses];
+        //total population
 
-        gridLayer.styles = [
-            new gridviz.SquareColorWebGLStyle({
-                viewScale: (cells) => d3.max(cells, (c) => c.T),
-                tFun: (c, r, z, max) => (max == 0 ? 0.5 : c.T / max),
-                color: d3.interpolateYlOrRd,
-                stretching: { fun: "log", alpha: -7 },
-                blendOperation: (z) => (z < 100 ? "multiply" : "source-over"),
-            }),
-            /*          new gridviz.ShapeColorSizeStyle({
-              color: (c, r, z, viewScale) => viewScale(c.T),
-              viewScale: gridviz.viewScaleColor({
-                valueFunction: (c) => +c.T,
-                //colorScale: d3.interpolateYlOrRd,
-                colors: colors,
-                stretching: gridviz.logarithmicScale(-7),
-              }),
-              blendOperation: (z) => (z < 100 ? "multiply" : "source-over"),
-            }),*/
-            new gridviz.StrokeStyle({ visible: (z) => z < 50 }),
-        ];
+        //get colors
+        const colors = []
+        const classNumber = 8;
+        for (let i = 0; i <= (classNumber - 1); i++) colors.push(d3.interpolateYlOrRd(i / (classNumber - 1)))
+        const scaleTPop = gridviz.exponentialScale(7) //exponentialScale logarithmicScale
+
+        //style
+        const totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
+            viewScale: cells => {
+                [min, max] = d3.extent(cells, c => c.T)
+                const breaks = []
+                for (let i = 1; i < classNumber; i++) {
+                    let t = i / classNumber
+                    t = scaleTPop(t)
+                    breaks.push(min + (max - min) * t)
+                }
+                return gridviz.classifier(breaks)
+            },
+            code: (c, r, z, classifier) => classifier(c.T),
+            color: { ...colors },
+            blendOperation: (z) => (z < 100 ? "multiply" : "source-over"),
+        })
 
         //legend
-        const textScale = gridviz.logarithmicScale(-7).invert;
-        gridLayer.styles[0].legends = [
-            /*new gridviz.ColorDiscreteLegend({
-              title: "Population",
-              width: 350,
-              colors: () => colors,
-              breaks: (viewScale) => viewScale?.breaks.map((b) => gridviz.nice(b)),
-              labelFormat: formatLarge,
-            }),*/
-            new gridviz.ColorLegend({
-                title: "Population",
-                colorScale: d3.interpolateYlOrRd,
-                width: 350,
-                ticks: 5,
-                textScale: (t, max) => formatLarge(Math.round(textScale(t) * max)),
-            }),
+        /*
+                            const legend = new gridviz.ColorDiscreteLegend({
+                                title: "Elevation, in meters",
+                                colors: () => colors,
+                                breaks: (viewScale) => viewScale?.breaks.map((b) => Math.round(b)),
+                                width: legendWidth,
+                                //labelFormat: (text, i) => (+text).toFixed(0)
+                            })
+        */
+        const legend = new gridviz.ColorDiscreteLegend({
+            title: "Population",
+            width: Math.min(window.innerWidth - 40, 400),
+            colors: () => colors,
+            /*breaks: (viewScale) => {
+                console.log(viewScale)
+                return viewScale?.breaks
+            }*/
+            breaks: (viewScale) => viewScale?.breaks.map((b) => gridviz.nice(b)),
+            labelFormat: formatLarge,
+        })
+        /*new gridviz.ColorLegend({
+            title: "Population",
+            colorScale: d3.interpolateYlOrRd,
+            width: 350,
+            ticks: 5,
+            textScale: (t, max) => formatLarge(Math.round(textScale(t) * max)),
+        }),*/
+
+        totPopStyle.legends = [legend];
+
+        gridLayer.styles = [
+            totPopStyle,
+            new gridviz.StrokeStyle({ visible: (z) => z < 50 }),
         ];
-
-        //gridLayer.minPixelsPerCell = 1;
-
+        gridLayer.minPixelsPerCell = 0.7;
         gridLayer.cellInfoHTML = (c) => "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 1 ? "" : "s");
+
     } else if (layCode === "sex") {
         //sex - color classifier
         const breaks = [-20, -7, -2, -0.5, 0.5, 2, 7, 20];
