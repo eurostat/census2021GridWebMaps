@@ -1,6 +1,9 @@
 
+//fix tooltip bug
 //total population: make more detailled. To discrete classification ?
 //update nuts2json, euronym
+//update background URL
+//add road background layer - add tomtom copyright
 
 
 //urls for production
