@@ -1,0 +1,1540 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Census 2021 map</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="" />
+
+    <!-- ECL -->
+    <link rel="stylesheet" href="./eu-preset-v4.2.3/styles/optional/ecl-reset.css" media="screen" />
+    <link rel="stylesheet" href="./eu-preset-v4.2.3/styles/ecl-eu.css" media="screen" />
+    <link rel="stylesheet" href="./eu-preset-v4.2.3/styles/optional/ecl-eu-utilities.css" media="screen" />
+    <link rel="stylesheet" href="./eu-preset-v4.2.3/styles/ecl-eu-print.css" media="print" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+
+  <!-- analytics -->
+  <script defer="defer" src="https://europa.eu/webtools/load.js"></script>
+  <script type="application/json">
+    {
+      "utility": "cck",
+      "url": "https://commission.europa.eu/cookies-policy_{lang}"
+    }
+  </script>
+  <script type="application/json">
+    { "utility": "analytics", "siteID": "59", "sitePath": ["ec.europa.eu/eurostat"], "instance": "ec" }
+  </script>
+  <!-- end analytics -->
+
+  <body>
+    <main>
+      <div class="header">
+        <script type="application/json">
+          {
+            "utility": "globan",
+            "theme": "dark",
+            "logo": true,
+            "link": true,
+            "lang": "en",
+            "mode": false,
+            "zindex": 40
+          }
+        </script>
+      </div>
+      <div class="wrapper">
+        <div id="map" style="height: 100%; width: 100%"></div>
+
+ <!-- boring protocol stuff -->
+        <div class="footer-links">
+          <a href="https://commission.europa.eu/privacy-policy-websites-managed-european-commission_en" target="_blank">Privacy policy</a>
+          |
+          <a href="https://commission.europa.eu/legal-notice_en" target="_blank">Legal notice</a>
+          |
+          <a href="https://commission.europa.eu/cookies-policy_en" target="_blank">Cookies</a>
+          |
+          <a href="https://ec.europa.eu/eurostat/web/main/help/accessibility" target="_blank">Accessibility</a>
+        </div>
+
+<!-- home button -->
+        <div id="home-button" class="home-button">
+          <svg
+            class="svg-home-icon"
+            fill="#0e47cb"
+            version="1.1"
+            id="Capa_1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            width="25px"
+            height="25px"
+            viewBox="0 0 495.398 495.398"
+            xml:space="preserve">
+            <g>
+              <g>
+                <g>
+                  <path
+                    d="M487.083,225.514l-75.08-75.08V63.704c0-15.682-12.708-28.391-28.413-28.391c-15.669,0-28.377,12.709-28.377,28.391
+               v29.941L299.31,37.74c-27.639-27.624-75.694-27.575-103.27,0.05L8.312,225.514c-11.082,11.104-11.082,29.071,0,40.158
+               c11.087,11.101,29.089,11.101,40.172,0l187.71-187.729c6.115-6.083,16.893-6.083,22.976-0.018l187.742,187.747
+               c5.567,5.551,12.825,8.312,20.081,8.312c7.271,0,14.541-2.764,20.091-8.312C498.17,254.586,498.17,236.619,487.083,225.514z" />
+                  <path
+                    d="M257.561,131.836c-5.454-5.451-14.285-5.451-19.723,0L72.712,296.913c-2.607,2.606-4.085,6.164-4.085,9.877v120.401
+               c0,28.253,22.908,51.16,51.16,51.16h81.754v-126.61h92.299v126.61h81.755c28.251,0,51.159-22.907,51.159-51.159V306.79
+               c0-3.713-1.465-7.271-4.085-9.877L257.561,131.836z" />
+                </g>
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <!-- full version button -->
+        <a
+          id="full-version-button"
+          href="https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/index.html"
+          target="_blank"
+          class="ecl-link ecl-link--primary"
+          ><span>Full version</span>
+          <svg class="ecl-icon ecl-icon--fluid ecl-link__icon" focusable="false" aria-hidden="false" role="img">
+            <title>Links to an external domain</title>
+            <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#external"></use>
+          </svg>
+        </a>
+
+        <!-- layer list control panel -->
+        <div id="expand-toggle" class="ecl-expandable" data-ecl-expandable="true" data-ecl-auto-init="Expandable">
+          <button
+            id="expand-toggle-button"
+            class="ecl-button ecl-button--ghost ecl-expandable__toggle"
+            type="button"
+            aria-controls="expandable-content"
+            data-ecl-expandable-toggle
+            data-ecl-label-expanded="Options"
+            data-ecl-label-collapsed="Options"
+            aria-expanded="true">
+            <span class="ecl-button__container">
+              <span class="ecl-button__label" data-ecl-label="true">Options</span>
+              <svg
+                class="ecl-icon ecl-icon--fluid ecl-icon--rotate-180 ecl-button__icon"
+                focusable="false"
+                aria-hidden="false"
+                data-ecl-icon>
+                <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#corner-arrow"></use>
+              </svg>
+            </span>
+          </button>
+          <div id="expandable-content" class="ecl-expandable__content">
+            <div id="layer-control">
+              <fieldset
+                class="ecl-form-group"
+                aria-describedby="radio-default-helper"
+                role="radiogroup"
+                aria-required="true">
+                <!-- <legend id="radio-default-label" class="ecl-form-label">Select an indicator</legend> -->
+                <!-- <div class="ecl-help-block" id="radio-default-helper">This is the group's helper text.</div> -->
+
+                <!-- total population -->
+                <div class="ecl-radio">
+                  <input id="pop" name="layer" class="ecl-radio__input" type="radio" value="pop" checked />
+                  <label class="ecl-radio__label" for="pop">
+                    <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
+                    <span class="ecl-radio__text">Total population</span>
+                  </label>
+                </div>
+
+                <hr />
+
+                <!-- share of -->
+                <div id="share-of-container">
+                  <div class="ecl-radio">
+                    <input id="share" name="layer" class="ecl-radio__input" type="radio" value="share" />
+                    <label class="ecl-radio__label" for="share">
+                      <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
+                      <span class="ecl-radio__text">Share of</span>
+                    </label>
+                  </div>
+
+                  <div class="subcontrols">
+                    <!-- share of select-->
+                    <div class="ecl-form-group">
+                      <!-- <label for="share_" id="share_-label" class="ecl-form-label">Select a share</label>
+                      <div class="ecl-help-block" id="share_-helper">This is the input's helper text.</div> -->
+                      <div class="ecl-select__container ecl-select__container--m">
+                        <select
+                          class="ecl-select"
+                          id="share_select"
+                          name="country"
+                          aria-label="country"
+                          required
+                          aria-describedby="share_-helper"
+                          data-ecl-auto-init="Select">
+                          <option value="F">Women</option>
+                          <option value="M">Men</option>
+                          <option value="Y_LT15">Age under 15 years</option>
+                          <option value="Y_1564">Age 15 to 64 years</option>
+                          <option value="Y_GE65">Age 65 years and older</option>
+                          <option value="EMP" selected>Employed</option>
+                          <option value="SAME">Residence unchanged</option>
+                          <option value="CHG_IN">Moved within the country</option>
+                          <option value="CHG_OUT">Moved from other country</option>
+                          <option value="NAT">Born in the country</option>
+                          <option value="EU_OTH">Born in another EU member state</option>
+                          <option value="OTH">Born outside the EU</option>
+                        </select>
+                        <div class="ecl-select__icon">
+                          <button
+                            class="ecl-button ecl-button--ghost ecl-button--icon-only"
+                            type="button"
+                            tabindex="-1">
+                            <span class="ecl-button__container">
+                              <span class="ecl-button__label" data-ecl-label="true">Toggle dropdown</span>
+                              <svg
+                                class="ecl-icon ecl-icon--s ecl-icon--rotate-180 ecl-button__icon"
+                                focusable="false"
+                                aria-hidden="true"
+                                data-ecl-icon>
+                                <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#corner-arrow"></use>
+                              </svg>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 'share of' proportional dot checkbox-->
+                    <div class="ecl-checkbox ecl-checkbox--single">
+                      <input name="checkbox-default" class="ecl-checkbox__input" type="checkbox" id="sbtp" checked />
+                      <label for="sbtp" class="ecl-checkbox__label proportional-checkbox-label">
+                        <span class="ecl-checkbox__box">
+                          <svg class="ecl-icon ecl-icon--m ecl-checkbox__icon" focusable="false" aria-hidden="true">
+                            <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#check"></use>
+                          </svg>
+                        </span>
+                        <span class="ecl-checkbox__text">Dot proportional to population</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <hr />
+
+                <!-- ternary-->
+                <div id="ternary-container">
+                  <div class="ecl-radio">
+                    <input id="ternary" name="layer" class="ecl-radio__input" type="radio" value="ternary" />
+                    <label class="ecl-radio__label" for="ternary">
+                      <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
+                      <span class="ecl-radio__text">Ternary color by</span>
+                    </label>
+                  </div>
+
+                  <div class="subcontrols">
+                    <!-- ternary select-->
+                    <div class="ecl-form-group">
+                      <div class="ecl-select__container ecl-select__container--m">
+                        <select
+                          class="ecl-select"
+                          id="ternary_select"
+                          name="country"
+                          aria-label="country"
+                          required
+                          aria-describedby="ternary_select-helper"
+                          data-ecl-auto-init="Select">
+                          <option value="age" selected>Age</option>
+                          <option value="mobility">Mobility</option>
+                          <option value="pob">Birth place</option>
+                        </select>
+                        <div class="ecl-select__icon">
+                          <button
+                            class="ecl-button ecl-button--ghost ecl-button--icon-only"
+                            type="button"
+                            tabindex="-1">
+                            <span class="ecl-button__container">
+                              <span class="ecl-button__label" data-ecl-label="true">Toggle dropdown</span>
+                              <svg
+                                class="ecl-icon ecl-icon--s ecl-icon--rotate-180 ecl-button__icon"
+                                focusable="false"
+                                aria-hidden="true"
+                                data-ecl-icon>
+                                <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#corner-arrow"></use>
+                              </svg>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- ternary proportional dot checkbox-->
+                    <div class="ecl-checkbox ecl-checkbox--single">
+                      <input
+                        name="checkbox-default"
+                        class="ecl-checkbox__input"
+                        type="checkbox"
+                        id="sbtp_tri"
+                        value="ternary"
+                        checked />
+                      <label for="sbtp_tri" class="ecl-checkbox__label proportional-checkbox-label">
+                        <span class="ecl-checkbox__box">
+                          <svg class="ecl-icon ecl-icon--m ecl-checkbox__icon" focusable="false" aria-hidden="true">
+                            <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#check"></use>
+                          </svg>
+                        </span>
+                        <span class="ecl-checkbox__text">Dot proportional to population</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+
+                <div>
+                  <div class="ecl-radio">
+                    <input id="sex" name="layer" class="ecl-radio__input" type="radio" value="sex" />
+                    <label class="ecl-radio__label" for="sex">
+                      <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
+                      <span class="ecl-radio__text">Sex</span>
+                    </label>
+                  </div>
+
+                  <div class="ecl-radio">
+                    <input id="emp" name="layer" class="ecl-radio__input" type="radio" value="emp" />
+                    <label class="ecl-radio__label" for="emp">
+                      <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
+                      <span class="ecl-radio__text">Employment</span>
+                    </label>
+                  </div>
+
+                  <div class="ecl-radio">
+                    <input id="age" name="layer" class="ecl-radio__input" type="radio" value="age" />
+                    <label class="ecl-radio__label" for="age">
+                      <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
+                      <span class="ecl-radio__text">Age</span>
+                    </label>
+                  </div>
+
+                  <div class="ecl-radio">
+                    <input id="mobility" name="layer" class="ecl-radio__input" type="radio" value="mobility" />
+                    <label class="ecl-radio__label" for="mobility">
+                      <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
+                      <span class="ecl-radio__text">Mobility</span>
+                    </label>
+                  </div>
+
+                  <div class="ecl-radio">
+                    <input id="pob" name="layer" class="ecl-radio__input" type="radio" value="pob" />
+                    <label class="ecl-radio__label" for="pob">
+                      <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
+                      <span class="ecl-radio__text">Birth place</span>
+                    </label>
+                  </div>
+                </div>
+              </fieldset>
+
+              <!--
+                        <br />
+                        <hr />
+                        <input type="radio" name="layer" id="emp_age" value="emp_age" />
+                        <label for="emp_age">Employment and age</label>
+                        <br />
+                        <input type="radio" name="layer" id="emp_sex" value="emp_sex" />
+                        <label for="emp_sex">Employment and sex</label>
+                        <br />
+                        <input type="radio" name="layer" id="chernoff" value="chernoff" />
+                        <label for="chernoff">Chernoff faces for sex, age, employment</label>
+                    -->
+
+              <hr />
+
+              <!-- basemaps -->
+              <div>
+                <!-- City names checkbox-->
+                <div class="ecl-checkbox ecl-checkbox--single">
+                  <input name="checkbox-default" class="ecl-checkbox__input" type="checkbox" id="label" checked />
+                  <label for="label" class="ecl-checkbox__label">
+                    <span class="ecl-checkbox__box">
+                      <svg class="ecl-icon ecl-icon--m ecl-checkbox__icon" focusable="false" aria-hidden="true">
+                        <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#check"></use>
+                      </svg>
+                    </span>
+                    <span class="ecl-checkbox__text">City names</span>
+                  </label>
+                </div>
+
+                <!-- Boundaries checkbox-->
+                <div class="ecl-checkbox ecl-checkbox--single">
+                  <input name="checkbox-default" class="ecl-checkbox__input" type="checkbox" id="boundary" checked />
+                  <label for="boundary" class="ecl-checkbox__label">
+                    <span class="ecl-checkbox__box">
+                      <svg class="ecl-icon ecl-icon--m ecl-checkbox__icon" focusable="false" aria-hidden="true">
+                        <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#check"></use>
+                      </svg>
+                    </span>
+                    <span class="ecl-checkbox__text">Boundaries</span>
+                  </label>
+                </div>
+
+                <!-- Boundaries checkbox-->
+                <div class="ecl-checkbox ecl-checkbox--single">
+                  <input name="checkbox-default" class="ecl-checkbox__input" type="checkbox" id="background" checked />
+                  <label for="background" class="ecl-checkbox__label">
+                    <span class="ecl-checkbox__box">
+                      <svg class="ecl-icon ecl-icon--m ecl-checkbox__icon" focusable="false" aria-hidden="true">
+                        <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#check"></use>
+                      </svg>
+                    </span>
+                    <span class="ecl-checkbox__text">Background</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!--
+    <script src="../../dist/gridviz.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gridviz-parquet@1.0.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gridviz-eurostat@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-color@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-interpolate@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-scale-chromatic@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-format@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-scale@4"></script>
+-->
+
+    <script src="gridviz@3.0.17.min.js"></script>
+    <script src="gridviz-parquet.min.js"></script>
+    <script src="gridviz-eurostat.min.js"></script>
+    <script src="d3@7.js"></script>
+
+    <!-- ECL -->
+    <script src="./eu-preset-v4.2.3/scripts/pikaday.js"></script>
+    <script src="./eu-preset-v4.2.3/scripts/ecl-eu.js"></script>
+    <script>
+      ECL.autoInit();
+    </script>
+    <!-- /ECL -->
+
+    <!-- only show full version button in iframe -->
+    <script>
+    function checkElementWidth() {
+      const mapElement = document.getElementById("map");
+      const isInIframe =window.self !== window.top;
+
+      if (mapElement) {
+        const mapWidth = mapElement.getBoundingClientRect().width;
+        const fullVersionButton = document.getElementById("full-version-button");
+	const homeButton = document.getElementById("home-button");
+        //zoom buttons
+        const zoomButtons = document.querySelector("#map > div:nth-child(3)");
+        if (isInIframe && mapWidth < 800) {
+          fullVersionButton.style.display = "block";
+          if (zoomButtons) zoomButtons.style.setProperty("top", "60px", "important");
+        } else {
+          fullVersionButton.style.display = "none";
+	  //homeButton.style.display = "none"
+          if (zoomButtons) zoomButtons.style.setProperty("top", "10px", "important");
+        }
+      }
+    }
+
+    // Check initially
+    checkElementWidth();
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Check after load
+        checkElementWidth();
+
+        // Check on resize
+        window.addEventListener("resize", checkElementWidth);
+      });
+    </script>
+
+    <script>
+      //urls for production
+      const tiledGridsURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles/";
+      const tiledTotalGridsURL =
+        "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles_total/";
+      const nuts2jsonURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/nuts2json/v2/";
+      const euronymURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/euronym/v2/UTF/";
+      const bgLayerURL = "https://ec.europa.eu/eurostat/cache/GISCO/mbkg/elevation_shading/";
+
+const DEFAULTMAPSETTINGS = { x: 4096489, y: 2829097, z: 2000, backgroundColor: "white" };
+
+      /*/urls for development
+        const tiledGridsURL = "http://127.0.0.1:5500/"
+        const nuts2jsonURL = undefined
+        const euronymURL = undefined
+        const bgLayerURL = 'https://raw.githubusercontent.com/jgaffuri/mbxyz/main/pub/elevation_shading/'
+*/
+
+      /*
+        "T" >= Total population
+
+        "F" >= Women
+        "M" >= Men
+
+        "EMP" >= Employed (working population)
+
+        "Y_LT15" >= Age under 15 years
+        "Y_1564" >= Age 15 to 64 years
+        "Y_GE65" >= Age 65 years and older
+
+        "SAME" >= Residence unchanged (as of January 1, 2021, compared to January 1, 2020)
+        "CHG_IN" >= Moved within the country (as of January 1, 2021, compared to January 1, 2020)
+        "CHG_OUT" >= Moved from outside the country (as of January 1, 2021, compared to January 1, 2020)
+
+        "NAT" >= Born in the country
+        "EU_OTH" >= Born in another EU member state
+        "OTH" >= Born outside the EU
+        */
+
+      //define map with initial view
+      const map = new gridviz.Map(document.getElementById("map"), {
+        x: DEFAULTMAPSETTINGS.x,
+        y: DEFAULTMAPSETTINGS.y,
+        z: DEFAULTMAPSETTINGS.z,
+        zoomExtent: [10, 10000],
+      })
+        .addZoomButtons()
+        //.addFullscreenButton()
+        .setViewFromURL();
+
+      const backgroundLayer1 = new gridviz.BackgroundLayer({
+        url: bgLayerURL,
+        resolutions: Array.from({ length: 9 }, (_, i) => 28.00132289714475 * Math.pow(2, 10 - i)),
+        origin: [0, 6000000],
+        filterColor: () => "#ffffffc0",
+        visible: (z) => z > 50,
+      });
+
+      const backgroundLayer2 = new gridviz.BackgroundLayer(
+        gridviz_eurostat.giscoBackgroundLayer("OSMPositronBackground", 18, "EPSG3035", {
+          visible: (z) => z <= 50,
+        })
+      );
+
+      //define boundaries layer
+      const boundariesLayer = new gridviz.GeoJSONLayer(
+        gridviz_eurostat.getEurostatBoundariesLayer({
+          baseURL: nuts2jsonURL,
+          showOth: false,
+          color: (f, zf) => {
+            const p = f.properties;
+            if (p.id >= 100000) return "#bcbcbc";
+            if (p.co === "T") return "#888";
+            if (zf < 400) return "#888";
+            else if (zf < 1000) return p.lvl >= 3 ? "" : "#888";
+            else if (zf < 2000) return p.lvl >= 2 ? "" : "#888";
+            else return p.lvl >= 1 ? "" : "#888";
+          },
+        })
+      );
+
+      //make label layer
+      const labelLayer = new gridviz.LabelLayer(
+        gridviz_eurostat.getEuronymeLabelLayer("EUR", 50, {
+          ccIn: [
+            "AT",
+            "BE",
+            "BG",
+            "CY",
+            "CZ",
+            "DE",
+            "DK",
+            "EE",
+            "ES",
+            "FI",
+            "FR",
+            "GR",
+            "HR",
+            "HU",
+            "IE",
+            "IT",
+            "LT",
+            "LU",
+            "LV",
+            "PL",
+            "PT",
+            "MT",
+            "NL",
+            "RO",
+            "SE",
+            "SK",
+            "SI",
+            "CH",
+            "NO",
+            "LI",
+          ],
+          baseURL: euronymURL,
+          exSize: 1.7,
+        })
+      );
+
+      //function to compute the percentage of a cell value
+      const computePercentage = (c, col, totalFunction) => {
+        const total = totalFunction(c);
+        if (total == 0 || c[col] == undefined) {
+          c["s" + col] = undefined;
+          return;
+        }
+        c["s" + col] = (c[col] / total) * 100;
+        c["s" + col] = c["s" + col] > 100 ? 100 : c["s" + col] < 0 ? 0 : c["s" + col];
+      };
+
+      //'x', 'y', 'T', 'M', 'F', 'Y_LT15', 'Y_1564', 'Y_GE65', 'EMP', 'NAT', 'EU_OTH', 'OTH', 'SAME', 'CHG_IN', 'CHG_OUT', 'CONFIDENTIALSTATUS'
+
+      const preprocessSex = (c) => {
+        if (c.CONFIDENTIALSTATUS && c.F == 0 && c.M == 0) {
+          c.F = undefined;
+          c.M = undefined;
+        }
+
+        if (c.F == undefined || c.M == undefined) {
+          c.indMF = undefined;
+          return;
+        }
+
+        //if (c.F + c.M != c.T) console.error("Error found in sex total", c.F + c.M, c.T)
+
+        //male/female index
+        c.indMF = (100 * (c.M - c.F)) / (c.M + c.F);
+
+        //compute percentages
+        computePercentage(c, "F", (c) => c.M + c.F);
+        computePercentage(c, "M", (c) => c.M + c.F);
+
+        //tag as precomputed
+        c.p_sex = true;
+      };
+
+      const preprocessAge = (c) => {
+        if (c.CONFIDENTIALSTATUS && c.Y_LT15 == 0 && c.Y_1564 == 0 && c.Y_GE65 == 0) {
+          c.Y_LT15 = undefined;
+          c.Y_1564 = undefined;
+          c.Y_GE65 = undefined;
+        }
+
+        //compute percentages
+        computePercentage(c, "Y_LT15", (c) => c.Y_LT15 + c.Y_1564 + c.Y_GE65);
+        computePercentage(c, "Y_1564", (c) => c.Y_LT15 + c.Y_1564 + c.Y_GE65);
+        computePercentage(c, "Y_GE65", (c) => c.Y_LT15 + c.Y_1564 + c.Y_GE65);
+        //tag as precomputed
+        c.p_age = true;
+      };
+
+      const preprocessEmp = (c) => {
+        if (c.CONFIDENTIALSTATUS && c.EMP == 0) {
+          c.EMP = undefined;
+        }
+
+        //compute percentages
+        computePercentage(c, "EMP", (c) => c.T); //TODO sure?
+        //tag as precomputed
+        c.p_emp = true;
+      };
+
+      const preprocessPob = (c) => {
+        if (c.CONFIDENTIALSTATUS && c.NAT == 0 && c.EU_OTH == 0 && c.OTH == 0) {
+          c.NAT = undefined;
+          c.EU_OTH = undefined;
+          c.OTH = undefined;
+        }
+
+        //compute percentages
+        computePercentage(c, "NAT", (c) => c.NAT + c.EU_OTH + c.OTH);
+        computePercentage(c, "EU_OTH", (c) => c.NAT + c.EU_OTH + c.OTH);
+        computePercentage(c, "OTH", (c) => c.NAT + c.EU_OTH + c.OTH);
+        //tag as precomputed
+        c.p_pob = true;
+      };
+
+      const preprocessMob = (c) => {
+        if (c.CONFIDENTIALSTATUS && c.SAME == 0 && c.CHG_IN == 0 && c.CHG_OUT == 0) {
+          c.SAME = undefined;
+          c.CHG_IN = undefined;
+          c.CHG_OUT = undefined;
+        }
+
+        //compute percentages
+        computePercentage(c, "SAME", (c) => c.SAME + c.CHG_IN + c.CHG_OUT);
+        computePercentage(c, "CHG_IN", (c) => c.SAME + c.CHG_IN + c.CHG_OUT);
+        computePercentage(c, "CHG_OUT", (c) => c.SAME + c.CHG_IN + c.CHG_OUT);
+        //tag as precomputed
+        c.p_mob = true;
+      };
+
+      //define multi resolution dataset
+      const dataset = new gridviz.MultiResolutionDataset(
+        [1000, 2000, 5000, 10000, 20000, 50000, 100000],
+        (resolution) => new gviz_par.TiledParquetGrid(map, tiledGridsURL + resolution + "/"),
+        { preprocess: (c) => c.T && +c.T > 0 }
+      );
+
+      //define multi resolution dataset
+      const datasetTotal = new gridviz.MultiResolutionDataset(
+        [1000, 2000, 5000, 10000, 20000, 50000, 100000],
+        (resolution) => new gviz_par.TiledParquetGrid(map, tiledTotalGridsURL + resolution + "/"),
+        { preprocess: (c) => c.T && +c.T > 0 }
+      );
+
+      //format function for percentages
+      const formatPercentage = d3.format(".1f");
+
+      //format function for large numbers
+      const _f = d3.format(",.0f");
+      const formatLarge = (v) => _f(v).replace(/,/g, " ");
+
+      //default color for not available data
+      const naColor = "#ccc";
+
+      //define not available legend
+      const naLegend = new gridviz.ColorCategoryLegend({
+        colorLabel: [[naColor, "Data not available"]],
+        shape: "square",
+      });
+
+      /*/use that style to show when a cell has some confidentiality
+      const confidentialStyle =
+          new gridviz.ShapeColorSizeStyle({
+                color: (c) => (c.CONFIDENTIALSTATUS ? '#666' : false),
+                shape: () => 'circle',
+                size: (c, r) => 0.25 * r,
+                visible: z => z < 150
+          })*/
+
+      //
+      const update = () => {
+        //read GUI selection
+        const layCode = document.querySelector('input[name="layer"]:checked').value;
+
+        if (layCode != "share") {
+          document.getElementById("share_select").disabled = true;
+          document.getElementById("sbtp").disabled = true;
+        }
+        if (layCode != "ternary") {
+          document.getElementById("ternary_select").disabled = true;
+          document.getElementById("sbtp_tri").disabled = true;
+        }
+
+        //make grid layer
+        const gridLayer = new gridviz.GridLayer(layCode === "pop" ? datasetTotal : dataset, []);
+
+        //add layers to map
+        map.layers = [backgroundLayer1, backgroundLayer2, gridLayer, boundariesLayer, labelLayer];
+
+        //set style
+        if (layCode === "pop") {
+          //const nbClasses = 6;
+          //const colors = d3.schemeYlOrRd[nbClasses];
+
+          gridLayer.styles = [
+            new gridviz.SquareColorWebGLStyle({
+              viewScale: (cells) => d3.max(cells, (c) => c.T),
+              tFun: (c, r, z, max) => (max == 0 ? 0.5 : c.T / max),
+              color: d3.interpolateYlOrRd,
+              stretching: { fun: "log", alpha: -7 },
+              blendOperation: (z) => (z < 100 ? "multiply" : "source-over"),
+            }),
+            /*          new gridviz.ShapeColorSizeStyle({
+              color: (c, r, z, viewScale) => viewScale(c.T),
+              viewScale: gridviz.viewScaleColor({
+                valueFunction: (c) => +c.T,
+                //colorScale: d3.interpolateYlOrRd,
+                colors: colors,
+                stretching: gridviz.logarithmicScale(-7),
+              }),
+              blendOperation: (z) => (z < 100 ? "multiply" : "source-over"),
+            }),*/
+            new gridviz.StrokeStyle({ visible: (z) => z < 50 }),
+          ];
+
+          //legend
+          const textScale = gridviz.logarithmicScale(-7).invert;
+          gridLayer.styles[0].legends = [
+            /*new gridviz.ColorDiscreteLegend({
+              title: "Population",
+              width: 350,
+              colors: () => colors,
+              breaks: (viewScale) => viewScale?.breaks.map((b) => gridviz.nice(b)),
+              labelFormat: formatLarge,
+            }),*/
+            new gridviz.ColorLegend({
+              title: "Population",
+              colorScale: d3.interpolateYlOrRd,
+              width: 350,
+              ticks: 5,
+              textScale: (t, max) => formatLarge(Math.round(textScale(t) * max)),
+            }),
+          ];
+
+          //gridLayer.minPixelsPerCell = 1;
+
+          gridLayer.cellInfoHTML = (c) => "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 1 ? "" : "s");
+        } else if (layCode === "sex") {
+          //sex - color classifier
+          const breaks = [-20, -7, -2, -0.5, 0.5, 2, 7, 20];
+          const sexColorClassifier = gridviz.colorClassifier(breaks, d3.schemeSpectral[breaks.length + 1]);
+
+          const classNumberSize = 4;
+          const style = new gridviz.ShapeColorSizeStyle({
+            color: (c, r, z, viewScale) => (c.indMF == undefined ? naColor : sexColorClassifier(c.indMF)),
+            size: (c, r, z, viewScale) => viewScale(c.T),
+            viewScale: gridviz.viewScaleQuantile({
+              valueFunction: (c) => {
+                if (!c.p_sex) preprocessSex(c);
+                return +c.T;
+              },
+              classNumber: classNumberSize,
+              minSizePix: 2.5,
+              maxSizeFactor: 1.3,
+            }),
+            shape: () => "circle",
+            blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+          });
+          gridLayer.styles = [style];
+
+          //gridLayer.minPixelsPerCell = 3;
+
+          style.legends = [];
+
+          //sex color legend
+          style.legends.push(
+            new gridviz.ColorDiscreteLegend({
+              title: "Women / men balance, in %",
+              width: 300,
+              colors: () => sexColorClassifier.colors,
+              breaks: () => sexColorClassifier.breaks,
+            })
+          );
+
+          //na legend
+          style.legends.push(naLegend);
+
+          //population size legend
+          style.addLegends(
+            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
+              title: "Population",
+              fillColor: "#666",
+              labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
+            })
+          );
+
+          gridLayer.cellInfoHTML = (c) => {
+            let tot = c.F + c.M;
+            if (isNaN(tot)) tot = c.T;
+            const pop_ = "<b>" + formatLarge(tot) + "</b> person" + (tot == 1 ? "" : "s") + "<br>";
+            if (c.F == undefined || c.M == undefined)
+              return "Data not available" + (c.CONFIDENTIALSTATUS ? " (confidential)" : "") + "<br>" + pop_;
+            return (
+              pop_ +
+              formatLarge(c.M) +
+              " m" +
+              (c.M == 1 ? "a" : "e") +
+              "n<br>" +
+              formatLarge(c.F) +
+              " wom" +
+              (c.F == 1 ? "a" : "e") +
+              "n<br>" +
+              "Difference: <b>" +
+              (c.indMF > 0 ? "+" : "") +
+              formatPercentage(c.indMF) +
+              " % men</b>"
+            );
+          };
+        } else if (layCode === "emp") {
+          const breaks = [30, 40, 45, 50, 55, 60, 70];
+          const empColorClassifier = gridviz.colorClassifier(breaks, d3.schemeYlOrRd[breaks.length + 1]);
+          //d3.interpolateYlOrRd(Math.floor(20*c.sEMP / 100)/20)
+
+          const classNumberSize = 4;
+          const style = new gridviz.ShapeColorSizeStyle({
+            color: (c, r, z, viewScale) => (c.sEMP == undefined ? naColor : empColorClassifier(c.sEMP)),
+            size: (c, r, z, viewScale) => viewScale(c.T),
+            viewScale: gridviz.viewScaleQuantile({
+              valueFunction: (c) => {
+                if (!c.p_emp) preprocessEmp(c);
+                return +c.T;
+              },
+              classNumber: classNumberSize,
+              minSizePix: 2.5,
+              maxSizeFactor: 1.3,
+            }),
+            shape: () => "circle",
+            blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+          });
+          gridLayer.styles = [style];
+
+          //gridLayer.minPixelsPerCell = 3;
+
+          //employment color legend
+          style.legends.push(
+            new gridviz.ColorDiscreteLegend({
+              title: "Employment, in %",
+              width: 250,
+              colors: () => empColorClassifier.colors,
+              breaks: () => empColorClassifier.breaks,
+            })
+          );
+
+          //na legend
+          style.legends.push(naLegend);
+
+          //population size legend
+          style.addLegends(
+            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
+              title: "Population",
+              fillColor: "#666",
+              labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
+            })
+          );
+
+          gridLayer.cellInfoHTML = (c) => {
+            const pop_ = "<br>" + formatLarge(c.T) + " person" + (c.T == 1 ? "" : "s");
+            if (c.sEMP == undefined || c.EMP == undefined)
+              return "Data not available" + (c.CONFIDENTIALSTATUS ? " (confidential)" : "") + pop_;
+            return "<b>" + formatPercentage(c.sEMP) + " %</b><br>" + formatLarge(c.EMP) + pop_;
+          };
+        } else if (layCode === "age") {
+          const colAge = d3.interpolateSpectral;
+          const classNumberSize = 4;
+          gridLayer.styles = [
+            new gridviz.CompositionStyle({
+              color: {
+                Y_LT15: colAge(0.2),
+                Y_1564: colAge(0.4),
+                Y_GE65: colAge(0.9),
+              },
+              type: () => "flag",
+              size: (c, r, z, scale) => scale(c.T),
+              viewScale: gridviz.viewScaleQuantile({
+                valueFunction: (c) => +c.T,
+                classNumber: classNumberSize,
+                minSizePix: 8,
+                maxSizeFactor: 0.9,
+              }),
+              //viewScale: gridviz.sizeScale({ valueFunction: (c) => +c.T, exponent: 0.1 }),
+              stripesOrientation: () => 90,
+              blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+            }),
+          ];
+
+          gridLayer.minPixelsPerCell = 12;
+
+          //age
+          gridLayer.styles[0].legends = [
+            new gridviz.ColorCategoryLegend({
+              title: "Age",
+              colorLabel: [
+                [colAge(0.2), "Under 15 years"],
+                [colAge(0.4), "15 to 64 years"],
+                [colAge(0.9), "65 years and older"],
+              ],
+            }),
+          ];
+
+          //population
+          gridLayer.styles[0].addLegends(
+            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
+              title: "Population",
+              shape: "square",
+              fillColor: "#666",
+              labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
+            })
+          );
+
+          gridLayer.cellInfoHTML = (c) =>
+            c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined
+              ? undefined
+              : "<b>" +
+                formatLarge(c.Y_LT15 + c.Y_1564 + c.Y_GE65) +
+                "</b> person" +
+                (c.Y_LT15 + c.Y_1564 + c.Y_GE65 == 1 ? "" : "s") +
+                "<br>" +
+                formatLarge(c.Y_LT15) +
+                " - under 15 years<br>" +
+                formatLarge(c.Y_1564) +
+                " - 15 to 64 years<br>" +
+                formatLarge(c.Y_GE65) +
+                " - 65 years and older";
+        } else if (layCode === "mobility") {
+          const classNumberSize = 5;
+          gridLayer.styles = [
+            new gridviz.CompositionStyle({
+              color: {
+                SAME: "#fed9a6", //light mostard
+                CHG_IN: "#7570b3", //blueish
+                CHG_OUT: "#d95f02", //orange
+              },
+              type: () => "piechart", //flag, piechart, ring, segment, radar, agepyramid, halftone
+              size: (c, r, z, scale) => scale(c.T),
+              viewScale: gridviz.viewScaleQuantile({
+                valueFunction: (c) => +c.T,
+                classNumber: classNumberSize,
+                minSizePix: 6,
+                maxSizeFactor: 1.2,
+              }),
+              blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+            }),
+          ];
+
+          gridLayer.minPixelsPerCell = 12;
+
+          //mobility
+          gridLayer.styles[0].legends = [
+            new gridviz.ColorCategoryLegend({
+              title: "Mobility, compared to January 1, 2020",
+              colorLabel: [
+                ["#fed9a6", "Residence unchanged"],
+                ["#7570b3", "Moved within the country"],
+                ["#d95f02", "Moved from outside the country"],
+              ],
+            }),
+          ];
+
+          //population
+          gridLayer.styles[0].addLegends(
+            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
+              title: "Population",
+              fillColor: "#666",
+              labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
+            })
+          );
+
+          gridLayer.cellInfoHTML = (c) =>
+            c.SAME == undefined || c.CHG_IN == undefined || c.CHG_OUT == undefined
+              ? undefined
+              : "<b>" +
+                formatLarge(c.SAME + c.CHG_IN + c.CHG_OUT) +
+                "</b> person" +
+                (c.SAME + c.CHG_IN + c.CHG_OUT == 1 ? "" : "s") +
+                "<br>" +
+                formatLarge(c.SAME) +
+                " residence unchanged<br>" +
+                formatLarge(c.CHG_IN) +
+                " moved within the country<br>" +
+                formatLarge(c.CHG_OUT) +
+                " moved from outside the country";
+        } else if (layCode === "pob") {
+          const classNumberSize = 5;
+          gridLayer.styles = [
+            new gridviz.CompositionStyle({
+              color: {
+                NAT: "#fed9a6", //light mostard
+                EU_OTH: "#7570b3", //blueish
+                OTH: "#d95f02", //orange
+              },
+              type: () => "halftone", //flag, piechart, ring, segment, radar, agepyramid, halftone
+              size: (c, r, z, scale) => scale(c.T),
+              viewScale: gridviz.viewScaleQuantile({
+                valueFunction: (c) => +c.T,
+                classNumber: classNumberSize,
+                minSizePix: 8,
+              }),
+              blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+            }),
+          ];
+
+          gridLayer.minPixelsPerCell = 12;
+
+          //place of birth
+          gridLayer.styles[0].legends = [
+            new gridviz.ColorCategoryLegend({
+              title: "Place of birth",
+              colorLabel: [
+                ["#fed9a6", "Born in the country"],
+                ["#7570b3", "Born in another EU member state"],
+                ["#d95f02", "Born outside the EU"],
+              ],
+            }),
+          ];
+
+          //population
+          gridLayer.styles[0].addLegends(
+            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
+              title: "Population",
+              fillColor: "#666",
+              labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
+            })
+          );
+
+          gridLayer.cellInfoHTML = (c) =>
+            c.NAT == undefined || c.EU_OTH == undefined || c.OTH == undefined
+              ? undefined
+              : "<b>" +
+                formatLarge(c.NAT + c.EU_OTH + c.OTH) +
+                "</b> person" +
+                (c.NAT + c.EU_OTH + c.OTH == 1 ? "" : "s") +
+                "<br>" +
+                formatLarge(c.NAT) +
+                " born in the country<br>" +
+                formatLarge(c.EU_OTH) +
+                " born in another EU member state<br>" +
+                formatLarge(c.OTH) +
+                " born outside the EU";
+        } else if (layCode === "share") {
+          //unfreeze GUI
+          document.getElementById("share_select").disabled = false;
+          document.getElementById("sbtp").disabled = false;
+
+          //get gui info
+          const shareA = document.querySelector("#share_select").value;
+          const shareB = "s" + shareA;
+          const sbtp = document.getElementById("sbtp").checked;
+
+          //define style
+
+          //breaks
+          let breaks = undefined;
+          switch (shareA) {
+            case "F":
+              breaks = [40, 45, 49, 50, 51, 55, 60];
+              break;
+            case "M":
+              breaks = [40, 45, 49, 50, 51, 55, 60];
+              break;
+            case "Y_LT15":
+              breaks = [5, 10, 15, 20, 30];
+              break;
+            case "Y_1564":
+              breaks = [50, 60, 65, 70, 80];
+              break;
+            case "Y_GE65":
+              breaks = [10, 20, 30, 40, 50];
+              break;
+            case "EMP":
+              breaks = [30, 40, 45, 50, 55, 60, 70];
+              break;
+            case "SAME":
+              breaks = [70, 80, 90, 95, 99];
+              break;
+            case "CHG_IN":
+              breaks = [0.5, 1, 5, 10, 20];
+              break;
+            case "CHG_OUT":
+              breaks = [0.5, 1, 2, 5, 10];
+              break;
+            case "NAT":
+              breaks = [60, 70, 80, 85, 90, 95, 99];
+              break;
+            case "EU_OTH":
+              breaks = [1, 5, 10, 15, 20, 30];
+              break;
+            case "OTH":
+              breaks = [1, 5, 10, 20, 30, 50];
+              break;
+            default:
+              breaks = [30, 40, 45, 50, 55, 60, 70];
+          }
+
+          const classNumberColor = breaks.length + 1; //6
+          const palette = shareA == "M" || shareA == "F" ? d3.schemeSpectral : d3.schemeYlOrRd;
+          const colors = palette[classNumberColor];
+          const colorClassifier = gridviz.colorClassifier(breaks, colors);
+          const classNumberSize = 4;
+          const style = new gridviz.ShapeColorSizeStyle({
+            color: (c, r, z, viewScale) => {
+              if (!c.p_sex && ["F", "M"].includes(shareA)) preprocessSex(c);
+              if (!c.p_age && ["Y_LT15", "Y_1564", "Y_GE65"].includes(shareA)) preprocessAge(c);
+              if (!c.p_emp && ["EMP"].includes(shareA)) preprocessEmp(c);
+              if (!c.p_mob && ["SAME", "CHG_IN", "CHG_OUT"].includes(shareA)) preprocessMob(c);
+              if (!c.p_pob && ["NAT", "EU_OTH", "OTH"].includes(shareA)) preprocessPob(c);
+              return c[shareB] == undefined ? naColor : colorClassifier(c[shareB]);
+            },
+            viewScale: sbtp
+              ? gridviz.viewScaleQuantile({
+                  valueFunction: (c) => +c.T,
+                  classNumber: classNumberSize,
+                  minSizePix: 2.5,
+                  maxSizeFactor: 1.3,
+                })
+              : undefined,
+            size: sbtp ? (c, r, z, viewScale) => viewScale(c.T) : (c, r) => r,
+            shape: sbtp ? () => "circle" : () => "square",
+            blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+          });
+
+          //set styles
+          gridLayer.styles = [style];
+          if (!sbtp) gridLayer.styles.push(new gridviz.StrokeStyle({ visible: (z) => z < 50 }));
+
+          //
+          gridLayer.minPixelsPerCell = sbtp ? 3 : 1.3;
+
+          //share color legend
+          style.addLegends([
+            new gridviz.ColorDiscreteLegend({
+              title: "Share, in percentage",
+              width: 250,
+              colors: () => colors,
+              breaks: () => breaks,
+            }),
+          ]);
+
+          //na legend
+          style.legends.push(naLegend);
+
+          //population size legend
+          if (sbtp)
+            style.addLegends(
+              gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
+                title: "Population",
+                fillColor: "#666",
+                labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
+              })
+            );
+
+          gridLayer.cellInfoHTML = (c) => {
+            const pop_ = "<br>" + formatLarge(c.T) + " person" + (c.T == 1 ? "" : "s");
+            if (c[shareA] == undefined || c[shareB] == undefined)
+              return "Data not available" + (c.CONFIDENTIALSTATUS ? " (confidential)" : "") + pop_;
+            return "<b>" + formatPercentage(c[shareB]) + " %</b><br>" + formatLarge(c[shareA]) + pop_;
+          };
+        } else if (layCode === "ternary") {
+          //unfreeze GUI
+          document.getElementById("ternary_select").disabled = false;
+          document.getElementById("sbtp_tri").disabled = false;
+
+          //get gui info
+          const theme = document.querySelector("#ternary_select").value;
+          //age, mobility, pob
+          const sbtp = document.getElementById("sbtp_tri").checked;
+
+          let colorTernaryFun;
+          if (theme == "age")
+            colorTernaryFun = gridviz.ternaryColorClassifier(
+              ["sY_LT15", "sY_1564", "sY_GE65"],
+              (c) => 100,
+              ["#4daf4a", "#377eb8", "#e41a1c"],
+              {
+                center: [0.15, 0.64, 0.21],
+                centerColor: "#999",
+                centerCoefficient: 0.25,
+                defaultColor: naColor,
+              }
+            );
+          else if (theme == "mobility")
+            colorTernaryFun = gridviz.ternaryColorClassifier(
+              ["sCHG_OUT", "sSAME", "sCHG_IN"],
+              (c) => 100,
+              ["#4daf4a", "#377eb8", "#e41a1c"],
+              {
+                center: [0.05, 0.85, 0.1],
+                //centerColor: "#999",
+                //centerCoefficient: 0.7,
+                defaultColor: naColor,
+              }
+            );
+          else if (theme == "pob")
+            colorTernaryFun = gridviz.ternaryColorClassifier(
+              ["sOTH", "sNAT", "sEU_OTH"],
+              (c) => 100,
+              ["#4daf4a", "#377eb8", "#e41a1c"],
+              {
+                center: [0.25, 0.6, 0.15],
+                //centerColor: "#999",
+                //centerCoefficient: 0.5,
+                defaultColor: naColor,
+              }
+            );
+
+          const classNumberSize = 4;
+          const style = new gridviz.ShapeColorSizeStyle({
+            color: (c) => {
+              if (theme == "age" && !c.p_age) preprocessAge(c);
+              if (theme == "mobility" && !c.p_mob) preprocessMob(c);
+              if (theme == "pob" && !c.p_pob) preprocessPob(c);
+              return colorTernaryFun(c) || naColor;
+            },
+            viewScale: sbtp
+              ? gridviz.viewScaleQuantile({
+                  valueFunction: (c) => +c.T,
+                  classNumber: classNumberSize,
+                  minSizePix: 2.5,
+                  maxSizeFactor: 1.3,
+                })
+              : undefined,
+            size: sbtp ? (c, r, z, viewScale) => viewScale(c.T) : (c, r) => r,
+            shape: sbtp ? () => "circle" : () => "square",
+            blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+          });
+
+          //set styles
+          gridLayer.styles = [style];
+          if (!sbtp) gridLayer.styles.push(new gridviz.StrokeStyle({ visible: (z) => z < 50 }));
+
+          //
+          gridLayer.minPixelsPerCell = sbtp ? 3 : 1.3;
+
+          //legends
+
+          const legendWidth = 150;
+          if (theme == "age")
+            gridLayer.styles[0].legends = [
+              new gridviz.TernaryLegend({
+                title: "Age",
+                classifier: colorTernaryFun,
+                width: legendWidth,
+                tooltip: map.tooltip,
+                texts: {
+                  0: "Over-representation of persons aged <15",
+                  1: "Over-representation of persons aged 15 to 64",
+                  2: "Over-representation of persons aged >=65",
+                  12: "Under-representation of persons aged <15",
+                  "02": "Under-representation of<br>persons aged 15 to 64",
+                  "01": "Under-representation of persons aged >=65",
+                  center: "Balanced representation of age groups",
+                },
+                leftText: "Under 15",
+                topText: "15 to 64",
+                rightText: "65 and older",
+                centerCoefficient: 0.5,
+              }),
+            ];
+          else if (theme == "mobility")
+            gridLayer.styles[0].legends = [
+              new gridviz.TernaryLegend({
+                title: "Mobility (2020-2021)",
+                classifier: colorTernaryFun,
+                width: legendWidth,
+                tooltip: map.tooltip,
+                texts: {
+                  0: "Over-representation of persons<br>that moved from outside the country",
+                  1: "Over-representation of persons<br>with residence unchanged",
+                  2: "Over-representation of persons<br>that moved within the country",
+                  12: "Under-representation of persons<br>that moved from outside the country",
+                  "02": "Under-representation of persons<br>with residence unchanged",
+                  "01": "Under-representation of persons<br>that moved within the country",
+                  center: "Balanced representation of mobility groups",
+                },
+                leftText: "Outside",
+                topText: "No change",
+                rightText: "Inside country",
+                //centerCoefficient: 0.5,
+              }),
+            ];
+          else if (theme == "pob")
+            gridLayer.styles[0].legends = [
+              new gridviz.TernaryLegend({
+                title: "Birth place",
+                classifier: colorTernaryFun,
+                width: legendWidth,
+                tooltip: map.tooltip,
+                texts: {
+                  0: "Over-representation of persons<br>born outside the EU",
+                  1: "Over-representation of persons<br>born in the country",
+                  2: "Over-representation of persons<br>born in another EU member state",
+                  12: "Under-representation of persons<br>born outside the EU",
+                  "02": "Under-representation of persons<br>born in the country",
+                  "01": "Under-representation of persons<br>born in another EU member state",
+                  center: "Balanced representation",
+                },
+                leftText: "Rest of the world",
+                topText: "Same country",
+                rightText: "EU",
+                //centerCoefficient: 0.5,
+              }),
+            ];
+
+          //na legend
+          style.legends.push(naLegend);
+
+          //population legend
+          if (sbtp)
+            gridLayer.styles[0].addLegends(
+              gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
+                title: "Population",
+                fillColor: "#666",
+                labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
+              })
+            );
+
+          //tooltip text
+          if (theme == "age")
+            gridLayer.cellInfoHTML = (c) => {
+              let total = c.Y_LT15 + c.Y_1564 + c.Y_GE65;
+              if (isNaN(total)) total = c.T;
+              const tot_ = "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>";
+              if (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined)
+                return tot_ + "Decomposition data not available" + (c.CONFIDENTIALSTATUS ? "<br>(confidential)" : "");
+              return (
+                tot_ +
+                formatPercentage(c.sY_LT15) +
+                "% under 15 years<br>" +
+                formatPercentage(c["sY_1564"]) +
+                "% 15 to 64 years<br>" +
+                formatPercentage(c.sY_GE65) +
+                "% 65 years and older"
+              );
+            };
+          else if (theme == "mobility")
+            gridLayer.cellInfoHTML = (c) => {
+              let total = c.CHG_IN + c.SAME + c.CHG_OUT;
+              if (isNaN(total)) total = c.T;
+              const tot_ = "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>";
+              if (c.CHG_IN == undefined || c.SAME == undefined || c.CHG_OUT == undefined)
+                return tot_ + "Decomposition data not available" + (c.CONFIDENTIALSTATUS ? "<br>(confidential)" : "");
+              return (
+                tot_ +
+                formatPercentage(c.sSAME) +
+                "% residence unchanged<br>" +
+                formatPercentage(c.sCHG_IN) +
+                "% moved within the country<br>" +
+                formatPercentage(c.sCHG_OUT) +
+                "% moved from outside the country"
+              );
+            };
+          else if (theme == "pob")
+            gridLayer.cellInfoHTML = (c) => {
+              let total = c.NAT + c.EU_OTH + c.OTH;
+              if (isNaN(total)) total = c.T;
+              const tot_ = "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>";
+              if (c.NAT == undefined || c.EU_OTH == undefined || c.OTH == undefined)
+                return tot_ + "Decomposition data not available" + (c.CONFIDENTIALSTATUS ? "<br>(confidential)" : "");
+              return (
+                tot_ +
+                formatPercentage(c.sNAT) +
+                "% born in the country<br>" +
+                formatPercentage(c.sEU_OTH) +
+                "% born in another EU member state<br>" +
+                formatPercentage(c.sOTH) +
+                "% born outside the EU"
+              );
+            };
+        } else if (layCode === "chernoff") {
+          if (!chernoffImages) return;
+
+          //age color - 3/4 classes
+          const ageClassifier = gridviz.ternaryClassifier(["sY_LT15", "sY_1564", "sY_GE65"], (c) => 100, {
+            center: [0.15, 0.64, 0.21],
+            withMixedClasses: false,
+          });
+
+          //sex code
+          const sexClassifier = (c) => (c.indMF <= 0 ? "f" : "m");
+
+          //employment class
+          const breaks = [45, 55];
+          const empClassifier = gridviz.classifier(breaks);
+
+          const classNumberSize = 3;
+          const style = new gridviz.ImageStyle({
+            imageCode: (c) => {
+              const a = +ageClassifier(c);
+              const ageCode = a == 0 ? "y" : a == 1 ? "m" : "o";
+              const sexCode = sexClassifier(c);
+              const empCode = empClassifier(c.sEMP);
+              return sexCode + ageCode + empCode;
+            },
+            images: chernoffImages,
+            size: (c, r, z, viewScale) => viewScale(c.T),
+            viewScale: gridviz.viewScaleQuantile({
+              valueFunction: (c) => +c.T,
+              classNumber: classNumberSize,
+              minSizePix: 30,
+              maxSizeFactor: 0.9,
+            }),
+            blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+          });
+          gridLayer.styles = [style];
+
+          gridLayer.minPixelsPerCell = 40;
+
+          gridLayer.cellInfoHTML = (c) => {
+            const a = ageClassifier(c);
+            const s = sexClassifier(c);
+            const e = empClassifier(c.sEMP);
+            return (
+              "" +
+              c.T +
+              " person" +
+              (c.T ? "s" : "") +
+              "<br>Over-representation of <b>" +
+              (s == "m" ? "men" : "women") +
+              "</b>" +
+              "<br>" +
+              (a == "0"
+                ? "younger than <b>15</b>"
+                : a == "1"
+                ? "aged between <b>15 and 64</b>"
+                : "aged <b>65</b> and older") +
+              "<br>with <b>" +
+              (e == 0 ? "low" : e == 1 ? "average" : "high") +
+              "</b> employment"
+            );
+          };
+        } else console.error("Unexpected layer code: " + layCode);
+
+        //redraw
+        map.redraw();
+      };
+
+//home button
+document.getElementById("home-button").addEventListener("click", (event) => {
+  event.stopPropagation();
+  map.setView(DEFAULTMAPSETTINGS.x, DEFAULTMAPSETTINGS.y);
+  map.setZoom(DEFAULTMAPSETTINGS.z);
+  map.redraw();
+});
+
+      //layer update
+      document.querySelector("#layer-control").addEventListener("change", update);
+
+      // show/hide labels
+      document.querySelector("#label").addEventListener("change", function () {
+        labelLayer.visible = () => this.checked;
+        map.redraw();
+      });
+
+      // show/hide boundaries
+      document.querySelector("#boundary").addEventListener("change", function () {
+        boundariesLayer.visible = () => this.checked;
+        map.redraw();
+      });
+
+      // show/hide background layer
+      document.querySelector("#background").addEventListener("change", function () {
+        if (this.checked) {
+          backgroundLayer1.visible = (z) => z > 50;
+          backgroundLayer2.visible = (z) => z <= 50;
+        } else {
+          backgroundLayer1.visible = () => false;
+          backgroundLayer2.visible = () => false;
+        }
+        map.redraw();
+      });
+
+      //set selected layer from URL param
+      const layerParam = gridviz.getParameterByName("lay");
+      if (layerParam) {
+        // Total population : pop
+        // Share: share
+        // Ternary: ternary
+        // Sex: sex
+        // Employment: emp
+        // Age: age
+        // Mobility: mobility
+        // Birth place: pob
+        const input = document.querySelector("#" + layerParam);
+        if (input) {
+          input.checked = true;
+          if (layerParam == "share") {
+            const dropdownSelection = gridviz.getParameterByName("share_selection");
+            document.getElementById("share_select").value = dropdownSelection;
+          } else if (layerParam == "ternary") {
+            const dropdownSelection = gridviz.getParameterByName("ternary_selection");
+            document.getElementById("ternary_select").value = dropdownSelection;
+          }
+        }
+      }
+
+      //toggle options panel collapse from URL param
+      const collapsed = gridviz.getParameterByName("collapsed");
+      if (collapsed) {
+        const collapseButton = document.getElementById("expand-toggle-button");
+        collapseButton.click();
+      }
+
+      //initialise
+      update();
+    </script>
+  </body>
+</html>

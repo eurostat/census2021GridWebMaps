@@ -1,0 +1,189 @@
+    body {
+	margin: 0; 
+	height: 100%; 
+	font-family: Arial, Helvetica, sans-serif !important; 
+	overflow: hidden
+    }
+    main {
+      max-height: 100vh;
+      height: calc(100% - 30px); 
+      flex: 1;
+    }
+ @media (max-width: 800px) {
+      .footer-links,
+      #globan,
+      .globan {
+        display: none !important;
+      }
+      .wrapper {
+        height: 100vh !important;
+      }
+    .home-button {
+     	 top: 140px !important;
+    	}
+    }
+    main {
+      max-height: 100vh;
+      height: calc(100vh - 30px); /* Fallback for older browsers */ 
+      flex: 1;
+    }
+    .footer-links {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      background-color: white;
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      font-size: 13px;
+	opacity:0.9
+    }
+    .footer-links a {
+      color: #3860ed;
+      text-decoration: underline;
+    }
+    .footer-links a:hover {
+      text-decoration: underline;
+	color: #0f2fa2;
+    }
+    .footer-links a:visited {
+      color: purple; /* Change this to your desired color */
+    }
+    .wrapper {
+      height: calc(100vh - 25px);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+      #gridviz-attribution {
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        width: auto;
+        height: auto;
+        padding: 1px;
+        border: 0px;
+        background: #ffffffcc;
+        font-size: 0.8em;
+        font-family: sans-serif;
+      }
+      #gridviz-attribution > span > a {
+        text-decoration: underline !important;
+      }
+      #expand-toggle {
+        position: absolute;
+        left: 5px;
+        top: 5px;
+      }
+#expand-toggle-button {
+    background: white;
+    border-color: var(--c-p);
+    border-width: 1px;
+}
+      #expandable-content {
+        margin-top: 4px;
+      }
+      #layer-control {
+        position: absolute;
+        left: 0px;
+        min-width: 260px;
+        height: auto;
+        padding: 10px;
+        background: #ffffff;
+        box-shadow: 5px 5px 5px grey;
+      }
+      #map {
+        height: 100%;
+        width: 100%;
+      }
+      .proportional-checkbox-label {
+        margin-top: 6px !important;
+      }
+      .subcontrols {
+        margin-left: 20px;
+        margin-top: 5px;
+      }
+      #tooltip_eurostat {
+        top: 0px;
+        z-index: 9999;
+      }
+      #share-of-container,
+      #ternary-container {
+        display: block;
+      }
+      #full-version-button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+      }
+      /* ECL overrides */
+      .ecl-radio {
+        margin-bottom: 2px !important;
+      }
+      .ecl-radio__label {
+        padding: unset !important;
+        line-height: unset !important;
+        font-size: 14px !important;
+        align-items: center !important;
+      }
+      .ecl-checkbox__label {
+        padding: 1px !important;
+        line-height: unset !important;
+        font-size: 14px !important;
+        align-items: center !important;
+      }
+      .ecl-select {
+        padding: 2px !important;
+        height: 35px !important;
+        font-size: 14px !important;
+      }
+      .ecl-select__container {
+        height: 35px !important;
+      }
+      span.ecl-checkbox__box,
+      span.ecl-radio__box {
+        height: 1.2rem !important;
+        width: 1.2rem !important;
+      }
+
+/* zoom buttons */
+    #map > div:nth-child(3) {
+      right: 13px !important;
+      top: 60px !important;
+    }
+    #map > div:nth-child(3) > a:nth-child(1),
+    #map > div:nth-child(3) > a:nth-child(2),.home-button {
+      background-color: #fff !important;
+      border: 2px solid var(--c-p) !important;
+      color: var(--c-p) !important;
+      height: 27px;
+      width: 27px;
+    }
+    #map > div:nth-child(3) > a:nth-child(1):hover,
+    #map > div:nth-child(3) > a:nth-child(2):hover,.home-button:hover {
+      background-color: var(--c-p-80) !important;
+      border-color: var(--c-p-80) !important;
+      color: #fff !important;
+    }
+    /* zoom in */
+    #map > div:nth-child(3) > a:nth-child(1) {
+      border-bottom: 0px !important;
+    }
+      hr {
+        border: 0.5px solid #e1e1e1;
+      } 
+
+    .home-button {
+  position: absolute;
+  top: 105px;
+  right: 4px;
+  background-color: white;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.home-button:hover .svg-home-icon {
+  fill: white;
+}
