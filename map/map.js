@@ -239,6 +239,7 @@ const classNumber = 8;
 for (let i = 0; i <= (classNumber - 1); i++) colors.push(d3.interpolateYlOrRd(i / (classNumber - 1)))
 const scaleTPop = gridviz.exponentialScale(7) //exponentialScale logarithmicScale
 
+
 //style
 const totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
     viewScale: cells => {
