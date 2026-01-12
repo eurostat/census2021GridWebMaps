@@ -1,4 +1,8 @@
 
+//total population: make more detailled. To discrete classification ?
+//update nuts2json, euronym
+
+
 //urls for production
 const tiledGridsURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles/";
 const tiledTotalGridsURL =
