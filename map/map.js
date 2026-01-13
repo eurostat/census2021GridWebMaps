@@ -713,7 +713,7 @@ const update = () => {
         });
         gridLayer.styles = [style];
 
-        //gridLayer.minPixelsPerCell = 3;
+        gridLayer.minPixelsPerCell = 3;
 
         style.legends = [];
 
@@ -768,7 +768,7 @@ const update = () => {
 
         const classNumberSize = 4;
         const style = new gridviz.ShapeColorSizeStyle({
-            color: (c, r, z, viewScale) => (c.sEMP == undefined ? naColor : empColorClassifier(c.sEMP)),
+            color: (c) => (c.sEMP == undefined ? naColor : empColorClassifier(c.sEMP)),
             size: (c, r, z, viewScale) => viewScale(c.T),
             viewScale: gridviz.viewScaleQuantile({
                 valueFunction: (c) => {
@@ -784,7 +784,7 @@ const update = () => {
         });
         gridLayer.styles = [style];
 
-        //gridLayer.minPixelsPerCell = 3;
+        gridLayer.minPixelsPerCell = 3;
 
         //employment color legend
         style.legends.push(
