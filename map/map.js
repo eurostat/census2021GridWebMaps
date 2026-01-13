@@ -1,12 +1,12 @@
 
 //fix tooltip bug
-//total population: make more detailled. To discrete classification ?
 //update nuts2json, euronym
 //update background URL
 //add road background layer - add tomtom copyright
-// strokestyle
 // blendop
 //use interpolator ?
+// add chernoff faces ?
+
 
 //urls for production
 const tiledGridsURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles/";
@@ -277,7 +277,8 @@ const totPopLegend = new gridviz.ColorDiscreteLegend({
 })
 totPopStyle.legends = [totPopLegend];
 
-
+// default stroke style
+const strokeStyle = new gridviz.StrokeStyle({ visible: (z) => z < 50 })
 
 
 const update = () => {
@@ -302,13 +303,10 @@ const update = () => {
         //total population
 
         // update legend width
-        totPopLegend.width = Math.min(window.innerWidth - 40, 400),
+        totPopLegend.width = Math.min(window.innerWidth - 40, 400)
 
-            // link legend, style and layer
-            gridLayer.styles = [
-                totPopStyle,
-                new gridviz.StrokeStyle({ visible: (z) => z < 50 }),
-            ];
+        // link legend, style and layer
+        gridLayer.styles = [totPopStyle, strokeStyle,];
 
         //set layer parameters
         gridLayer.minPixelsPerCell = 0.7;
@@ -389,7 +387,7 @@ const update = () => {
                     color: colDict,
                     blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
                 }),
-                new gridviz.StrokeStyle({ visible: (z) => z < 50 })
+                strokeStyle
             ];
             gridLayer.minPixelsPerCell = 0.7;
         }
@@ -548,7 +546,7 @@ const update = () => {
                     color: colDict,
                     blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
                 }),
-                new gridviz.StrokeStyle({ visible: (z) => z < 50 })
+                strokeStyle
             ];
             gridLayer.minPixelsPerCell = 0.7;
         }
