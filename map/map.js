@@ -4,7 +4,8 @@
 //update nuts2json, euronym
 //update background URL
 //add road background layer - add tomtom copyright
-
+// strokestyle
+// blendop
 
 //urls for production
 const tiledGridsURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles/";
@@ -486,62 +487,42 @@ const update = () => {
         const classNumberSize = 4;
 
         if (sbtp) {
-            const style = new gridviz.ShapeColorSizeStyle({
-                color: (c) => {
-                    if (theme == "age" && !c.p_age) preprocessAge(c);
-                    else if (theme == "mobility" && !c.p_mob) preprocessMob(c);
-                    else if (theme == "pob" && !c.p_pob) preprocessPob(c);
-                    return colorTernaryFun(c) || naColor;
-                },
-                viewScale: sbtp
-                    ? gridviz.viewScaleQuantile({
+            // prop circles
+            gridLayer.styles = [
+                new gridviz.ShapeColorSizeStyle({
+                    color: (c) => {
+                        if (theme == "age" && !c.p_age) preprocessAge(c);
+                        else if (theme == "mobility" && !c.p_mob) preprocessMob(c);
+                        else if (theme == "pob" && !c.p_pob) preprocessPob(c);
+                        return colorTernaryFun(c) || naColor;
+                    },
+                    viewScale: gridviz.viewScaleQuantile({
                         valueFunction: (c) => +c.T,
                         classNumber: classNumberSize,
                         minSizePix: 2.5,
                         maxSizeFactor: 1.2,
-                    })
-                    : undefined,
-                size: sbtp ? (c, r, z, viewScale) => viewScale(c.T) : (c, r) => r,
-                shape: sbtp ? () => "circle" : () => "square",
-                blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
-            });
-
-            //set styles
-            gridLayer.styles = [style];
-            if (!sbtp) gridLayer.styles.push(new gridviz.StrokeStyle({ visible: (z) => z < 50 }));
-
-            //
-            gridLayer.minPixelsPerCell = sbtp ? 3 : 1.2;
-
+                    }),
+                    size: (c, r, z, viewScale) => viewScale(c.T),
+                    shape: () => "circle",
+                    blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+                })
+            ];
+            gridLayer.minPixelsPerCell = 3;
         } else {
-
-            const style = new gridviz.ShapeColorSizeStyle({
-                color: (c) => {
-                    if (theme == "age" && !c.p_age) preprocessAge(c);
-                    else if (theme == "mobility" && !c.p_mob) preprocessMob(c);
-                    else if (theme == "pob" && !c.p_pob) preprocessPob(c);
-                    return colorTernaryFun(c) || naColor;
-                },
-                viewScale: sbtp
-                    ? gridviz.viewScaleQuantile({
-                        valueFunction: (c) => +c.T,
-                        classNumber: classNumberSize,
-                        minSizePix: 2.5,
-                        maxSizeFactor: 1.2,
-                    })
-                    : undefined,
-                size: sbtp ? (c, r, z, viewScale) => viewScale(c.T) : (c, r) => r,
-                shape: sbtp ? () => "circle" : () => "square",
-                blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
-            });
-
-            //set styles
-            gridLayer.styles = [style];
-            if (!sbtp) gridLayer.styles.push(new gridviz.StrokeStyle({ visible: (z) => z < 50 }));
-
-            //
-            gridLayer.minPixelsPerCell = sbtp ? 3 : 1.2;
-
+            //pixel style
+            gridLayer.styles = [
+                new gridviz.ShapeColorSizeStyle({
+                    color: (c) => {
+                        if (theme == "age" && !c.p_age) preprocessAge(c);
+                        else if (theme == "mobility" && !c.p_mob) preprocessMob(c);
+                        else if (theme == "pob" && !c.p_pob) preprocessPob(c);
+                        return colorTernaryFun(c) || naColor;
+                    },
+                    blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+                }),
+                new gridviz.StrokeStyle({ visible: (z) => z < 50 })
+            ];
+            gridLayer.minPixelsPerCell = 0.7;
         }
 
 
