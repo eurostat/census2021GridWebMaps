@@ -1,0 +1,41 @@
+Aging Index
+
+The indicator based on the ratio of individuals aged 65+ to those aged 0-15
+
+Dependency Ratios:
+
+Youth Dependency Ratio: This is the ratio of individuals aged 0-15 to those aged 16-64. It indicates the burden on the working-age population to support the youth.
+
+Old-Age Dependency Ratio: The ratio of individuals aged 65+ to those aged 16-64. It reflects the pressure on the working-age population to support the elderly.
+
+Total Dependency Ratio: Combines both youth and old-age dependency ratios.
+
+median age estimation
+
+Calculate Total Population: total_population = pop_0_15 + pop_16_64 + pop_65_plus
+
+Find Median Position: median_position = total_population / 2
+
+Determine median age group
+
+if median_position < pop_0_15
+
+                median_age = 15 * (median_position / pop_0_15)
+
+else if median_position < pop_16_64
+
+                offset_in_16_64 = median_position - pop_0_15
+
+                median_age = 16 + 48 * (offset_in_16_64 / pop_16_64)
+
+else ...
+
+                offset_in_65_plus = median_position - (pop_0_15 + pop_16_64)
+
+                median_age = 65 + 15 * (offset_in_65_plus / pop_65_plus)
+
+                (with 15 years for dispersion)
+
+year of maximum population
+
+sea level ?
