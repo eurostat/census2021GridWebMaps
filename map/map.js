@@ -345,18 +345,18 @@ const update = () => {
         const classNumberColor = breaks.length + 1; //6
         const palette = shareA == "M" || shareA == "F" ? d3.schemeSpectral : d3.schemeYlOrRd;
         const colors = palette[classNumberColor];
-        const colorClassifier = gridviz.colorClassifier(breaks, colors);
         const classNumberSize = 4;
 
-        let style = undefined
         if (sbtp) {
-            style = new gridviz.ShapeColorSizeStyle({
+            const colorClassifier = gridviz.colorClassifier(breaks, colors);
+
+            const style = new gridviz.ShapeColorSizeStyle({
                 color: (c, r, z, viewScale) => {
                     if (!c.p_sex && ["F", "M"].includes(shareA)) preprocessSex(c);
-                    if (!c.p_age && ["Y_LT15", "Y_1564", "Y_GE65"].includes(shareA)) preprocessAge(c);
-                    if (!c.p_emp && ["EMP"].includes(shareA)) preprocessEmp(c);
-                    if (!c.p_mob && ["SAME", "CHG_IN", "CHG_OUT"].includes(shareA)) preprocessMob(c);
-                    if (!c.p_pob && ["NAT", "EU_OTH", "OTH"].includes(shareA)) preprocessPob(c);
+                    else if (!c.p_age && ["Y_LT15", "Y_1564", "Y_GE65"].includes(shareA)) preprocessAge(c);
+                    else if (!c.p_emp && ["EMP"].includes(shareA)) preprocessEmp(c);
+                    else if (!c.p_mob && ["SAME", "CHG_IN", "CHG_OUT"].includes(shareA)) preprocessMob(c);
+                    else if (!c.p_pob && ["NAT", "EU_OTH", "OTH"].includes(shareA)) preprocessPob(c);
                     return c[shareB] == undefined ? naColor : colorClassifier(c[shareB]);
                 },
                 viewScale: gridviz.viewScaleQuantile({
@@ -369,9 +369,24 @@ const update = () => {
                 shape: () => "circle",
                 blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
             });
-
+            gridLayer.styles = [style];
+            gridLayer.minPixelsPerCell = 3;
         } else {
-            style = new gridviz.ShapeColorSizeStyle({
+            const classifier = gridviz.classifier(breaks)
+            const colDict = { ...colors }; colDict["na"] = naColor
+            const style = new gridviz.SquareColorCategoryWebGLStyle({
+                code: (c) => {
+                    if (!c.p_sex && ["F", "M"].includes(shareA)) preprocessSex(c);
+                    else if (!c.p_age && ["Y_LT15", "Y_1564", "Y_GE65"].includes(shareA)) preprocessAge(c);
+                    else if (!c.p_emp && ["EMP"].includes(shareA)) preprocessEmp(c);
+                    else if (!c.p_mob && ["SAME", "CHG_IN", "CHG_OUT"].includes(shareA)) preprocessMob(c);
+                    else if (!c.p_pob && ["NAT", "EU_OTH", "OTH"].includes(shareA)) preprocessPob(c);
+                    return c[shareB] == undefined ? "na" : classifier(c[shareB])
+                },
+                color: colDict,
+                blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+            })
+            /*style = new gridviz.ShapeColorSizeStyle({
                 color: (c, r, z, viewScale) => {
                     if (!c.p_sex && ["F", "M"].includes(shareA)) preprocessSex(c);
                     if (!c.p_age && ["Y_LT15", "Y_1564", "Y_GE65"].includes(shareA)) preprocessAge(c);
@@ -381,15 +396,12 @@ const update = () => {
                     return c[shareB] == undefined ? naColor : colorClassifier(c[shareB]);
                 },
                 blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
-            });
+            });*/
+            gridLayer.styles = [style, new gridviz.StrokeStyle({ visible: (z) => z < 50 })];
+            gridLayer.minPixelsPerCell = 0.7;
         }
 
-        //set styles
-        gridLayer.styles = [style];
-        if (!sbtp) gridLayer.styles.push(new gridviz.StrokeStyle({ visible: (z) => z < 50 }));
-
-        //
-        gridLayer.minPixelsPerCell = sbtp ? 3 : 0.7;
+        const style = gridLayer.styles[0];
 
         //share color legend
         style.addLegends([
@@ -414,13 +426,16 @@ const update = () => {
                 })
             );
 
+        //tooltip text
         gridLayer.cellInfoHTML = (c) => {
             const pop_ = "<br>" + formatLarge(c.T) + " person" + (c.T == 1 ? "" : "s");
             if (c[shareA] == undefined || c[shareB] == undefined)
                 return "Data not available" + (c.CONFIDENTIALSTATUS ? " (confidential)" : "") + pop_;
             return "<b>" + formatPercentage(c[shareB]) + " %</b><br>" + formatLarge(c[shareA]) + pop_;
         };
+
     } else if (layCode === "ternary") {
+
         //unfreeze GUI
         document.getElementById("ternary_select").disabled = false;
         document.getElementById("sbtp_tri").disabled = false;
