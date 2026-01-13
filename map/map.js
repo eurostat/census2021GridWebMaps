@@ -484,32 +484,66 @@ const update = () => {
             );
 
         const classNumberSize = 4;
-        const style = new gridviz.ShapeColorSizeStyle({
-            color: (c) => {
-                if (theme == "age" && !c.p_age) preprocessAge(c);
-                if (theme == "mobility" && !c.p_mob) preprocessMob(c);
-                if (theme == "pob" && !c.p_pob) preprocessPob(c);
-                return colorTernaryFun(c) || naColor;
-            },
-            viewScale: sbtp
-                ? gridviz.viewScaleQuantile({
-                    valueFunction: (c) => +c.T,
-                    classNumber: classNumberSize,
-                    minSizePix: 2.5,
-                    maxSizeFactor: 1.2,
-                })
-                : undefined,
-            size: sbtp ? (c, r, z, viewScale) => viewScale(c.T) : (c, r) => r,
-            shape: sbtp ? () => "circle" : () => "square",
-            blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
-        });
 
-        //set styles
-        gridLayer.styles = [style];
-        if (!sbtp) gridLayer.styles.push(new gridviz.StrokeStyle({ visible: (z) => z < 50 }));
+        if (sbtp) {
+            const style = new gridviz.ShapeColorSizeStyle({
+                color: (c) => {
+                    if (theme == "age" && !c.p_age) preprocessAge(c);
+                    else if (theme == "mobility" && !c.p_mob) preprocessMob(c);
+                    else if (theme == "pob" && !c.p_pob) preprocessPob(c);
+                    return colorTernaryFun(c) || naColor;
+                },
+                viewScale: sbtp
+                    ? gridviz.viewScaleQuantile({
+                        valueFunction: (c) => +c.T,
+                        classNumber: classNumberSize,
+                        minSizePix: 2.5,
+                        maxSizeFactor: 1.2,
+                    })
+                    : undefined,
+                size: sbtp ? (c, r, z, viewScale) => viewScale(c.T) : (c, r) => r,
+                shape: sbtp ? () => "circle" : () => "square",
+                blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+            });
 
-        //
-        gridLayer.minPixelsPerCell = sbtp ? 3 : 1.2;
+            //set styles
+            gridLayer.styles = [style];
+            if (!sbtp) gridLayer.styles.push(new gridviz.StrokeStyle({ visible: (z) => z < 50 }));
+
+            //
+            gridLayer.minPixelsPerCell = sbtp ? 3 : 1.2;
+
+        } else {
+
+            const style = new gridviz.ShapeColorSizeStyle({
+                color: (c) => {
+                    if (theme == "age" && !c.p_age) preprocessAge(c);
+                    else if (theme == "mobility" && !c.p_mob) preprocessMob(c);
+                    else if (theme == "pob" && !c.p_pob) preprocessPob(c);
+                    return colorTernaryFun(c) || naColor;
+                },
+                viewScale: sbtp
+                    ? gridviz.viewScaleQuantile({
+                        valueFunction: (c) => +c.T,
+                        classNumber: classNumberSize,
+                        minSizePix: 2.5,
+                        maxSizeFactor: 1.2,
+                    })
+                    : undefined,
+                size: sbtp ? (c, r, z, viewScale) => viewScale(c.T) : (c, r) => r,
+                shape: sbtp ? () => "circle" : () => "square",
+                blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+            });
+
+            //set styles
+            gridLayer.styles = [style];
+            if (!sbtp) gridLayer.styles.push(new gridviz.StrokeStyle({ visible: (z) => z < 50 }));
+
+            //
+            gridLayer.minPixelsPerCell = sbtp ? 3 : 1.2;
+
+        }
+
 
         //legends
 
@@ -582,7 +616,7 @@ const update = () => {
             ];
 
         //na legend
-        style.legends.push(naLegend);
+        gridLayer.styles[0].legends.push(naLegend);
 
         //population legend
         if (sbtp)
