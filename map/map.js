@@ -8,8 +8,7 @@
 
 //urls for production
 const tiledGridsURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles/";
-const tiledTotalGridsURL =
-    "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles_total/";
+const tiledTotalGridsURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles_total/";
 const nuts2jsonURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/nuts2json/v2/";
 const euronymURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/euronym/v2/UTF/";
 const bgLayerURL = "https://ec.europa.eu/eurostat/cache/GISCO/mbkg/elevation_shading/";
@@ -95,6 +94,15 @@ const labelLayer = new gridviz.LabelLayer(
         exSize: 1.7,
     })
 );
+
+
+//make grid layer
+const gridLayer = new gridviz.GridLayer(undefined, []);
+
+
+//set map layers
+map.layers = [backgroundLayer1, backgroundLayer2, gridLayer, boundariesLayer, labelLayer];
+
 
 //function to compute the percentage of a cell value
 const computePercentage = (c, col, totalFunction) => {
@@ -283,11 +291,8 @@ const update = () => {
         document.getElementById("sbtp_tri").disabled = true;
     }
 
-    //make grid layer
-    const gridLayer = new gridviz.GridLayer(layCode === "pop" ? datasetTotal : dataset, []);
-
-    //add layers to map
-    map.layers = [backgroundLayer1, backgroundLayer2, gridLayer, boundariesLayer, labelLayer];
+    // set gridlayer dataset
+    gridLayer.dataset = layCode === "pop" ? datasetTotal : dataset
 
     //set style
     if (layCode === "pop") {
@@ -296,11 +301,11 @@ const update = () => {
         // update legend width
         totPopLegend.width = Math.min(window.innerWidth - 40, 400),
 
-        // link legend, style and layer
-        gridLayer.styles = [
-            totPopStyle,
-            new gridviz.StrokeStyle({ visible: (z) => z < 50 }),
-        ];
+            // link legend, style and layer
+            gridLayer.styles = [
+                totPopStyle,
+                new gridviz.StrokeStyle({ visible: (z) => z < 50 }),
+            ];
 
         //set layer parameters
         gridLayer.minPixelsPerCell = 0.7;
