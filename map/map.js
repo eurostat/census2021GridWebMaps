@@ -798,7 +798,7 @@ const update = () => {
                     Y_1564: colAge(0.4),
                     Y_GE65: colAge(0.9),
                 },
-                type: () => "flag",
+                type: () => "flag", //flag, piechart, ring, segment, radar, agepyramid, halftone
                 size: (c, r, z, scale) => scale(c.T),
                 viewScale: gridviz.viewScaleQuantile({
                     valueFunction: (c) => +c.T,
@@ -807,7 +807,7 @@ const update = () => {
                     maxSizeFactor: 0.9,
                 }),
                 //viewScale: gridviz.sizeScale({ valueFunction: (c) => +c.T, exponent: 0.1 }),
-                stripesOrientation: () => 90,
+                //stripesOrientation: () => 90,
                 blendOperation: blendOp,
             }),
         ];
