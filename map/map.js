@@ -386,7 +386,7 @@ const update = () => {
                     valueFunction: (c) => +c.T,
                     classNumber: classNumberSize,
                     minSizePix: 2.5,
-                    maxSizeFactor: 1.3,
+                    maxSizeFactor: 1.2,
                 })
                 : undefined,
             size: sbtp ? (c, r, z, viewScale) => viewScale(c.T) : (c, r) => r,
@@ -399,7 +399,7 @@ const update = () => {
         if (!sbtp) gridLayer.styles.push(new gridviz.StrokeStyle({ visible: (z) => z < 50 }));
 
         //
-        gridLayer.minPixelsPerCell = sbtp ? 3 : 1.3;
+        gridLayer.minPixelsPerCell = sbtp ? 3 : 1.2;
 
         //share color legend
         style.addLegends([
@@ -491,7 +491,7 @@ const update = () => {
                     valueFunction: (c) => +c.T,
                     classNumber: classNumberSize,
                     minSizePix: 2.5,
-                    maxSizeFactor: 1.3,
+                    maxSizeFactor: 1.2,
                 })
                 : undefined,
             size: sbtp ? (c, r, z, viewScale) => viewScale(c.T) : (c, r) => r,
@@ -504,7 +504,7 @@ const update = () => {
         if (!sbtp) gridLayer.styles.push(new gridviz.StrokeStyle({ visible: (z) => z < 50 }));
 
         //
-        gridLayer.minPixelsPerCell = sbtp ? 3 : 1.3;
+        gridLayer.minPixelsPerCell = sbtp ? 3 : 1.2;
 
         //legends
 
@@ -658,7 +658,7 @@ const update = () => {
                 },
                 classNumber: classNumberSize,
                 minSizePix: 2.5,
-                maxSizeFactor: 1.3,
+                maxSizeFactor: 1.2,
             }),
             shape: () => "circle",
             blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
@@ -729,7 +729,7 @@ const update = () => {
                 },
                 classNumber: classNumberSize,
                 minSizePix: 2.5,
-                maxSizeFactor: 1.3,
+                maxSizeFactor: 1.2,
             }),
             shape: () => "circle",
             blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
