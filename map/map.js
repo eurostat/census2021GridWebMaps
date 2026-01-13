@@ -447,7 +447,7 @@ const update = () => {
             if (theme == "age")
                 colorTernaryFun = gridviz.ternaryColorClassifier(
                     ["sY_LT15", "sY_1564", "sY_GE65"],
-                    (c) => 100,
+                    () => 100,
                     ["#4daf4a", "#377eb8", "#e41a1c"],
                     {
                         center: [0.15, 0.64, 0.21],
@@ -459,24 +459,20 @@ const update = () => {
             else if (theme == "mobility")
                 colorTernaryFun = gridviz.ternaryColorClassifier(
                     ["sCHG_OUT", "sSAME", "sCHG_IN"],
-                    (c) => 100,
+                    () => 100,
                     ["#4daf4a", "#377eb8", "#e41a1c"],
                     {
                         center: [0.05, 0.85, 0.1],
-                        //centerColor: "#999",
-                        //centerCoefficient: 0.7,
                         defaultColor: naColor,
                     }
                 );
             else if (theme == "pob")
                 colorTernaryFun = gridviz.ternaryColorClassifier(
                     ["sOTH", "sNAT", "sEU_OTH"],
-                    (c) => 100,
+                    () => 100,
                     ["#4daf4a", "#377eb8", "#e41a1c"],
                     {
                         center: [0.25, 0.6, 0.15],
-                        //centerColor: "#999",
-                        //centerCoefficient: 0.5,
                         defaultColor: naColor,
                     }
                 );
@@ -503,20 +499,42 @@ const update = () => {
             ];
             gridLayer.minPixelsPerCell = 3;
         } else {
+
+            // get ternary classifier
+            let ternaryFun;
+            if (theme == "age")
+                ternaryFun = gridviz.ternaryClassifier(
+                    ["sY_LT15", "sY_1564", "sY_GE65"],
+                    () => 100,
+                    { center: [0.15, 0.64, 0.21], centerCoefficient: 0.25 }
+                );
+            else if (theme == "mobility")
+                ternaryFun = gridviz.ternaryClassifier(
+                    ["sCHG_OUT", "sSAME", "sCHG_IN"],
+                    () => 100,
+                    { center: [0.05, 0.85, 0.1] }
+                );
+            else if (theme == "pob")
+                ternaryFun = gridviz.ternaryClassifier(
+                    ["sOTH", "sNAT", "sEU_OTH"],
+                    () => 100,
+                    { center: [0.25, 0.6, 0.15] }
+                );
+
+
+            const colDict = { center: "#999", "0": "#4daf4a", "1": "#377eb8", "2": "#e41a1c", "m01": "#999", "m12": "#999", "m20": "#999" };
+            colDict["na"] = naColor
+
             //pixel style
-
-            //const classifier = gridviz.classifier(breaks)
-
-            //const colDict = { ...colors }; colDict["na"] = naColor
-
             gridLayer.styles = [
                 new gridviz.SquareColorCategoryWebGLStyle({
                     code: (c) => {
                         if (theme == "age" && !c.p_age) preprocessAge(c);
                         else if (theme == "mobility" && !c.p_mob) preprocessMob(c);
                         else if (theme == "pob" && !c.p_pob) preprocessPob(c);
-                        return ternaryFun(c) == undefined ? "na" : ternaryFun(c);
-                        //return c[shareB] == undefined ? "na" : classifier(c[shareB])
+                        const cl = ternaryFun(c)
+                        console.log(cl)
+                        return cl == undefined ? "na" : cl;
                     },
                     color: colDict,
                     blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
