@@ -3,9 +3,35 @@
 //update nuts2json, euronym
 //update background URL
 //add road background layer - add tomtom copyright
-// blendop
+//new indicators
 //use interpolator ?
-// add chernoff faces ?
+//add chernoff faces ?
+//sea level rise ?
+
+/*
+Aging Index
+The indicator based on the ratio of individuals aged 65+ to those aged 0-15
+
+Dependency Ratios:
+Youth Dependency Ratio: This is the ratio of individuals aged 0-15 to those aged 16-64. It indicates the burden on the working-age population to support the youth.
+Old-Age Dependency Ratio: The ratio of individuals aged 65+ to those aged 16-64. It reflects the pressure on the working-age population to support the elderly.
+Total Dependency Ratio: Combines both youth and old-age dependency ratios.
+
+median age estimation
+Calculate Total Population: total_population = pop_0_15 + pop_16_64 + pop_65_plus
+Find Median Position: median_position = total_population / 2
+Determine median age group
+if median_position < pop_0_15
+                median_age = 15 * (median_position / pop_0_15)
+else if median_position < pop_16_64
+                offset_in_16_64 = median_position - pop_0_15
+                median_age = 16 + 48 * (offset_in_16_64 / pop_16_64)
+else ...
+                offset_in_65_plus = median_position - (pop_0_15 + pop_16_64)
+                median_age = 65 + 15 * (offset_in_65_plus / pop_65_plus)
+                (with 15 years for dispersion)
+year of maximum population
+ */
 
 
 //urls for production
@@ -280,6 +306,8 @@ totPopStyle.legends = [totPopLegend];
 // default stroke style
 const strokeStyle = new gridviz.StrokeStyle({ visible: (z) => z < 50 })
 
+//default blend operation
+const blendOp = (z) => (z < 50 ? "multiply" : "source-over")
 
 const update = () => {
     //read GUI selection
@@ -367,7 +395,7 @@ const update = () => {
                     }),
                     size: (c, r, z, viewScale) => viewScale(c.T),
                     shape: () => "circle",
-                    blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+                    blendOperation: blendOp,
                 })
             ];
             gridLayer.minPixelsPerCell = 3;
@@ -385,7 +413,7 @@ const update = () => {
                         return c[shareB] == undefined ? "na" : classifier(c[shareB])
                     },
                     color: colDict,
-                    blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+                    blendOperation: blendOp,
                 }),
                 strokeStyle
             ];
@@ -497,7 +525,7 @@ const update = () => {
                     }),
                     size: (c, r, z, viewScale) => viewScale(c.T),
                     shape: () => "circle",
-                    blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+                    blendOperation: blendOp,
                 })
             ];
             gridLayer.minPixelsPerCell = 3;
@@ -544,7 +572,7 @@ const update = () => {
                         return cl == undefined ? "na" : cl;
                     },
                     color: colDict,
-                    blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+                    blendOperation: blendOp,
                 }),
                 strokeStyle
             ];
@@ -707,7 +735,7 @@ const update = () => {
                 maxSizeFactor: 1.2,
             }),
             shape: () => "circle",
-            blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+            blendOperation: blendOp,
         });
         gridLayer.styles = [style];
 
@@ -780,7 +808,7 @@ const update = () => {
                 }),
                 //viewScale: gridviz.sizeScale({ valueFunction: (c) => +c.T, exponent: 0.1 }),
                 stripesOrientation: () => 90,
-                blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+                blendOperation: blendOp,
             }),
         ];
 
@@ -839,7 +867,7 @@ const update = () => {
                     minSizePix: 6,
                     maxSizeFactor: 1.2,
                 }),
-                blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+                blendOperation: blendOp,
             }),
         ];
 
@@ -896,7 +924,7 @@ const update = () => {
                     classNumber: classNumberSize,
                     minSizePix: 8,
                 }),
-                blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+                blendOperation: blendOp,
             }),
         ];
 
@@ -972,7 +1000,7 @@ const update = () => {
                 minSizePix: 30,
                 maxSizeFactor: 0.9,
             }),
-            blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+            blendOperation: blendOp,
         });
         gridLayer.styles = [style];
 
