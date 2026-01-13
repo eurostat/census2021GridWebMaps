@@ -347,34 +347,49 @@ const update = () => {
         const colors = palette[classNumberColor];
         const colorClassifier = gridviz.colorClassifier(breaks, colors);
         const classNumberSize = 4;
-        const style = new gridviz.ShapeColorSizeStyle({
-            color: (c, r, z, viewScale) => {
-                if (!c.p_sex && ["F", "M"].includes(shareA)) preprocessSex(c);
-                if (!c.p_age && ["Y_LT15", "Y_1564", "Y_GE65"].includes(shareA)) preprocessAge(c);
-                if (!c.p_emp && ["EMP"].includes(shareA)) preprocessEmp(c);
-                if (!c.p_mob && ["SAME", "CHG_IN", "CHG_OUT"].includes(shareA)) preprocessMob(c);
-                if (!c.p_pob && ["NAT", "EU_OTH", "OTH"].includes(shareA)) preprocessPob(c);
-                return c[shareB] == undefined ? naColor : colorClassifier(c[shareB]);
-            },
-            viewScale: sbtp
-                ? gridviz.viewScaleQuantile({
+
+        let style = undefined
+        if (sbtp) {
+            style = new gridviz.ShapeColorSizeStyle({
+                color: (c, r, z, viewScale) => {
+                    if (!c.p_sex && ["F", "M"].includes(shareA)) preprocessSex(c);
+                    if (!c.p_age && ["Y_LT15", "Y_1564", "Y_GE65"].includes(shareA)) preprocessAge(c);
+                    if (!c.p_emp && ["EMP"].includes(shareA)) preprocessEmp(c);
+                    if (!c.p_mob && ["SAME", "CHG_IN", "CHG_OUT"].includes(shareA)) preprocessMob(c);
+                    if (!c.p_pob && ["NAT", "EU_OTH", "OTH"].includes(shareA)) preprocessPob(c);
+                    return c[shareB] == undefined ? naColor : colorClassifier(c[shareB]);
+                },
+                viewScale: gridviz.viewScaleQuantile({
                     valueFunction: (c) => +c.T,
                     classNumber: classNumberSize,
                     minSizePix: 2.5,
                     maxSizeFactor: 1.2,
-                })
-                : undefined,
-            size: sbtp ? (c, r, z, viewScale) => viewScale(c.T) : (c, r) => r,
-            shape: sbtp ? () => "circle" : () => "square",
-            blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
-        });
+                }),
+                size: (c, r, z, viewScale) => viewScale(c.T),
+                shape: () => "circle",
+                blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+            });
+
+        } else {
+            style = new gridviz.ShapeColorSizeStyle({
+                color: (c, r, z, viewScale) => {
+                    if (!c.p_sex && ["F", "M"].includes(shareA)) preprocessSex(c);
+                    if (!c.p_age && ["Y_LT15", "Y_1564", "Y_GE65"].includes(shareA)) preprocessAge(c);
+                    if (!c.p_emp && ["EMP"].includes(shareA)) preprocessEmp(c);
+                    if (!c.p_mob && ["SAME", "CHG_IN", "CHG_OUT"].includes(shareA)) preprocessMob(c);
+                    if (!c.p_pob && ["NAT", "EU_OTH", "OTH"].includes(shareA)) preprocessPob(c);
+                    return c[shareB] == undefined ? naColor : colorClassifier(c[shareB]);
+                },
+                blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+            });
+        }
 
         //set styles
         gridLayer.styles = [style];
         if (!sbtp) gridLayer.styles.push(new gridviz.StrokeStyle({ visible: (z) => z < 50 }));
 
         //
-        gridLayer.minPixelsPerCell = sbtp ? 3 : 1.2;
+        gridLayer.minPixelsPerCell = sbtp ? 3 : 0.7;
 
         //share color legend
         style.addLegends([
