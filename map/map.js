@@ -324,47 +324,22 @@ const update = () => {
 
         //define style
 
-        //breaks
+        //define style breaks
         let breaks = undefined;
         switch (shareA) {
-            case "F":
-                breaks = [40, 45, 49, 50, 51, 55, 60];
-                break;
-            case "M":
-                breaks = [40, 45, 49, 50, 51, 55, 60];
-                break;
-            case "Y_LT15":
-                breaks = [5, 10, 15, 20, 30];
-                break;
-            case "Y_1564":
-                breaks = [50, 60, 65, 70, 80];
-                break;
-            case "Y_GE65":
-                breaks = [10, 20, 30, 40, 50];
-                break;
-            case "EMP":
-                breaks = [30, 40, 45, 50, 55, 60, 70];
-                break;
-            case "SAME":
-                breaks = [70, 80, 90, 95, 99];
-                break;
-            case "CHG_IN":
-                breaks = [0.5, 1, 5, 10, 20];
-                break;
-            case "CHG_OUT":
-                breaks = [0.5, 1, 2, 5, 10];
-                break;
-            case "NAT":
-                breaks = [60, 70, 80, 85, 90, 95, 99];
-                break;
-            case "EU_OTH":
-                breaks = [1, 5, 10, 15, 20, 30];
-                break;
-            case "OTH":
-                breaks = [1, 5, 10, 20, 30, 50];
-                break;
-            default:
-                breaks = [30, 40, 45, 50, 55, 60, 70];
+            case "F": breaks = [40, 45, 49, 50, 51, 55, 60]; break;
+            case "M": breaks = [40, 45, 49, 50, 51, 55, 60]; break;
+            case "Y_LT15": breaks = [5, 10, 15, 20, 30]; break;
+            case "Y_1564": breaks = [50, 60, 65, 70, 80]; break;
+            case "Y_GE65": breaks = [10, 20, 30, 40, 50]; break;
+            case "EMP": breaks = [30, 40, 45, 50, 55, 60, 70]; break;
+            case "SAME": breaks = [70, 80, 90, 95, 99]; break;
+            case "CHG_IN": breaks = [0.5, 1, 5, 10, 20]; break;
+            case "CHG_OUT": breaks = [0.5, 1, 2, 5, 10]; break;
+            case "NAT": breaks = [60, 70, 80, 85, 90, 95, 99]; break;
+            case "EU_OTH": breaks = [1, 5, 10, 15, 20, 30]; break;
+            case "OTH": breaks = [1, 5, 10, 20, 30, 50]; break;
+            default: breaks = [30, 40, 45, 50, 55, 60, 70];
         }
 
         const classNumberColor = breaks.length + 1; //6
