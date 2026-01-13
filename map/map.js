@@ -759,59 +759,7 @@ const update = () => {
                 " % men</b>"
             );
         };
-    } else if (layCode === "emp") {
-        const breaks = [30, 40, 45, 50, 55, 60, 70];
-        const empColorClassifier = gridviz.colorClassifier(breaks, d3.schemeYlOrRd[breaks.length + 1]);
-        //d3.interpolateYlOrRd(Math.floor(20*c.sEMP / 100)/20)
 
-        const classNumberSize = 4;
-        const style = new gridviz.ShapeColorSizeStyle({
-            color: (c) => (c.sEMP == undefined ? naColor : empColorClassifier(c.sEMP)),
-            size: (c, r, z, viewScale) => viewScale(c.T),
-            viewScale: gridviz.viewScaleQuantile({
-                valueFunction: (c) => {
-                    if (!c.p_emp) preprocessEmp(c);
-                    return +c.T;
-                },
-                classNumber: classNumberSize,
-                minSizePix: 2.5,
-                maxSizeFactor: 1.2,
-            }),
-            shape: () => "circle",
-            blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
-        });
-        gridLayer.styles = [style];
-
-        gridLayer.minPixelsPerCell = 3;
-
-        //employment color legend
-        style.legends.push(
-            new gridviz.ColorDiscreteLegend({
-                title: "Employment, in %",
-                width: 250,
-                colors: () => empColorClassifier.colors,
-                breaks: () => empColorClassifier.breaks,
-            })
-        );
-
-        //na legend
-        style.legends.push(naLegend);
-
-        //population size legend
-        style.addLegends(
-            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
-                title: "Population",
-                fillColor: "#666",
-                labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
-            })
-        );
-
-        gridLayer.cellInfoHTML = (c) => {
-            const pop_ = "<br>" + formatLarge(c.T) + " person" + (c.T == 1 ? "" : "s");
-            if (c.sEMP == undefined || c.EMP == undefined)
-                return "Data not available" + (c.CONFIDENTIALSTATUS ? " (confidential)" : "") + pop_;
-            return "<b>" + formatPercentage(c.sEMP) + " %</b><br>" + formatLarge(c.EMP) + pop_;
-        };
     } else if (layCode === "age") {
         const colAge = d3.interpolateSpectral;
         const classNumberSize = 4;
