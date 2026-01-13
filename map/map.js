@@ -525,12 +525,12 @@ const update = () => {
             gridLayer.minPixelsPerCell = 0.7;
         }
 
-
         //legends
 
+        const style = gridLayer.styles[0];
         const legendWidth = 150;
         if (theme == "age")
-            gridLayer.styles[0].legends = [
+            style.legends = [
                 new gridviz.TernaryLegend({
                     title: "Age",
                     classifier: colorTernaryFun,
@@ -552,7 +552,7 @@ const update = () => {
                 }),
             ];
         else if (theme == "mobility")
-            gridLayer.styles[0].legends = [
+            style.legends = [
                 new gridviz.TernaryLegend({
                     title: "Mobility (2020-2021)",
                     classifier: colorTernaryFun,
@@ -574,7 +574,7 @@ const update = () => {
                 }),
             ];
         else if (theme == "pob")
-            gridLayer.styles[0].legends = [
+            style.legends = [
                 new gridviz.TernaryLegend({
                     title: "Birth place",
                     classifier: colorTernaryFun,
@@ -597,11 +597,11 @@ const update = () => {
             ];
 
         //na legend
-        gridLayer.styles[0].legends.push(naLegend);
+        style.legends.push(naLegend);
 
         //population legend
         if (sbtp)
-            gridLayer.styles[0].addLegends(
+            style.addLegends(
                 gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
                     title: "Population",
                     fillColor: "#666",
