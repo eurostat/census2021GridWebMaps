@@ -6,6 +6,7 @@
 //add road background layer - add tomtom copyright
 // strokestyle
 // blendop
+//use interpolator ?
 
 //urls for production
 const tiledGridsURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles/";
