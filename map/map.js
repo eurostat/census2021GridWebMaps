@@ -282,6 +282,7 @@ const update = () => {
     //read GUI selection
     const layCode = document.querySelector('input[name="layer"]:checked').value;
 
+    //enable/disable GUI components
     if (layCode != "share") {
         document.getElementById("share_select").disabled = true;
         document.getElementById("sbtp").disabled = true;
@@ -294,7 +295,7 @@ const update = () => {
     // set gridlayer dataset
     gridLayer.dataset = layCode === "pop" ? datasetTotal : dataset
 
-    //set style
+    //set gridlayer style
     if (layCode === "pop") {
         //total population
 
@@ -311,307 +312,6 @@ const update = () => {
         gridLayer.minPixelsPerCell = 0.7;
         gridLayer.cellInfoHTML = (c) => "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 1 ? "" : "s");
 
-    } else if (layCode === "sex") {
-        //sex - color classifier
-        const breaks = [-20, -7, -2, -0.5, 0.5, 2, 7, 20];
-        const sexColorClassifier = gridviz.colorClassifier(breaks, d3.schemeSpectral[breaks.length + 1]);
-
-        const classNumberSize = 4;
-        const style = new gridviz.ShapeColorSizeStyle({
-            color: (c, r, z, viewScale) => (c.indMF == undefined ? naColor : sexColorClassifier(c.indMF)),
-            size: (c, r, z, viewScale) => viewScale(c.T),
-            viewScale: gridviz.viewScaleQuantile({
-                valueFunction: (c) => {
-                    if (!c.p_sex) preprocessSex(c);
-                    return +c.T;
-                },
-                classNumber: classNumberSize,
-                minSizePix: 2.5,
-                maxSizeFactor: 1.3,
-            }),
-            shape: () => "circle",
-            blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
-        });
-        gridLayer.styles = [style];
-
-        //gridLayer.minPixelsPerCell = 3;
-
-        style.legends = [];
-
-        //sex color legend
-        style.legends.push(
-            new gridviz.ColorDiscreteLegend({
-                title: "Women / men balance, in %",
-                width: 300,
-                colors: () => sexColorClassifier.colors,
-                breaks: () => sexColorClassifier.breaks,
-            })
-        );
-
-        //na legend
-        style.legends.push(naLegend);
-
-        //population size legend
-        style.addLegends(
-            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
-                title: "Population",
-                fillColor: "#666",
-                labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
-            })
-        );
-
-        gridLayer.cellInfoHTML = (c) => {
-            let tot = c.F + c.M;
-            if (isNaN(tot)) tot = c.T;
-            const pop_ = "<b>" + formatLarge(tot) + "</b> person" + (tot == 1 ? "" : "s") + "<br>";
-            if (c.F == undefined || c.M == undefined)
-                return "Data not available" + (c.CONFIDENTIALSTATUS ? " (confidential)" : "") + "<br>" + pop_;
-            return (
-                pop_ +
-                formatLarge(c.M) +
-                " m" +
-                (c.M == 1 ? "a" : "e") +
-                "n<br>" +
-                formatLarge(c.F) +
-                " wom" +
-                (c.F == 1 ? "a" : "e") +
-                "n<br>" +
-                "Difference: <b>" +
-                (c.indMF > 0 ? "+" : "") +
-                formatPercentage(c.indMF) +
-                " % men</b>"
-            );
-        };
-    } else if (layCode === "emp") {
-        const breaks = [30, 40, 45, 50, 55, 60, 70];
-        const empColorClassifier = gridviz.colorClassifier(breaks, d3.schemeYlOrRd[breaks.length + 1]);
-        //d3.interpolateYlOrRd(Math.floor(20*c.sEMP / 100)/20)
-
-        const classNumberSize = 4;
-        const style = new gridviz.ShapeColorSizeStyle({
-            color: (c, r, z, viewScale) => (c.sEMP == undefined ? naColor : empColorClassifier(c.sEMP)),
-            size: (c, r, z, viewScale) => viewScale(c.T),
-            viewScale: gridviz.viewScaleQuantile({
-                valueFunction: (c) => {
-                    if (!c.p_emp) preprocessEmp(c);
-                    return +c.T;
-                },
-                classNumber: classNumberSize,
-                minSizePix: 2.5,
-                maxSizeFactor: 1.3,
-            }),
-            shape: () => "circle",
-            blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
-        });
-        gridLayer.styles = [style];
-
-        //gridLayer.minPixelsPerCell = 3;
-
-        //employment color legend
-        style.legends.push(
-            new gridviz.ColorDiscreteLegend({
-                title: "Employment, in %",
-                width: 250,
-                colors: () => empColorClassifier.colors,
-                breaks: () => empColorClassifier.breaks,
-            })
-        );
-
-        //na legend
-        style.legends.push(naLegend);
-
-        //population size legend
-        style.addLegends(
-            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
-                title: "Population",
-                fillColor: "#666",
-                labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
-            })
-        );
-
-        gridLayer.cellInfoHTML = (c) => {
-            const pop_ = "<br>" + formatLarge(c.T) + " person" + (c.T == 1 ? "" : "s");
-            if (c.sEMP == undefined || c.EMP == undefined)
-                return "Data not available" + (c.CONFIDENTIALSTATUS ? " (confidential)" : "") + pop_;
-            return "<b>" + formatPercentage(c.sEMP) + " %</b><br>" + formatLarge(c.EMP) + pop_;
-        };
-    } else if (layCode === "age") {
-        const colAge = d3.interpolateSpectral;
-        const classNumberSize = 4;
-        gridLayer.styles = [
-            new gridviz.CompositionStyle({
-                color: {
-                    Y_LT15: colAge(0.2),
-                    Y_1564: colAge(0.4),
-                    Y_GE65: colAge(0.9),
-                },
-                type: () => "flag",
-                size: (c, r, z, scale) => scale(c.T),
-                viewScale: gridviz.viewScaleQuantile({
-                    valueFunction: (c) => +c.T,
-                    classNumber: classNumberSize,
-                    minSizePix: 8,
-                    maxSizeFactor: 0.9,
-                }),
-                //viewScale: gridviz.sizeScale({ valueFunction: (c) => +c.T, exponent: 0.1 }),
-                stripesOrientation: () => 90,
-                blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
-            }),
-        ];
-
-        gridLayer.minPixelsPerCell = 12;
-
-        //age
-        gridLayer.styles[0].legends = [
-            new gridviz.ColorCategoryLegend({
-                title: "Age",
-                colorLabel: [
-                    [colAge(0.2), "Under 15 years"],
-                    [colAge(0.4), "15 to 64 years"],
-                    [colAge(0.9), "65 years and older"],
-                ],
-            }),
-        ];
-
-        //population
-        gridLayer.styles[0].addLegends(
-            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
-                title: "Population",
-                shape: "square",
-                fillColor: "#666",
-                labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
-            })
-        );
-
-        gridLayer.cellInfoHTML = (c) =>
-            c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined
-                ? undefined
-                : "<b>" +
-                formatLarge(c.Y_LT15 + c.Y_1564 + c.Y_GE65) +
-                "</b> person" +
-                (c.Y_LT15 + c.Y_1564 + c.Y_GE65 == 1 ? "" : "s") +
-                "<br>" +
-                formatLarge(c.Y_LT15) +
-                " - under 15 years<br>" +
-                formatLarge(c.Y_1564) +
-                " - 15 to 64 years<br>" +
-                formatLarge(c.Y_GE65) +
-                " - 65 years and older";
-    } else if (layCode === "mobility") {
-        const classNumberSize = 5;
-        gridLayer.styles = [
-            new gridviz.CompositionStyle({
-                color: {
-                    SAME: "#fed9a6", //light mostard
-                    CHG_IN: "#7570b3", //blueish
-                    CHG_OUT: "#d95f02", //orange
-                },
-                type: () => "piechart", //flag, piechart, ring, segment, radar, agepyramid, halftone
-                size: (c, r, z, scale) => scale(c.T),
-                viewScale: gridviz.viewScaleQuantile({
-                    valueFunction: (c) => +c.T,
-                    classNumber: classNumberSize,
-                    minSizePix: 6,
-                    maxSizeFactor: 1.2,
-                }),
-                blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
-            }),
-        ];
-
-        gridLayer.minPixelsPerCell = 12;
-
-        //mobility
-        gridLayer.styles[0].legends = [
-            new gridviz.ColorCategoryLegend({
-                title: "Mobility, compared to January 1, 2020",
-                colorLabel: [
-                    ["#fed9a6", "Residence unchanged"],
-                    ["#7570b3", "Moved within the country"],
-                    ["#d95f02", "Moved from outside the country"],
-                ],
-            }),
-        ];
-
-        //population
-        gridLayer.styles[0].addLegends(
-            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
-                title: "Population",
-                fillColor: "#666",
-                labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
-            })
-        );
-
-        gridLayer.cellInfoHTML = (c) =>
-            c.SAME == undefined || c.CHG_IN == undefined || c.CHG_OUT == undefined
-                ? undefined
-                : "<b>" +
-                formatLarge(c.SAME + c.CHG_IN + c.CHG_OUT) +
-                "</b> person" +
-                (c.SAME + c.CHG_IN + c.CHG_OUT == 1 ? "" : "s") +
-                "<br>" +
-                formatLarge(c.SAME) +
-                " residence unchanged<br>" +
-                formatLarge(c.CHG_IN) +
-                " moved within the country<br>" +
-                formatLarge(c.CHG_OUT) +
-                " moved from outside the country";
-    } else if (layCode === "pob") {
-        const classNumberSize = 5;
-        gridLayer.styles = [
-            new gridviz.CompositionStyle({
-                color: {
-                    NAT: "#fed9a6", //light mostard
-                    EU_OTH: "#7570b3", //blueish
-                    OTH: "#d95f02", //orange
-                },
-                type: () => "halftone", //flag, piechart, ring, segment, radar, agepyramid, halftone
-                size: (c, r, z, scale) => scale(c.T),
-                viewScale: gridviz.viewScaleQuantile({
-                    valueFunction: (c) => +c.T,
-                    classNumber: classNumberSize,
-                    minSizePix: 8,
-                }),
-                blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
-            }),
-        ];
-
-        gridLayer.minPixelsPerCell = 12;
-
-        //place of birth
-        gridLayer.styles[0].legends = [
-            new gridviz.ColorCategoryLegend({
-                title: "Place of birth",
-                colorLabel: [
-                    ["#fed9a6", "Born in the country"],
-                    ["#7570b3", "Born in another EU member state"],
-                    ["#d95f02", "Born outside the EU"],
-                ],
-            }),
-        ];
-
-        //population
-        gridLayer.styles[0].addLegends(
-            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
-                title: "Population",
-                fillColor: "#666",
-                labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
-            })
-        );
-
-        gridLayer.cellInfoHTML = (c) =>
-            c.NAT == undefined || c.EU_OTH == undefined || c.OTH == undefined
-                ? undefined
-                : "<b>" +
-                formatLarge(c.NAT + c.EU_OTH + c.OTH) +
-                "</b> person" +
-                (c.NAT + c.EU_OTH + c.OTH == 1 ? "" : "s") +
-                "<br>" +
-                formatLarge(c.NAT) +
-                " born in the country<br>" +
-                formatLarge(c.EU_OTH) +
-                " born in another EU member state<br>" +
-                formatLarge(c.OTH) +
-                " born outside the EU";
     } else if (layCode === "share") {
         //unfreeze GUI
         document.getElementById("share_select").disabled = false;
@@ -941,6 +641,310 @@ const update = () => {
                     "% born outside the EU"
                 );
             };
+
+    } else if (layCode === "sex") {
+        //sex - color classifier
+        const breaks = [-20, -7, -2, -0.5, 0.5, 2, 7, 20];
+        const sexColorClassifier = gridviz.colorClassifier(breaks, d3.schemeSpectral[breaks.length + 1]);
+
+        const classNumberSize = 4;
+        const style = new gridviz.ShapeColorSizeStyle({
+            color: (c, r, z, viewScale) => (c.indMF == undefined ? naColor : sexColorClassifier(c.indMF)),
+            size: (c, r, z, viewScale) => viewScale(c.T),
+            viewScale: gridviz.viewScaleQuantile({
+                valueFunction: (c) => {
+                    if (!c.p_sex) preprocessSex(c);
+                    return +c.T;
+                },
+                classNumber: classNumberSize,
+                minSizePix: 2.5,
+                maxSizeFactor: 1.3,
+            }),
+            shape: () => "circle",
+            blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+        });
+        gridLayer.styles = [style];
+
+        //gridLayer.minPixelsPerCell = 3;
+
+        style.legends = [];
+
+        //sex color legend
+        style.legends.push(
+            new gridviz.ColorDiscreteLegend({
+                title: "Women / men balance, in %",
+                width: 300,
+                colors: () => sexColorClassifier.colors,
+                breaks: () => sexColorClassifier.breaks,
+            })
+        );
+
+        //na legend
+        style.legends.push(naLegend);
+
+        //population size legend
+        style.addLegends(
+            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
+                title: "Population",
+                fillColor: "#666",
+                labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
+            })
+        );
+
+        gridLayer.cellInfoHTML = (c) => {
+            let tot = c.F + c.M;
+            if (isNaN(tot)) tot = c.T;
+            const pop_ = "<b>" + formatLarge(tot) + "</b> person" + (tot == 1 ? "" : "s") + "<br>";
+            if (c.F == undefined || c.M == undefined)
+                return "Data not available" + (c.CONFIDENTIALSTATUS ? " (confidential)" : "") + "<br>" + pop_;
+            return (
+                pop_ +
+                formatLarge(c.M) +
+                " m" +
+                (c.M == 1 ? "a" : "e") +
+                "n<br>" +
+                formatLarge(c.F) +
+                " wom" +
+                (c.F == 1 ? "a" : "e") +
+                "n<br>" +
+                "Difference: <b>" +
+                (c.indMF > 0 ? "+" : "") +
+                formatPercentage(c.indMF) +
+                " % men</b>"
+            );
+        };
+    } else if (layCode === "emp") {
+        const breaks = [30, 40, 45, 50, 55, 60, 70];
+        const empColorClassifier = gridviz.colorClassifier(breaks, d3.schemeYlOrRd[breaks.length + 1]);
+        //d3.interpolateYlOrRd(Math.floor(20*c.sEMP / 100)/20)
+
+        const classNumberSize = 4;
+        const style = new gridviz.ShapeColorSizeStyle({
+            color: (c, r, z, viewScale) => (c.sEMP == undefined ? naColor : empColorClassifier(c.sEMP)),
+            size: (c, r, z, viewScale) => viewScale(c.T),
+            viewScale: gridviz.viewScaleQuantile({
+                valueFunction: (c) => {
+                    if (!c.p_emp) preprocessEmp(c);
+                    return +c.T;
+                },
+                classNumber: classNumberSize,
+                minSizePix: 2.5,
+                maxSizeFactor: 1.3,
+            }),
+            shape: () => "circle",
+            blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+        });
+        gridLayer.styles = [style];
+
+        //gridLayer.minPixelsPerCell = 3;
+
+        //employment color legend
+        style.legends.push(
+            new gridviz.ColorDiscreteLegend({
+                title: "Employment, in %",
+                width: 250,
+                colors: () => empColorClassifier.colors,
+                breaks: () => empColorClassifier.breaks,
+            })
+        );
+
+        //na legend
+        style.legends.push(naLegend);
+
+        //population size legend
+        style.addLegends(
+            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
+                title: "Population",
+                fillColor: "#666",
+                labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
+            })
+        );
+
+        gridLayer.cellInfoHTML = (c) => {
+            const pop_ = "<br>" + formatLarge(c.T) + " person" + (c.T == 1 ? "" : "s");
+            if (c.sEMP == undefined || c.EMP == undefined)
+                return "Data not available" + (c.CONFIDENTIALSTATUS ? " (confidential)" : "") + pop_;
+            return "<b>" + formatPercentage(c.sEMP) + " %</b><br>" + formatLarge(c.EMP) + pop_;
+        };
+    } else if (layCode === "age") {
+        const colAge = d3.interpolateSpectral;
+        const classNumberSize = 4;
+        gridLayer.styles = [
+            new gridviz.CompositionStyle({
+                color: {
+                    Y_LT15: colAge(0.2),
+                    Y_1564: colAge(0.4),
+                    Y_GE65: colAge(0.9),
+                },
+                type: () => "flag",
+                size: (c, r, z, scale) => scale(c.T),
+                viewScale: gridviz.viewScaleQuantile({
+                    valueFunction: (c) => +c.T,
+                    classNumber: classNumberSize,
+                    minSizePix: 8,
+                    maxSizeFactor: 0.9,
+                }),
+                //viewScale: gridviz.sizeScale({ valueFunction: (c) => +c.T, exponent: 0.1 }),
+                stripesOrientation: () => 90,
+                blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+            }),
+        ];
+
+        gridLayer.minPixelsPerCell = 12;
+
+        //age
+        gridLayer.styles[0].legends = [
+            new gridviz.ColorCategoryLegend({
+                title: "Age",
+                colorLabel: [
+                    [colAge(0.2), "Under 15 years"],
+                    [colAge(0.4), "15 to 64 years"],
+                    [colAge(0.9), "65 years and older"],
+                ],
+            }),
+        ];
+
+        //population
+        gridLayer.styles[0].addLegends(
+            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
+                title: "Population",
+                shape: "square",
+                fillColor: "#666",
+                labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
+            })
+        );
+
+        gridLayer.cellInfoHTML = (c) =>
+            c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined
+                ? undefined
+                : "<b>" +
+                formatLarge(c.Y_LT15 + c.Y_1564 + c.Y_GE65) +
+                "</b> person" +
+                (c.Y_LT15 + c.Y_1564 + c.Y_GE65 == 1 ? "" : "s") +
+                "<br>" +
+                formatLarge(c.Y_LT15) +
+                " - under 15 years<br>" +
+                formatLarge(c.Y_1564) +
+                " - 15 to 64 years<br>" +
+                formatLarge(c.Y_GE65) +
+                " - 65 years and older";
+    } else if (layCode === "mobility") {
+        const classNumberSize = 5;
+        gridLayer.styles = [
+            new gridviz.CompositionStyle({
+                color: {
+                    SAME: "#fed9a6", //light mostard
+                    CHG_IN: "#7570b3", //blueish
+                    CHG_OUT: "#d95f02", //orange
+                },
+                type: () => "piechart", //flag, piechart, ring, segment, radar, agepyramid, halftone
+                size: (c, r, z, scale) => scale(c.T),
+                viewScale: gridviz.viewScaleQuantile({
+                    valueFunction: (c) => +c.T,
+                    classNumber: classNumberSize,
+                    minSizePix: 6,
+                    maxSizeFactor: 1.2,
+                }),
+                blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+            }),
+        ];
+
+        gridLayer.minPixelsPerCell = 12;
+
+        //mobility
+        gridLayer.styles[0].legends = [
+            new gridviz.ColorCategoryLegend({
+                title: "Mobility, compared to January 1, 2020",
+                colorLabel: [
+                    ["#fed9a6", "Residence unchanged"],
+                    ["#7570b3", "Moved within the country"],
+                    ["#d95f02", "Moved from outside the country"],
+                ],
+            }),
+        ];
+
+        //population
+        gridLayer.styles[0].addLegends(
+            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
+                title: "Population",
+                fillColor: "#666",
+                labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
+            })
+        );
+
+        gridLayer.cellInfoHTML = (c) =>
+            c.SAME == undefined || c.CHG_IN == undefined || c.CHG_OUT == undefined
+                ? undefined
+                : "<b>" +
+                formatLarge(c.SAME + c.CHG_IN + c.CHG_OUT) +
+                "</b> person" +
+                (c.SAME + c.CHG_IN + c.CHG_OUT == 1 ? "" : "s") +
+                "<br>" +
+                formatLarge(c.SAME) +
+                " residence unchanged<br>" +
+                formatLarge(c.CHG_IN) +
+                " moved within the country<br>" +
+                formatLarge(c.CHG_OUT) +
+                " moved from outside the country";
+    } else if (layCode === "pob") {
+        const classNumberSize = 5;
+        gridLayer.styles = [
+            new gridviz.CompositionStyle({
+                color: {
+                    NAT: "#fed9a6", //light mostard
+                    EU_OTH: "#7570b3", //blueish
+                    OTH: "#d95f02", //orange
+                },
+                type: () => "halftone", //flag, piechart, ring, segment, radar, agepyramid, halftone
+                size: (c, r, z, scale) => scale(c.T),
+                viewScale: gridviz.viewScaleQuantile({
+                    valueFunction: (c) => +c.T,
+                    classNumber: classNumberSize,
+                    minSizePix: 8,
+                }),
+                blendOperation: (z) => (z < 50 ? "multiply" : "source-over"),
+            }),
+        ];
+
+        gridLayer.minPixelsPerCell = 12;
+
+        //place of birth
+        gridLayer.styles[0].legends = [
+            new gridviz.ColorCategoryLegend({
+                title: "Place of birth",
+                colorLabel: [
+                    ["#fed9a6", "Born in the country"],
+                    ["#7570b3", "Born in another EU member state"],
+                    ["#d95f02", "Born outside the EU"],
+                ],
+            }),
+        ];
+
+        //population
+        gridLayer.styles[0].addLegends(
+            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
+                title: "Population",
+                fillColor: "#666",
+                labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
+            })
+        );
+
+        gridLayer.cellInfoHTML = (c) =>
+            c.NAT == undefined || c.EU_OTH == undefined || c.OTH == undefined
+                ? undefined
+                : "<b>" +
+                formatLarge(c.NAT + c.EU_OTH + c.OTH) +
+                "</b> person" +
+                (c.NAT + c.EU_OTH + c.OTH == 1 ? "" : "s") +
+                "<br>" +
+                formatLarge(c.NAT) +
+                " born in the country<br>" +
+                formatLarge(c.EU_OTH) +
+                " born in another EU member state<br>" +
+                formatLarge(c.OTH) +
+                " born outside the EU";
+
+
     } else if (layCode === "chernoff") {
         if (!chernoffImages) return;
 
