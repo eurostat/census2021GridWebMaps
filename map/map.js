@@ -1,7 +1,7 @@
 
 //fix tooltip bug
 //euronym - fix marseille 14e !!!
-//update background URL
+//update background URL - check elevation shading new one
 //add road background layer - add tomtom copyright
 //new indicators
 //live update url
@@ -9,7 +9,7 @@
 //add chernoff faces ?
 //sea level rise ?
 //true age pyramid
-//debug interpolation: negative values !!!
+//debug interpolation: negative values !!! problem when allignement left/right AND diagonal (revert)
 
 /*
 Aging Index
@@ -42,7 +42,8 @@ const tiledGridsURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/cens
 const tiledTotalGridsURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles_total/";
 const nuts2jsonURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/nuts2json/v2/";
 const euronymURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/euronym/v3/UTF_LATIN/";
-const bgLayerURL = "https://ec.europa.eu/eurostat/cache/GISCO/mbkg/elevation_shading/";
+const bgLayerURLElevation = "https://ec.europa.eu/eurostat/cache/GISCO/mbkg/elevation_shading/";
+const bgLayerURLRoad = 'https://ec.europa.eu/eurostat/cache/GISCO/mbkg/road/'
 
 /*/urls for development
   const tiledGridsURL = "http://127.0.0.1:5500/"
@@ -79,25 +80,41 @@ const map = new gridviz.Map(document.getElementById("map"), {
     x: DEFAULTMAPSETTINGS.x,
     y: DEFAULTMAPSETTINGS.y,
     z: DEFAULTMAPSETTINGS.z,
-    zoomExtent: [10, 10000],
+    zoomExtent: [5, 10000],
 })
     .addZoomButtons()
-    //.addFullscreenButton()
-    .setViewFromURL();
+    .setViewFromURL()
+//.addFullscreenButton()
 
-const backgroundLayer1 = new gridviz.BackgroundLayer({
-    url: bgLayerURL,
+
+const backgroundLayerRoad = new gridviz.BackgroundLayer({
+    url: bgLayerURLRoad,
+    resolutions: Array.from({ length: 15 }, (_, i) => 114688 / Math.pow(2, i)),
+    origin: [0, 6000000],
+    nbPix: 512, //512 256
+    visible: (z) => z > 11, //&& z < 2100,
+    pixelationCoefficient: 0.55,
+    filterColor: (z) => z>200? "#fff8" : "#fff4",
+})
+
+/*
+const backgroundLayerElevation = new gridviz.BackgroundLayer({
+    url: bgLayerURLElevation,
     resolutions: Array.from({ length: 9 }, (_, i) => 28.00132289714475 * Math.pow(2, 10 - i)),
     origin: [0, 6000000],
     filterColor: () => "#ffffffc0",
     visible: (z) => z > 50,
-});
+});*/
 
 const backgroundLayer2 = new gridviz.BackgroundLayer(
-    gridviz_eurostat.giscoBackgroundLayer("OSMPositronBackground", 18, "EPSG3035", {
-        visible: (z) => z <= 50,
+    gridviz_eurostat.giscoBackgroundLayer('OSMPositronCompositeEN', 19, 'EPSG3035', {
+        visible: (z) => z <= 11,
+        pixelationCoefficient: 0.55,
     })
 );
+
+
+
 
 //define boundaries layer
 const boundariesLayer = new gridviz.GeoJSONLayer(
@@ -129,10 +146,11 @@ const labelLayer = new gridviz.LabelLayer(
 
 //make grid layer
 const gridLayer = new gridviz.GridLayer(undefined, []);
+gridLayer.blendOperation = () => "multiply"
 
 
 //set map layers
-map.layers = [backgroundLayer1, backgroundLayer2, gridLayer, boundariesLayer, labelLayer];
+map.layers = [backgroundLayerRoad, backgroundLayer2, gridLayer, boundariesLayer, labelLayer];
 
 
 //function to compute the percentage of a cell value
@@ -271,10 +289,12 @@ const confidentialStyle =
 
 
 //default blend operation
-const blendOp = (z) => (z < 50 ? "multiply" : "source-over")
+const blendOp = undefined //(z) => (z < 50 ? "multiply" : "source-over")
+const blendOp2 = undefined //() => "multiply"
+
 
 // default stroke style
-const strokeStyle = new gridviz.StrokeStyle({ strokeColor:()=> "#ccc", visible: (z) => z < 50, blendOperation: blendOp });
+const strokeStyle = new gridviz.StrokeStyle({ strokeColor: () => "white", visible: (z) => z < 50, blendOperation: blendOp });
 
 
 
@@ -295,13 +315,14 @@ let totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
         for (let i = 1; i < classNumber; i++) {
             let t = i / classNumber
             t = scaleTPop(t)
-            breaks.push(min + (max - min) * t)
+            //breaks.push(min + (max - min) * t)
+            breaks.push(max * t)
         }
         return gridviz.classifier(breaks)
     },
     code: (c, r, z, classifier) => classifier(c.T),
     color: { ...colors },
-    blendOperation: blendOp,
+    blendOperation: blendOp2,
 })
 
 //legend
@@ -354,7 +375,7 @@ const update = () => {
         // link legend, style and layer
         //gridLayer.styles = [interpTotPopStyle, strokeStyle,];
         gridLayer.styles = [totPopStyle];
-        if(!interpolate) gridLayer.styles.push(strokeStyle)
+        if (!interpolate) gridLayer.styles.push(strokeStyle)
 
         //set layer parameters
         gridLayer.minPixelsPerCell = interpolate ? 1.7 : 0.7;
@@ -1081,10 +1102,10 @@ document.querySelector("#boundary").addEventListener("change", function () {
 // show/hide background layer
 document.querySelector("#background").addEventListener("change", function () {
     if (this.checked) {
-        backgroundLayer1.visible = (z) => z > 50;
-        backgroundLayer2.visible = (z) => z <= 50;
+        backgroundLayerRoad.visible = (z) => z > 11;
+        backgroundLayer2.visible = (z) => z <= 11;
     } else {
-        backgroundLayer1.visible = () => false;
+        backgroundLayerRoad.visible = () => false;
         backgroundLayer2.visible = () => false;
     }
     map.redraw();
