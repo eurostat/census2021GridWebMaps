@@ -25,14 +25,14 @@ Calculate Total Population: total_population = pop_0_15 + pop_16_64 + pop_65_plu
 Find Median Position: median_position = total_population / 2
 Determine median age group
 if median_position < pop_0_15
-                median_age = 15 * (median_position / pop_0_15)
+                median_age = 15 * (median_position / pop_0_15)
 else if median_position < pop_16_64
-                offset_in_16_64 = median_position - pop_0_15
-                median_age = 16 + 48 * (offset_in_16_64 / pop_16_64)
+                offset_in_16_64 = median_position - pop_0_15
+                median_age = 16 + 48 * (offset_in_16_64 / pop_16_64)
 else ...
-                offset_in_65_plus = median_position - (pop_0_15 + pop_16_64)
-                median_age = 65 + 15 * (offset_in_65_plus / pop_65_plus)
-                (with 15 years for dispersion)
+                offset_in_65_plus = median_position - (pop_0_15 + pop_16_64)
+                median_age = 65 + 15 * (offset_in_65_plus / pop_65_plus)
+                (with 15 years for dispersion)
 year of maximum population
  */
 
@@ -118,9 +118,8 @@ const boundariesLayer = new gridviz.GeoJSONLayer(
 
 //make label layer
 const labelLayer = new gridviz.LabelLayer(
-    gridviz_eurostat.getEuronymeLabelLayer("EUR", 50, {
-        ccIn: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "PL", "PT", "MT", "NL", "RO", "SE", "SK",
-            "SI", "CH", "NO", "LI",],
+    gridviz_eurostat.getEuronymeLabelLayer("EUR", 20, {
+        ccIn: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "PL", "PT", "MT", "NL", "RO", "SE", "SK", "SI", "CH", "NO", "LI",],
         baseURL: euronymURL,
         //exSize: 1.7,
     })
@@ -271,17 +270,25 @@ const confidentialStyle =
 //
 
 
+//default blend operation
+const blendOp = (z) => (z < 50 ? "multiply" : "source-over")
+
+// default stroke style
+const strokeStyle = new gridviz.StrokeStyle({ strokeColor:()=> "#ccc", visible: (z) => z < 50, blendOperation: blendOp });
+
+
+
 // total population style
+let interpolate = false
 
 //get colors
 const colors = []
 const classNumber = 8;
 for (let i = 0; i <= (classNumber - 1); i++) colors.push(d3.interpolateYlOrRd(i / (classNumber - 1)))
-const scaleTPop = gridviz.exponentialScale(7) //exponentialScale logarithmicScale
-
+const scaleTPop = interpolate ? gridviz.logarithmicScale(7) : gridviz.exponentialScale(7) //exponentialScale logarithmicScale
 
 //style
-const totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
+let totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
     viewScale: cells => {
         [min, max] = d3.extent(cells, c => c.T)
         const breaks = []
@@ -294,7 +301,7 @@ const totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
     },
     code: (c, r, z, classifier) => classifier(c.T),
     color: { ...colors },
-    blendOperation: (z) => (z < 100 ? "multiply" : "source-over"),
+    blendOperation: blendOp,
 })
 
 //legend
@@ -307,11 +314,18 @@ const totPopLegend = new gridviz.ColorDiscreteLegend({
 })
 totPopStyle.legends = [totPopLegend];
 
-// default stroke style
-const strokeStyle = new gridviz.StrokeStyle({ visible: (z) => z < 50 })
+if (interpolate) {
+    //define interpolator
+    const interpTotPopStyle = new gridviz.Interpolator({
+        value: (c) => c.T,
+        targetResolution: (r, z) => z,
+        interpolatedProperty: 'T',
+    })
+    interpTotPopStyle.styles = [totPopStyle]
+    totPopStyle = interpTotPopStyle
+}
 
-//default blend operation
-const blendOp = (z) => (z < 50 ? "multiply" : "source-over")
+
 
 const update = () => {
     //read GUI selection
@@ -338,10 +352,11 @@ const update = () => {
         totPopLegend.width = Math.min(window.innerWidth - 40, 400)
 
         // link legend, style and layer
+        //gridLayer.styles = [interpTotPopStyle, strokeStyle,];
         gridLayer.styles = [totPopStyle, strokeStyle,];
 
         //set layer parameters
-        gridLayer.minPixelsPerCell = 0.7;
+        gridLayer.minPixelsPerCell = interpolate ? 1.7 : 0.7;
         gridLayer.cellInfoHTML = (c) => "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 1 ? "" : "s");
 
     } else if (layCode === "share") {
