@@ -5,11 +5,11 @@
 //update background URL
 //add road background layer - add tomtom copyright
 //new indicators
+//live update url
 //use interpolator ?
 //add chernoff faces ?
 //sea level rise ?
 //true age pyramid
-
 
 /*
 Aging Index
@@ -279,7 +279,7 @@ const strokeStyle = new gridviz.StrokeStyle({ strokeColor:()=> "#ccc", visible: 
 
 
 // total population style
-let interpolate = false
+let interpolate = gridviz.getParameterByName("interpolate")
 
 //get colors
 const colors = []
@@ -353,7 +353,8 @@ const update = () => {
 
         // link legend, style and layer
         //gridLayer.styles = [interpTotPopStyle, strokeStyle,];
-        gridLayer.styles = [totPopStyle, strokeStyle,];
+        gridLayer.styles = [totPopStyle];
+        if(!interpolate) gridLayer.styles.push(strokeStyle)
 
         //set layer parameters
         gridLayer.minPixelsPerCell = interpolate ? 1.7 : 0.7;
