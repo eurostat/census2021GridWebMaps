@@ -1,12 +1,15 @@
 
 //fix tooltip bug
-//update nuts2json, euronym
+//update euronym
+//euronym - fix marseille 14e !!!
 //update background URL
 //add road background layer - add tomtom copyright
 //new indicators
 //use interpolator ?
 //add chernoff faces ?
 //sea level rise ?
+//true age pyramid
+
 
 /*
 Aging Index
@@ -38,7 +41,7 @@ year of maximum population
 const tiledGridsURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles/";
 const tiledTotalGridsURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles_total/";
 const nuts2jsonURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/nuts2json/v2/";
-const euronymURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/euronym/v2/UTF/";
+const euronymURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/euronym/v3/UTF_LATIN/";
 const bgLayerURL = "https://ec.europa.eu/eurostat/cache/GISCO/mbkg/elevation_shading/";
 
 /*/urls for development
@@ -119,9 +122,10 @@ const labelLayer = new gridviz.LabelLayer(
         ccIn: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "PL", "PT", "MT", "NL", "RO", "SE", "SK",
             "SI", "CH", "NO", "LI",],
         baseURL: euronymURL,
-        exSize: 1.7,
+        //exSize: 1.7,
     })
 );
+
 
 
 //make grid layer
