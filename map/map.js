@@ -111,39 +111,31 @@ if (urlParams.get("collapsed")) document.getElementById("expand-toggle-button").
 
 for (let cb of ["sbtp", "sbtp_tri", "label", "boundary", "background"]) {
     const sel = urlParams.get(cb);
-    if(sel==undefined) continue;
+    if (sel == undefined) continue;
     document.getElementById(cb).checked = sel != "" && sel != "false" && +sel != 0
 }
 
 
 
 
+//define background layers
+
 const backgroundLayerRoad = new gridviz.BackgroundLayer({
     url: bgLayerURLRoad,
     resolutions: Array.from({ length: 15 }, (_, i) => 114688 / Math.pow(2, i)),
     origin: [0, 6000000],
     nbPix: 512, //512 256
-    visible: (z) => z > 11, //&& z < 2100,
+    visible: document.getElementById("background").checked ? (z) => z > 11 : () => false,
     pixelationCoefficient: 0.55,
     filterColor: (z) => z > 200 ? "#fff8" : "#fff4",
 })
 
-/*
-const backgroundLayerElevation = new gridviz.BackgroundLayer({
-    url: bgLayerURLElevation,
-    resolutions: Array.from({ length: 9 }, (_, i) => 28.00132289714475 * Math.pow(2, 10 - i)),
-    origin: [0, 6000000],
-    filterColor: () => "#ffffffc0",
-    visible: (z) => z > 50,
-});*/
-
 const backgroundLayer2 = new gridviz.BackgroundLayer(
     gridviz_eurostat.giscoBackgroundLayer('OSMPositronCompositeEN', 19, 'EPSG3035', {
-        visible: (z) => z <= 11,
+        visible: document.getElementById("background").checked ? (z) => z <= 11 : () => false,
         pixelationCoefficient: 0.55,
     })
 );
-
 
 
 
@@ -161,6 +153,7 @@ const boundariesLayer = new gridviz.GeoJSONLayer(
             else if (zf < 2000) return p.lvl >= 2 ? "" : "#888";
             else return p.lvl >= 1 ? "" : "#888";
         },
+        visible: document.getElementById("boundary").checked ? undefined : () => false,
     })
 );
 
@@ -170,6 +163,7 @@ const labelLayer = new gridviz.LabelLayer(
         ccIn: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "PL", "PT", "MT", "NL", "RO", "SE", "SK", "SI", "CH", "NO", "LI",],
         baseURL: euronymURL,
         //exSize: 1.7,
+        visible: document.getElementById("label").checked ? undefined : () => false,
     })
 );
 
@@ -1107,29 +1101,24 @@ document.getElementById("home-button").addEventListener("click", (event) => {
 });
 
 //layer update
-document.querySelector("#layer-control").addEventListener("change", update);
+document.getElementById("layer-control").addEventListener("change", update);
 
 // show/hide labels
-document.querySelector("#label").addEventListener("change", function () {
-    labelLayer.visible = () => this.checked;
+document.getElementById("label").addEventListener("change", function () {
+    labelLayer.visible = this.checked ? undefined : () => false;
     map.redraw();
 });
 
 // show/hide boundaries
-document.querySelector("#boundary").addEventListener("change", function () {
-    boundariesLayer.visible = () => this.checked;
+document.getElementById("boundary").addEventListener("change", function () {
+    boundariesLayer.visible = this.checked ? undefined : () => false;
     map.redraw();
 });
 
 // show/hide background layer
-document.querySelector("#background").addEventListener("change", function () {
-    if (this.checked) {
-        backgroundLayerRoad.visible = (z) => z > 11;
-        backgroundLayer2.visible = (z) => z <= 11;
-    } else {
-        backgroundLayerRoad.visible = () => false;
-        backgroundLayer2.visible = () => false;
-    }
+document.getElementById("background").addEventListener("change", function () {
+    backgroundLayerRoad.visible = this.checked ? (z) => z > 11 : () => false;
+    backgroundLayer2.visible = this.checked ? (z) => z <= 11 : () => false;
     map.redraw();
 });
 
