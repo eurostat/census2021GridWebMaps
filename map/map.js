@@ -1,7 +1,6 @@
 
 //fix tooltip bug
 //euronym - fix marseille 14e !!!
-//update background URL - check elevation shading new one
 //add road background layer - add tomtom copyright
 //new indicators
 //live update url
@@ -589,8 +588,8 @@ const update = () => {
             const colDict = {
                 center: "#999",
                 "0": "#4daf4a", "1": "#377eb8", "2": "#e41a1c",
-                "m01": "rgb(79, 150, 133)", "m20": "rgb(174, 127, 48)", "m12": "rgb(171, 96, 106)",
-                "na": naColor
+                "m01": "rgb(79, 150, 133)", "m02": "rgb(174, 127, 48)", "m12": "rgb(171, 96, 106)",
+                "unknown": naColor,
             };
 
             //pixel style
@@ -600,9 +599,7 @@ const update = () => {
                         if (theme == "age" && !c.p_age) preprocessAge(c);
                         else if (theme == "mobility" && !c.p_mob) preprocessMob(c);
                         else if (theme == "pob" && !c.p_pob) preprocessPob(c);
-                        const cl = ternaryFun(c)
-                        //console.log(cl)
-                        return cl == undefined ? "na" : cl;
+                        return ternaryFun(c)
                     },
                     color: colDict,
                 }),
