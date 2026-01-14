@@ -94,7 +94,7 @@ const backgroundLayerRoad = new gridviz.BackgroundLayer({
     nbPix: 512, //512 256
     visible: (z) => z > 11, //&& z < 2100,
     pixelationCoefficient: 0.55,
-    filterColor: (z) => z>200? "#fff8" : "#fff4",
+    filterColor: (z) => z > 200 ? "#fff8" : "#fff4",
 })
 
 /*
@@ -288,13 +288,9 @@ const confidentialStyle =
 //
 
 
-//default blend operation
-const blendOp = undefined //(z) => (z < 50 ? "multiply" : "source-over")
-const blendOp2 = undefined //() => "multiply"
-
 
 // default stroke style
-const strokeStyle = new gridviz.StrokeStyle({ strokeColor: () => "white", visible: (z) => z < 50, blendOperation: blendOp });
+const strokeStyle = new gridviz.StrokeStyle({ strokeColor: () => "white", visible: (z) => z < 50 });
 
 
 
@@ -322,7 +318,6 @@ let totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
     },
     code: (c, r, z, classifier) => classifier(c.T),
     color: { ...colors },
-    blendOperation: blendOp2,
 })
 
 //legend
@@ -436,7 +431,6 @@ const update = () => {
                     }),
                     size: (c, r, z, viewScale) => viewScale(c.T),
                     shape: () => "circle",
-                    blendOperation: blendOp,
                 })
             ];
             gridLayer.minPixelsPerCell = 3;
@@ -454,7 +448,6 @@ const update = () => {
                         return c[shareB] == undefined ? "na" : classifier(c[shareB])
                     },
                     color: colDict,
-                    blendOperation: blendOp,
                 }),
                 strokeStyle
             ];
@@ -566,7 +559,6 @@ const update = () => {
                     }),
                     size: (c, r, z, viewScale) => viewScale(c.T),
                     shape: () => "circle",
-                    blendOperation: blendOp,
                 })
             ];
             gridLayer.minPixelsPerCell = 3;
@@ -613,7 +605,6 @@ const update = () => {
                         return cl == undefined ? "na" : cl;
                     },
                     color: colDict,
-                    blendOperation: blendOp,
                 }),
                 strokeStyle
             ];
@@ -776,7 +767,6 @@ const update = () => {
                 maxSizeFactor: 1.2,
             }),
             shape: () => "circle",
-            blendOperation: blendOp,
         });
         gridLayer.styles = [style];
 
@@ -849,7 +839,6 @@ const update = () => {
                 }),
                 //viewScale: gridviz.sizeScale({ valueFunction: (c) => +c.T, exponent: 0.1 }),
                 //stripesOrientation: () => 90,
-                blendOperation: blendOp,
             }),
         ];
 
@@ -908,7 +897,6 @@ const update = () => {
                     minSizePix: 6,
                     maxSizeFactor: 1.2,
                 }),
-                blendOperation: blendOp,
             }),
         ];
 
@@ -965,7 +953,6 @@ const update = () => {
                     classNumber: classNumberSize,
                     minSizePix: 8,
                 }),
-                blendOperation: blendOp,
             }),
         ];
 
@@ -1041,7 +1028,6 @@ const update = () => {
                 minSizePix: 30,
                 maxSizeFactor: 0.9,
             }),
-            blendOperation: blendOp,
         });
         gridLayer.styles = [style];
 
