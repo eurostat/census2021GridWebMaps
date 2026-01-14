@@ -1,6 +1,5 @@
 
 //fix tooltip bug
-//update euronym
 //euronym - fix marseille 14e !!!
 //update background URL
 //add road background layer - add tomtom copyright
@@ -10,6 +9,7 @@
 //add chernoff faces ?
 //sea level rise ?
 //true age pyramid
+//debug interpolation: negative values !!!
 
 /*
 Aging Index
