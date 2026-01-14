@@ -1,6 +1,5 @@
 
 //fix tooltip bug
-//fix interpolator - nodata case
 //euronym - fix marseille 14e !!!
 //add elevation background layer
 //new indicators
@@ -10,6 +9,7 @@
 //sea level rise ?
 //true age pyramid
 //debug interpolation: negative values !!! problem when allignement left/right AND diagonal (revert)
+//interpolator: add checkbox?
 
 /*
 Aging Index
@@ -85,6 +85,37 @@ const map = new gridviz.Map(document.getElementById("map"), {
     .addZoomButtons()
     .setViewFromURL()
 //.addFullscreenButton()
+
+
+
+// initialise map using URL parameters
+
+//set selected layer from URL param
+const urlParams = new URLSearchParams(window.location.search);
+
+// read layer parameter // Total population : pop // Share: share // Ternary: ternary // Sex: sex // Age: age // Mobility: mobility // Birth place: pob
+const layParam = urlParams.get("lay");
+if (layParam) {
+    const a = document.getElementById(layParam)
+    if (a) a.checked = true; else console.warn("lay param invalid:", layParam)
+}
+
+// read dropdown list values
+for (let dd of ["share_select", "ternary_select"]) {
+    const sel = urlParams.get(dd);
+    if (sel) document.getElementById(dd).value = sel; //else console.warn(dd, "param invalid:", sel)
+}
+
+// toggle options panel collapse from URL param
+if (urlParams.get("collapsed")) document.getElementById("expand-toggle-button").click();
+
+for (let cb of ["sbtp", "sbtp_tri", "label", "boundary", "background"]) {
+    const sel = urlParams.get(cb);
+    if(sel==undefined) continue;
+    document.getElementById(cb).checked = sel != "" && sel != "false" && +sel != 0
+}
+
+
 
 
 const backgroundLayerRoad = new gridviz.BackgroundLayer({
@@ -295,7 +326,8 @@ const strokeStyle = new gridviz.StrokeStyle({ strokeColor: () => "white", visibl
 
 
 // total population style
-let interpolate = gridviz.getParameterByName("interpolate")
+//TODO move
+let interpolate = new URLSearchParams(window.location.search).get("interpolate")
 
 //get colors
 const colors = []
@@ -357,11 +389,11 @@ const update = () => {
         document.getElementById("sbtp_tri").disabled = true;
     }
 
-	//show/hide copyright html components
-	const egCopyright = document.getElementById('eurogeographics-copyright');
-	if (egCopyright) egCopyright.style.display = document.getElementById("boundary").checked ? 'inline-block' : 'none';
-	const tomtomCopyright = document.getElementById('tomtom-copyright');
-	if (tomtomCopyright) tomtomCopyright.style.display = document.getElementById("background").checked ? 'inline-block' : 'none';
+    //show/hide copyright html components
+    const egCopyright = document.getElementById('eurogeographics-copyright');
+    if (egCopyright) egCopyright.style.display = document.getElementById("boundary").checked ? 'inline-block' : 'none';
+    const tomtomCopyright = document.getElementById('tomtom-copyright');
+    if (tomtomCopyright) tomtomCopyright.style.display = document.getElementById("background").checked ? 'inline-block' : 'none';
 
     // set gridlayer dataset
     gridLayer.dataset = layCode === "pop" ? datasetTotal : dataset
@@ -1101,36 +1133,21 @@ document.querySelector("#background").addEventListener("change", function () {
     map.redraw();
 });
 
-//set selected layer from URL param
-const layerParam = gridviz.getParameterByName("lay");
-if (layerParam) {
-    // Total population : pop
-    // Share: share
-    // Ternary: ternary
-    // Sex: sex
-    // Employment: emp
-    // Age: age
-    // Mobility: mobility
-    // Birth place: pob
-    const input = document.querySelector("#" + layerParam);
-    if (input) {
-        input.checked = true;
-        if (layerParam == "share") {
-            const dropdownSelection = gridviz.getParameterByName("share_selection");
-            document.getElementById("share_select").value = dropdownSelection;
-        } else if (layerParam == "ternary") {
-            const dropdownSelection = gridviz.getParameterByName("ternary_selection");
-            document.getElementById("ternary_select").value = dropdownSelection;
-        }
-    }
-}
 
-//toggle options panel collapse from URL param
-const collapsed = gridviz.getParameterByName("collapsed");
-if (collapsed) {
-    const collapseButton = document.getElementById("expand-toggle-button");
-    collapseButton.click();
-}
+
+
+/*
+// Function to update URL with lon, lat, and z
+const updateURL = () => {
+  const zoom = view.getZoom().toFixed(2);
+  const center = toLonLat(view.getCenter());
+  const lon = center[0].toFixed(5);
+  const lat = center[1].toFixed(5);
+ 
+  const newURL = `${window.location.pathname}?lon=${lon}&lat=${lat}&z=${zoom}`;
+  window.history.replaceState({}, '', newURL);
+};
+*/
 
 //initialise
 update();
