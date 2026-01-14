@@ -1,15 +1,12 @@
 
 //fix tooltip bug
 //euronym - fix marseille 14e !!!
-//add elevation background layer
 //new indicators
-//live update url
-//use interpolator ?
-//add chernoff faces ?
-//sea level rise ?
 //true age pyramid
-//debug interpolation: negative values !!! problem when allignement left/right AND diagonal (revert)
-//interpolator: add checkbox?
+
+//add chernoff faces - as GUI element, hidden
+//add elevation background layer
+//sea level rise ?
 
 /*
 Aging Index
@@ -115,6 +112,9 @@ for (let cb of ["sbtp", "sbtp_tri", "label", "boundary", "background"]) {
     document.getElementById(cb).checked = sel != "" && sel != "false" && +sel != 0
 }
 
+// interpolate
+let interpolate = urlParams.get("interpolate")
+interpolate = interpolate != "" && interpolate != "false" && +interpolate != 0
 
 
 
@@ -320,8 +320,6 @@ const strokeStyle = new gridviz.StrokeStyle({ strokeColor: () => "white", visibl
 
 
 // total population style
-//TODO move
-let interpolate = new URLSearchParams(window.location.search).get("interpolate")
 
 //get colors
 const colors = []
@@ -414,7 +412,7 @@ const update = () => {
         document.getElementById("sbtp").disabled = false;
 
         //get gui info
-        const shareA = document.querySelector("#share_select").value;
+        const shareA = document.getElementById("share_select").value;
         const shareB = "s" + shareA;
         const sbtp = document.getElementById("sbtp").checked;
 
@@ -785,7 +783,7 @@ const update = () => {
 
         const classNumberSize = 4;
         const style = new gridviz.ShapeColorSizeStyle({
-            color: (c, r, z, viewScale) => (c.indMF == undefined ? naColor : sexColorClassifier(c.indMF)),
+            color: (c) => (c.indMF == undefined ? naColor : sexColorClassifier(c.indMF)),
             size: (c, r, z, viewScale) => viewScale(c.T),
             viewScale: gridviz.viewScaleQuantile({
                 valueFunction: (c) => {
@@ -1090,6 +1088,7 @@ const update = () => {
 
     //redraw
     map.redraw();
+    updateURL();
 };
 
 //home button
@@ -1098,6 +1097,7 @@ document.getElementById("home-button").addEventListener("click", (event) => {
     map.setView(DEFAULTMAPSETTINGS.x, DEFAULTMAPSETTINGS.y);
     map.setZoom(DEFAULTMAPSETTINGS.z);
     map.redraw();
+    updateURL();
 });
 
 //layer update
@@ -1107,12 +1107,14 @@ document.getElementById("layer-control").addEventListener("change", update);
 document.getElementById("label").addEventListener("change", function () {
     labelLayer.visible = this.checked ? undefined : () => false;
     map.redraw();
+    updateURL();
 });
 
 // show/hide boundaries
 document.getElementById("boundary").addEventListener("change", function () {
     boundariesLayer.visible = this.checked ? undefined : () => false;
     map.redraw();
+    updateURL();
 });
 
 // show/hide background layer
@@ -1120,23 +1122,47 @@ document.getElementById("background").addEventListener("change", function () {
     backgroundLayerRoad.visible = this.checked ? (z) => z > 11 : () => false;
     backgroundLayer2.visible = this.checked ? (z) => z <= 11 : () => false;
     map.redraw();
+    updateURL();
 });
 
 
 
 
-/*
-// Function to update URL with lon, lat, and z
+// update URL with map parameters
+//TODO should be trigerred also on map move end event
 const updateURL = () => {
-  const zoom = view.getZoom().toFixed(2);
-  const center = toLonLat(view.getCenter());
-  const lon = center[0].toFixed(5);
-  const lat = center[1].toFixed(5);
- 
-  const newURL = `${window.location.pathname}?lon=${lon}&lat=${lat}&z=${zoom}`;
-  window.history.replaceState({}, '', newURL);
+    //get parameters
+    const p = new URLSearchParams(window.location.search);
+
+    // map viewport
+    const v = map.getView();
+    p.set("x", v.x.toFixed(0)); p.set("y", v.y.toFixed(0)); p.set("z", v.z.toFixed(0));
+
+    // handle layer selection
+    p.set("lay", document.querySelector('input[name="layer"]:checked').value);
+
+    // handle dropdowns selection
+    for (let dd of ["share_select", "ternary_select"])
+        p.set(dd, document.getElementById(dd).value);
+
+    // handle checkboxes
+    for (let cb of ["sbtp", "sbtp_tri", "label", "boundary", "background"])
+        p.set(cb, document.getElementById(cb).checked ? "1" : "");
+
+    // handle collapse
+    //TODO
+    //document.getElementById("expandable-content").classList.contains("collapsed")
+    //p.set("collapsed", document.getElementById("sidebar").classList.contains("collapsed") ? "1" : "");
+    //if (urlParams.get("collapsed")) document.getElementById("expand-toggle-button").click();
+
+    //interpolate
+    p.set("interpolate", interpolate ? "1" : "");
+
+    //set URL with map parameters
+    const newURL = `${window.location.pathname}?${p.toString()}`;
+    window.history.replaceState({}, '', newURL);
 };
-*/
+
 
 //initialise
 update();
