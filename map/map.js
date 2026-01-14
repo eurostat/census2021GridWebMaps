@@ -2,7 +2,6 @@
 //fix tooltip bug
 //fix interpolator - nodata case
 //euronym - fix marseille 14e !!!
-//add add tomtom copyright
 //add elevation background layer
 //new indicators
 //live update url
@@ -358,7 +357,7 @@ const update = () => {
         document.getElementById("sbtp_tri").disabled = true;
     }
 
-	//show/hide copyrights
+	//show/hide copyright html components
 	const egCopyright = document.getElementById('eurogeographics-copyright');
 	if (egCopyright) egCopyright.style.display = document.getElementById("boundary").checked ? 'inline-block' : 'none';
 	const tomtomCopyright = document.getElementById('tomtom-copyright');
