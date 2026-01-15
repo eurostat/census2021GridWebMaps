@@ -385,6 +385,10 @@ const update = () => {
         document.getElementById("ternary_select").disabled = true;
         document.getElementById("sbtp").disabled = true;
     }
+    if (layCode != "demography") {
+        document.getElementById("demography_select").disabled = true;
+        document.getElementById("sbtp").disabled = true;
+    }
 
     //show/hide copyright html components
     const egCopyright = document.getElementById('eurogeographics-copyright');
@@ -780,6 +784,21 @@ const update = () => {
                     "% born outside the EU"
                 );
             };
+
+    } else if (layCode === "demography") {
+
+        //unfreeze GUI
+        document.getElementById("demography_select").disabled = false;
+        document.getElementById("sbtp").disabled = false;
+
+        //get gui info
+        const theme = document.querySelector("#demography_select").value;
+        //age, mobility, pob
+        const sbtp = document.getElementById("sbtp").checked;
+
+        const classNumberSize = 4;
+
+        console.log("TODO: " + theme)
 
     } else if (layCode === "sex") {
         //sex - color classifier
