@@ -821,15 +821,12 @@ const update = () => {
         if (sbtp) {
             const colorClassifier = gridviz.colorClassifier(breaks, colors);
 
-            const colFun =
-                theme === "ageing" ? (c) => {
-                    if (c["ageing"] == undefined) compute["ageing"](c)
-                    return c["ageing"] < 0 ? naColor : colorClassifier(c["ageing"]);
-                } : () => "red"
-
             gridLayer.styles = [
                 new gridviz.ShapeColorSizeStyle({
-                    color: colFun,
+                    color: (c) => {
+                        if (c[theme] == undefined) compute[theme](c)
+                        return c[theme] < 0 ? naColor : colorClassifier(c[theme]);
+                    },
                     viewScale: gridviz.viewScaleQuantile({
                         valueFunction: (c) => +c.T,
                         classNumber: classNumberSize,
@@ -845,14 +842,14 @@ const update = () => {
             const classifier = gridviz.classifier(breaks)
             const colDict = { ...colors }; colDict["na"] = naColor
 
-            const codeFun =
-                theme === "ageing" ? (c) => {
-                    if (c["ageing"] == undefined) compute["ageing"](c)
-                    return c["ageing"] < 0 ? "na" : classifier(c["ageing"]);
-                } : () => "0"
-
             gridLayer.styles = [
-                new gridviz.SquareColorCategoryWebGLStyle({ code: codeFun, color: colDict, }),
+                new gridviz.SquareColorCategoryWebGLStyle({
+                    code: (c) => {
+                        if (c[theme] == undefined) compute[theme](c)
+                        return c[theme] < 0 ? "na" : classifier(c[theme]);
+                    },
+                    color: colDict,
+                }),
                 strokeStyle
             ];
             gridLayer.minPixelsPerCell = 0.7;
