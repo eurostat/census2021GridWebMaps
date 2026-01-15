@@ -798,7 +798,7 @@ const update = () => {
 
         const classNumberSize = 4;
 
-        console.log("TODO: " + theme)
+        console.log(theme)
 
     } else if (layCode === "sex") {
         //sex - color classifier
