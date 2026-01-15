@@ -210,6 +210,46 @@
                 </div>
               </div>
 
+              <!-- demography-->
+              <div id="demography-container">
+                <div class="ecl-radio">
+                  <input id="demography" name="layer" class="ecl-radio__input" type="radio" value="demography" />
+                  <label class="ecl-radio__label" for="demography">
+                    <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
+                    <span class="ecl-radio__text">Demography by</span>
+                  </label>
+                </div>
+
+                <div class="subcontrols">
+                  <!-- demography select-->
+                  <div class="ecl-form-group">
+                    <div class="ecl-select__container ecl-select__container--m">
+                      <select class="ecl-select" id="demography_select" name="country" aria-label="country" required
+                        aria-describedby="demography_select-helper" data-ecl-auto-init="Select">
+                        <option value="ageing" selected>Ageing Index</option>
+                        <option value="dep_ratio">Total Dependency ratio</option>
+                        <option value="oa_dep_ratio">Old-age dependency ratio</option>
+                        <option value="y_dep_ratio">Youth dependency ratio</option>
+                        <option value="median_age">Median age estimation</option>
+                      </select>
+                      <div class="ecl-select__icon">
+                        <button class="ecl-button ecl-button--ghost ecl-button--icon-only" type="button" tabindex="-1">
+                          <span class="ecl-button__container">
+                            <span class="ecl-button__label" data-ecl-label="true">Toggle dropdown</span>
+                            <svg class="ecl-icon ecl-icon--s ecl-icon--rotate-180 ecl-button__icon" focusable="false"
+                              aria-hidden="true" data-ecl-icon>
+                              <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#corner-arrow"></use>
+                            </svg>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+
               <!-- proportional dot checkbox-->
               <div class="ecl-checkbox ecl-checkbox--single">
                 <input name="checkbox-default" class="ecl-checkbox__input" type="checkbox" id="sbtp" value="ternary" />
