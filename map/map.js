@@ -798,18 +798,22 @@ const update = () => {
         //define style
 
         //define style breaks
-        let breaks = undefined;
-        switch (theme) {
-            case "ageing": breaks = [25, 50, 75, 100, 150, 200, 400]; break;
-            default: breaks = [30, 40, 45, 50, 55, 60, 70];
+        //TODO generalise
+        const breaks = {
+            ageing: [25, 50, 75, 100, 150, 200, 400],
+            dep_ratio: [25, 50, 75, 100, 150, 200, 400],
+            oa_dep_ratio: [25, 50, 75, 100, 150, 200, 400],
+            y_dep_ratio: [25, 50, 75, 100, 150, 200, 400],
+            median_age: [35, 40, 45, 50, 55, 60, 65],
         }
 
-        const classNumberColor = breaks.length + 1; //6
+        const classNumberColor = breaks[theme].length + 1; //6
         const palette = d3.schemeSpectral //: d3.schemeYlOrRd;
         const colors = palette[classNumberColor].slice().reverse()
         const classNumberSize = 4;
 
         //indicator computation functions
+        //TODO generalise
         const compute = {
             ageing: (c) => { c.ageing = (c.Y_LT15 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_LT15 },
             dep_ratio: (c) => { c.dep_ratio = (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * (c.Y_GE65 + c.Y_LT15) / c.Y_1564 },
@@ -819,7 +823,7 @@ const update = () => {
         }
 
         if (sbtp) {
-            const colorClassifier = gridviz.colorClassifier(breaks, colors);
+            const colorClassifier = gridviz.colorClassifier(breaks[theme], colors);
 
             gridLayer.styles = [
                 new gridviz.ShapeColorSizeStyle({
@@ -839,7 +843,7 @@ const update = () => {
             ];
             gridLayer.minPixelsPerCell = 3;
         } else {
-            const classifier = gridviz.classifier(breaks)
+            const classifier = gridviz.classifier(breaks[theme])
             const colDict = { ...colors }; colDict["na"] = naColor
 
             gridLayer.styles = [
