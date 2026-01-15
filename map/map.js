@@ -3,20 +3,25 @@
 //new indicators
 //true age pyramid
 
+//generalise interpolation
 //add chernoff faces - as GUI element, hidden
 //add elevation background layer
 //sea level rise ?
 
 /*
-Aging Index
+Demography indicators
+
+Ageing Index
 The indicator based on the ratio of individuals aged 65+ to those aged 0-15
+seniors per 100 youth
 
-Dependency Ratios:
-Youth Dependency Ratio: This is the ratio of individuals aged 0-15 to those aged 16-64. It indicates the burden on the working-age population to support the youth.
-Old-Age Dependency Ratio: The ratio of individuals aged 65+ to those aged 16-64. It reflects the pressure on the working-age population to support the elderly.
-Total Dependency Ratio: Combines both youth and old-age dependency ratios.
+Total Dependency ratio: Combines both youth and old-age dependency ratios.
 
-median age estimation
+Old-age dependency ratio: The ratio of individuals aged 65+ to those aged 16-64. It reflects the pressure on the working-age population to support the elderly.
+
+Youth dependency ratio: This is the ratio of individuals aged 0-15 to those aged 16-64. It indicates the burden on the working-age population to support the youth.
+
+Median age estimation
 Calculate Total Population: total_population = pop_0_15 + pop_16_64 + pop_65_plus
 Find Median Position: median_position = total_population / 2
 Determine median age group
