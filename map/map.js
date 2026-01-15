@@ -106,7 +106,7 @@ for (let dd of ["share_select", "ternary_select"]) {
 // toggle options panel collapse from URL param
 if (urlParams.get("collapsed")) document.getElementById("expand-toggle-button").click();
 
-for (let cb of ["sbtp", "sbtp_tri", "label", "boundary", "background"]) {
+for (let cb of ["sbtp", "label", "boundary", "background"]) {
     const sel = urlParams.get(cb);
     if (sel == undefined) continue;
     document.getElementById(cb).checked = sel != "" && sel != "false" && +sel != 0
@@ -378,7 +378,7 @@ const update = () => {
     }
     if (layCode != "ternary") {
         document.getElementById("ternary_select").disabled = true;
-        document.getElementById("sbtp_tri").disabled = true;
+        document.getElementById("sbtp").disabled = true;
     }
 
     //show/hide copyright html components
@@ -521,12 +521,12 @@ const update = () => {
 
         //unfreeze GUI
         document.getElementById("ternary_select").disabled = false;
-        document.getElementById("sbtp_tri").disabled = false;
+        document.getElementById("sbtp").disabled = false;
 
         //get gui info
         const theme = document.querySelector("#ternary_select").value;
         //age, mobility, pob
-        const sbtp = document.getElementById("sbtp_tri").checked;
+        const sbtp = document.getElementById("sbtp").checked;
 
         const classNumberSize = 4;
 
@@ -1146,7 +1146,7 @@ const updateURL = () => {
         p.set(dd, document.getElementById(dd).value);
 
     // handle checkboxes
-    for (let cb of ["sbtp", "sbtp_tri", "label", "boundary", "background"])
+    for (let cb of ["sbtp", "label", "boundary", "background"])
         p.set(cb, document.getElementById(cb).checked ? "1" : "");
 
     // handle collapse
