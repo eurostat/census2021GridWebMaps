@@ -809,15 +809,22 @@ const update = () => {
         const colors = palette[classNumberColor].slice().reverse()
         const classNumberSize = 4;
 
-        const computeAgeing = (c) => { c.ageing = (c.Y_LT15 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_LT15 }
+        //indicator computation functions
+        const compute = {
+            ageing: (c) => { c.ageing = (c.Y_LT15 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_LT15 },
+            dep_ratio: (c) => { c.dep_ratio = (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * (c.Y_GE65 + c.Y_LT15) / c.Y_1564 },
+            oa_dep_ratio: (c) => { c.dep_ratio = (c.Y_1564 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_1564 },
+            y_dep_ratio: (c) => { c.dep_ratio = (c.Y_LT15 == undefined || c.Y_1564 == undefined) ? -1 : 100 * c.Y_LT15 / c.Y_1564 },
+            median_age: (c) => { c.median_age = 50 },
+        }
 
         if (sbtp) {
             const colorClassifier = gridviz.colorClassifier(breaks, colors);
 
             const colFun =
                 theme === "ageing" ? (c) => {
-                    if (c.ageing == undefined) computeAgeing(c)
-                    return c.ageing < 0 ? naColor : colorClassifier(c.ageing);
+                    if (c["ageing"] == undefined) compute["ageing"](c)
+                    return c["ageing"] < 0 ? naColor : colorClassifier(c["ageing"]);
                 } : () => "red"
 
             gridLayer.styles = [
@@ -840,8 +847,8 @@ const update = () => {
 
             const codeFun =
                 theme === "ageing" ? (c) => {
-                    if (c.ageing == undefined) computeAgeing(c)
-                    return c.ageing < 0 ? "na" : classifier(c.ageing);
+                    if (c["ageing"] == undefined) compute["ageing"](c)
+                    return c["ageing"] < 0 ? "na" : classifier(c["ageing"]);
                 } : () => "0"
 
             gridLayer.styles = [
