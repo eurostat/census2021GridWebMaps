@@ -1,7 +1,7 @@
 
 //fix tooltip bug
-//euronym - publish new
 //new indicators
+//euronym - publish new
 //true age pyramid
 
 //add chernoff faces - as GUI element, hidden
