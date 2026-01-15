@@ -793,12 +793,66 @@ const update = () => {
 
         //get gui info
         const theme = document.querySelector("#demography_select").value;
-        //age, mobility, pob
         const sbtp = document.getElementById("sbtp").checked;
 
+        //define style
+
+        //define style breaks
+        let breaks = undefined;
+        switch (theme) {
+            case "ageing": breaks = [50, 75, 90, 100, 120, 150, 200]; break;
+            default: breaks = [30, 40, 45, 50, 55, 60, 70];
+        }
+
+        const classNumberColor = breaks.length + 1; //6
+        const palette = d3.schemeSpectral //: d3.schemeYlOrRd;
+        const colors = palette[classNumberColor];
         const classNumberSize = 4;
 
-        console.log(theme)
+        const colAgeing = (c) => {
+            let v = c.ageing
+            if (c.ageing == undefined) {
+                if (c.Y_LT15 == undefined || c.Y_GE65 == undefined) { c.ageing = -1; v=-1 }
+                else {
+                    c.ageing = 100 * c.Y_GE65 / c.Y_LT15
+                    v = c.ageing
+                }
+            }
+            return v < 0 ? naColor : colorClassifier(v);
+        }
+
+        if (sbtp) {
+            const colorClassifier = gridviz.colorClassifier(breaks, colors);
+            gridLayer.styles = [
+                new gridviz.ShapeColorSizeStyle({
+                    color: theme==="ageing"? colAgeing : ()=>"red",
+                    viewScale: gridviz.viewScaleQuantile({
+                        valueFunction: (c) => +c.T,
+                        classNumber: classNumberSize,
+                        minSizePix: 2.5,
+                        maxSizeFactor: 1.2,
+                    }),
+                    size: (c, r, z, viewScale) => viewScale(c.T),
+                    shape: () => "circle",
+                })
+            ];
+            gridLayer.minPixelsPerCell = 3;
+        } else {
+            const classifier = gridviz.classifier(breaks)
+            const colDict = { ...colors }; colDict["na"] = naColor
+            gridLayer.styles = [
+                new gridviz.SquareColorCategoryWebGLStyle({
+                    code: (c) => {
+                        //TODO
+                        return c[shareB] == undefined ? "na" : classifier(c[shareB])
+                    },
+                    color: colDict,
+                }),
+                strokeStyle
+            ];
+            gridLayer.minPixelsPerCell = 0.7;
+        }
+
 
     } else if (layCode === "sex") {
         //sex - color classifier
