@@ -1,6 +1,8 @@
 
 //fix tooltip bug
-//new indicators
+//new indicators: median age, tooltip, legend
+//reorganise code based on demography
+//add title to legends
 //true age pyramid
 
 //generalise interpolation
