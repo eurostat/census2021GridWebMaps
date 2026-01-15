@@ -801,9 +801,9 @@ const update = () => {
         //TODO generalise
         const breaks = {
             ageing: [25, 50, 75, 100, 150, 200, 400],
-            dep_ratio: [25, 50, 75, 100, 150, 200, 400],
-            oa_dep_ratio: [25, 50, 75, 100, 150, 200, 400],
-            y_dep_ratio: [25, 50, 75, 100, 150, 200, 400],
+            dep_ratio: [0, 50, 80, 100, 120, 150, 200],
+            oa_dep_ratio: [0, 50, 80, 100, 120, 150, 200],
+            y_dep_ratio: [0, 50, 80, 100, 120, 150, 200],
             median_age: [35, 40, 45, 50, 55, 60, 65],
         }
 
@@ -817,8 +817,8 @@ const update = () => {
         const compute = {
             ageing: (c) => { c.ageing = (c.Y_LT15 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_LT15 },
             dep_ratio: (c) => { c.dep_ratio = (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * (c.Y_GE65 + c.Y_LT15) / c.Y_1564 },
-            oa_dep_ratio: (c) => { c.dep_ratio = (c.Y_1564 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_1564 },
-            y_dep_ratio: (c) => { c.dep_ratio = (c.Y_LT15 == undefined || c.Y_1564 == undefined) ? -1 : 100 * c.Y_LT15 / c.Y_1564 },
+            oa_dep_ratio: (c) => { c.oa_dep_ratio = (c.Y_1564 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_1564 },
+            y_dep_ratio: (c) => { c.y_dep_ratio = (c.Y_LT15 == undefined || c.Y_1564 == undefined) ? -1 : 100 * c.Y_LT15 / c.Y_1564 },
             median_age: (c) => { c.median_age = 50 },
         }
 
@@ -858,6 +858,22 @@ const update = () => {
             ];
             gridLayer.minPixelsPerCell = 0.7;
         }
+
+        //TODO legends
+        //TODO tooltip
+        gridLayer.cellInfoHTML = (c) => {
+            return (
+                theme + "<br>" +
+                c[theme] + "<br>" +
+                formatPercentage(c.sY_LT15) +
+                "% under 15 years<br>" +
+                formatPercentage(c["sY_1564"]) +
+                "% 15 to 64 years<br>" +
+                formatPercentage(c.sY_GE65) +
+                "% 65 years and older"
+            );
+        };
+
 
 
     } else if (layCode === "sex") {
