@@ -1,6 +1,6 @@
 
 //fix tooltip bug
-//euronym - fix marseille 14e !!!
+//euronym - publish new
 //new indicators
 //true age pyramid
 
@@ -39,6 +39,7 @@ const tiledGridsURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/cens
 const tiledTotalGridsURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles_total/";
 const nuts2jsonURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/nuts2json/v2/";
 const euronymURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/euronym/v3/UTF_LATIN/";
+//const euronymURL = "https://raw.githubusercontent.com/eurostat/euronym/main/pub/v3/UTF_LATIN/"
 const bgLayerURLElevation = "https://ec.europa.eu/eurostat/cache/GISCO/mbkg/elevation_shading/";
 const bgLayerURLRoad = 'https://ec.europa.eu/eurostat/cache/GISCO/mbkg/road/'
 
