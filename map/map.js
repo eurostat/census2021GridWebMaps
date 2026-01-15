@@ -806,22 +806,23 @@ const update = () => {
 
         const classNumberColor = breaks.length + 1; //6
         const palette = d3.schemeSpectral //: d3.schemeYlOrRd;
-        const colors = palette[classNumberColor].reverse();
+        const colors = palette[classNumberColor].slice().reverse()
         const classNumberSize = 4;
+
+        const computeAgeing = (c) => { c.ageing = (c.Y_LT15 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_LT15 }
 
         if (sbtp) {
             const colorClassifier = gridviz.colorClassifier(breaks, colors);
 
-            const colAgeing = (c) => {
-                if (c.ageing == undefined) {
-                    c.ageing = (c.Y_LT15 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_LT15
-                }
-                return c.ageing < 0 ? naColor : colorClassifier(c.ageing);
-            }
+            const colFun =
+                theme === "ageing" ? (c) => {
+                    if (c.ageing == undefined) computeAgeing(c)
+                    return c.ageing < 0 ? naColor : colorClassifier(c.ageing);
+                } : () => "red"
 
             gridLayer.styles = [
                 new gridviz.ShapeColorSizeStyle({
-                    color: theme === "ageing" ? colAgeing : () => "red",
+                    color: colFun,
                     viewScale: gridviz.viewScaleQuantile({
                         valueFunction: (c) => +c.T,
                         classNumber: classNumberSize,
@@ -836,14 +837,15 @@ const update = () => {
         } else {
             const classifier = gridviz.classifier(breaks)
             const colDict = { ...colors }; colDict["na"] = naColor
+
+            const codeFun =
+                theme === "ageing" ? (c) => {
+                    if (c.ageing == undefined) computeAgeing(c)
+                    return c.ageing < 0 ? "na" : classifier(c.ageing);
+                } : () => "0"
+
             gridLayer.styles = [
-                new gridviz.SquareColorCategoryWebGLStyle({
-                    code: (c) => {
-                        //TODO
-                        return c[shareB] == undefined ? "na" : classifier(c[shareB])
-                    },
-                    color: colDict,
-                }),
+                new gridviz.SquareColorCategoryWebGLStyle({ code: codeFun, color: colDict, }),
                 strokeStyle
             ];
             gridLayer.minPixelsPerCell = 0.7;
