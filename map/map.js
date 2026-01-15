@@ -103,7 +103,7 @@ if (layParam) {
 }
 
 // read dropdown list values
-for (let dd of ["share_select", "ternary_select"]) {
+for (let dd of ["share_select", "ternary_select", "demography_select"]) {
     const sel = urlParams.get(dd);
     if (sel) document.getElementById(dd).value = sel; //else console.warn(dd, "param invalid:", sel)
 }
@@ -800,10 +800,10 @@ const update = () => {
         //define style breaks
         //TODO generalise
         const breaks = {
-            ageing: [25, 50, 75, 100, 150, 200, 400],
-            dep_ratio: [0, 50, 80, 100, 120, 150, 200],
-            oa_dep_ratio: [0, 50, 80, 100, 120, 150, 200],
-            y_dep_ratio: [0, 50, 80, 100, 120, 150, 200],
+            ageing: [25, 50, 75, 100, 150, 200, 400], // seniors per 100 youth
+            dep_ratio: [30, 40, 50, 60, 80, 100, 150], //seniors and youth per 100 active
+            oa_dep_ratio: [15, 20, 25, 30, 40, 50, 75],
+            y_dep_ratio: [15, 20, 25, 30, 40, 50, 75],
             median_age: [35, 40, 45, 50, 55, 60, 65],
         }
 
@@ -865,12 +865,9 @@ const update = () => {
             return (
                 theme + "<br>" +
                 c[theme] + "<br>" +
-                formatPercentage(c.sY_LT15) +
-                "% under 15 years<br>" +
-                formatPercentage(c["sY_1564"]) +
-                "% 15 to 64 years<br>" +
-                formatPercentage(c.sY_GE65) +
-                "% 65 years and older"
+                (c.Y_LT15) + " under 15 years<br>" +
+                (c["Y_1564"]) + " 15 to 64 years<br>" +
+                (c.Y_GE65) + " 65 years and older"
             );
         };
 
@@ -1242,7 +1239,7 @@ const updateURL = () => {
     p.set("lay", document.querySelector('input[name="layer"]:checked').value);
 
     // handle dropdowns selection
-    for (let dd of ["share_select", "ternary_select"])
+    for (let dd of ["share_select", "ternary_select", "demography_select"])
         p.set(dd, document.getElementById(dd).value);
 
     // handle checkboxes
