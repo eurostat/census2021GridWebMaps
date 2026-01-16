@@ -833,17 +833,17 @@ const update = () => {
                 const half = (y + m + o) / 2
                 //yes, this case does happen !
                 if (m == 0 && y == o) c.median_age = 40
-                else if (half <= y) c.median_age = Math.round(15 * half / y)
-                else if (half <= y + m) c.median_age = Math.round(15 + 49 * (half - y) / m)
+                else if (half <= y) c.median_age = Math.round(14 * half / y)
+                else if (half <= y + m) c.median_age = Math.round(14 + 49 * (half - y) / m)
                 else c.median_age = Math.round(64 + 30 * (half - y - m) / o)
             },
         }
 
         const legendTitle = {
-            ageing: "", // seniors per 100 youth
-            dep_ratio: "", //seniors and youth per 100 active
-            oa_dep_ratio: "",
-            y_dep_ratio: "",
+            ageing: "Ageing Index, in seniors (65+) per 100 youth (0-14)",
+            dep_ratio: "Dependency ratio, in seniors (65+) and youth (0-14) per 100 active (15-64)",
+            oa_dep_ratio: "Old-age dependency ratio, in seniors (65+) per 100 active (15-64)",
+            y_dep_ratio: "Youth dependency ratio, in youth (0-14) per 100 active (15-64)",
             median_age: "Median age estimate",
         }
 
@@ -884,13 +884,15 @@ const update = () => {
             gridLayer.minPixelsPerCell = 0.7;
         }
 
+        const style = gridLayer.styles[0]
+
         //demography color legend
         style.addLegends([
             new gridviz.ColorDiscreteLegend({
                 title: legendTitle[theme],
                 width: 250,
                 colors: () => colors,
-                breaks: () => breaks,
+                breaks: () => breaks[theme],
             }),
         ]);
 
