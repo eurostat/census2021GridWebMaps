@@ -385,10 +385,11 @@ const update = () => {
         //share color legend
         style.addLegends([
             new gridviz.ColorDiscreteLegend({
-                title: "Share, in percentage",
+                title: legendTitles[share],
                 width: 250,
                 colors: () => colors,
                 breaks: () => breaks,
+                labelFormat: (v, i) => v + (i == 1 || i == breaks.length ? "%" : ""),
             }),
         ]);
 
@@ -401,7 +402,7 @@ const update = () => {
                 gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
                     title: "Population",
                     fillColor: "#666",
-                    labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
+                    labelFormat: (v) => formatLarge(gridviz.nice(v)),
                 })
             );
 
