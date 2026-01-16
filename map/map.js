@@ -1,11 +1,11 @@
 //TODO
+//generalise interpolation
 //fix tooltip location bug
-//reorganise code based on demography
+//reorganise code: ternary, other
 //true age pyramid
 //update x,y,z on view change
-// revamp breaks ?
+//revamp breaks ?
 
-//generalise interpolation
 //add chernoff faces - as GUI element, hidden
 //sea level rise ?
 
