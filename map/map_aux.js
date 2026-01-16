@@ -108,3 +108,37 @@ const compute = {
 }
 
 
+
+
+
+// class breaks
+const breaksDict = {
+    F: [40, 45, 49, 50, 51, 55, 60],
+    M: [40, 45, 49, 50, 51, 55, 60],
+    Y_LT15: [5, 10, 15, 20, 25, 30],
+    Y_1564: [50, 60, 65, 70, 75, 80],
+    Y_GE65: [10, 20, 30, 40, 50],
+    EMP: [30, 40, 45, 50, 55, 60, 70],
+    SAME: [70, 80, 90, 95, 99],
+    CHG_IN: [0.5, 1, 5, 10, 20],
+    CHG_OUT: [0.5, 1, 2, 5, 10],
+    NAT: [60, 70, 80, 85, 90, 95, 99],
+    EU_OTH: [1, 5, 10, 15, 20, 30],
+    OTH: [1, 5, 10, 20, 30, 50],
+    ageing: [25, 50, 75, 100, 150, 200, 400],
+    dep_ratio: [30, 40, 50, 60, 80, 100, 150],
+    oa_dep_ratio: [15, 20, 25, 30, 40, 50, 75],
+    y_dep_ratio: [15, 20, 25, 30, 40, 50, 75],
+    median_age: [35, 40, 43, 46, 50, 55, 60, 65],
+}
+
+
+const legendTitles = {
+    //TODO add others ?
+    ageing: "Ageing Index, in seniors (65+) per 100 youth (0-14)",
+    dep_ratio: "Dependency ratio, in seniors (65+) and youth (0-14) per 100 active (15-64)",
+    oa_dep_ratio: "Old-age dependency ratio, in seniors (65+) per 100 active (15-64)",
+    y_dep_ratio: "Youth dependency ratio, in youth (0-14) per 100 active (15-64)",
+    median_age: "Median age estimate",
+}
+
