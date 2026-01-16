@@ -63,7 +63,7 @@ const urlParams = new URLSearchParams(window.location.search);
 
 // read map code from URL
 const sel = urlParams.get("map");
-if (sel) document.getElementById("map").value = sel
+if (sel) document.getElementById("map_select").value = sel
 
 // background theme bt
 const btParam = urlParams.get("bt");
@@ -221,7 +221,7 @@ const strokeStyle = new gridviz.StrokeStyle({ strokeColor: () => "#fff8", visibl
 const colors = []
 const classNumber = 8;
 for (let i = 0; i <= (classNumber - 1); i++) colors.push(d3.interpolateYlOrRd(i / (classNumber - 1)))
-const scaleTPop = interpolate ? gridviz.logarithmicScale(7) : gridviz.exponentialScale(7) //exponentialScale logarithmicScale
+const scaleTPop = gridviz.exponentialScale(7) //exponentialScale logarithmicScale
 
 //style
 let totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
@@ -250,16 +250,20 @@ const totPopLegend = new gridviz.ColorDiscreteLegend({
 })
 totPopStyle.legends = [totPopLegend];
 
-if (interpolate) {
+
+// interoplator function
+const interpolateStyles = (styles, prop) => {
     //define interpolator
     const interpTotPopStyle = new gridviz.Interpolator({
-        value: (c) => c.T,
+        value: (c) => c[prop],
         targetResolution: (r, z) => z,
-        interpolatedProperty: 'T',
+        interpolatedProperty: prop,
     })
-    interpTotPopStyle.styles = [totPopStyle]
-    totPopStyle = interpTotPopStyle
+    //apply styles
+    interpTotPopStyle.styles = styles
+    return [interpTotPopStyle]
 }
+
 
 
 
@@ -291,6 +295,7 @@ const update = () => {
         // link legend, style and layer
         //gridLayer.styles = [interpTotPopStyle, strokeStyle,];
         gridLayer.styles = [totPopStyle];
+        if (interpolate) gridLayer.styles = interpolateStyles(gridLayer.styles, 'T');
         if (!interpolate) gridLayer.styles.push(strokeStyle)
 
         //set layer parameters
@@ -349,7 +354,7 @@ const update = () => {
                 }),
                 strokeStyle
             ];
-            gridLayer.minPixelsPerCell = 0.7;
+            gridLayer.minPixelsPerCell = interpolate ? 1.7 : 0.7
         }
 
         const style = gridLayer.styles[0];
