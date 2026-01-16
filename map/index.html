@@ -108,212 +108,78 @@
           </span>
         </button>
         <div id="expandable-content" class="ecl-expandable__content">
+
           <div id="layer-control">
-            <fieldset class="ecl-form-group" aria-describedby="radio-default-helper" role="radiogroup"
-              aria-required="true">
-              <!-- <legend id="radio-default-label" class="ecl-form-label">Select an indicator</legend> -->
-              <!-- <div class="ecl-help-block" id="radio-default-helper">This is the group's helper text.</div> -->
 
-              <!-- total population -->
-              <div class="ecl-radio">
-                <input id="pop" name="layer" class="ecl-radio__input" type="radio" value="pop" checked />
-                <label class="ecl-radio__label" for="pop">
-                  <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
-                  <span class="ecl-radio__text">Total population</span>
-                </label>
-              </div>
-
-              <hr />
-
-              <!-- share of -->
-              <div id="share-of-container">
-                <div class="ecl-radio">
-                  <input id="share" name="layer" class="ecl-radio__input" type="radio" value="share" />
-                  <label class="ecl-radio__label" for="share">
-                    <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
-                    <span class="ecl-radio__text">Share</span>
-                  </label>
-                </div>
-
-                <div class="subcontrols" id="share_select_div" style="display: none;">
-                  <!-- share of select-->
-                  <div class="ecl-form-group">
-                    <!-- <label for="share_" id="share_-label" class="ecl-form-label">Select a share</label>
-                      <div class="ecl-help-block" id="share_-helper">This is the input's helper text.</div> -->
-                    <div class="ecl-select__container ecl-select__container--m">
-                      <select class="ecl-select" id="share_select" name="country" aria-label="country" required
-                        aria-describedby="share_-helper" data-ecl-auto-init="Select">
-                        <option value="Y_LT15">Age under 15 years</option>
-                        <option value="Y_1564">Age 15 to 64 years</option>
-                        <option value="Y_GE65" selected>Age 65 years and older</option>
-                        <option value="F">Women</option>
-                        <option value="M">Men</option>
-                        <option value="EMP">Employed</option>
-                        <option value="SAME">Residence unchanged</option>
-                        <option value="CHG_IN">Residence change within the country</option>
-                        <option value="CHG_OUT">Residence change from other country</option>
-                        <option value="NAT">Born in the country</option>
-                        <option value="EU_OTH">Born in another EU member state</option>
-                        <option value="OTH">Born outside the EU</option>
-                      </select>
-                      <div class="ecl-select__icon">
-                        <button class="ecl-button ecl-button--ghost ecl-button--icon-only" type="button" tabindex="-1">
-                          <span class="ecl-button__container">
-                            <span class="ecl-button__label" data-ecl-label="true">Toggle dropdown</span>
-                            <svg class="ecl-icon ecl-icon--s ecl-icon--rotate-180 ecl-button__icon" focusable="false"
-                              aria-hidden="true" data-ecl-icon>
-                              <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#corner-arrow"></use>
-                            </svg>
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
+            <!-- map select-->
+            <div class="ecl-form-group">
+              <div class="ecl-select__container ecl-select__container--m">
+                <select class="ecl-select" id="map_select" name="map_select" aria-label="map_select" required
+                  aria-describedby="share_-helper" data-ecl-auto-init="Select">
+                  <optgroup label="Total population" data-id="tot">
+                    <option value="pop" selected>Total population</option>
+                  </optgroup>
+                  <optgroup label="Share of" data-id="share">
+                    <option value="Y_LT15">Age under 15 years</option>
+                    <option value="Y_1564">Age 15 to 64 years</option>
+                    <option value="Y_GE65">Age 65 years and older</option>
+                    <option value="F">Women</option>
+                    <option value="M">Men</option>
+                    <option value="EMP">Employed</option>
+                    <option value="SAME">Residence unchanged</option>
+                    <option value="CHG_IN">Residence change within the country</option>
+                    <option value="CHG_OUT">Residence change from other country</option>
+                    <option value="NAT">Born in the country</option>
+                    <option value="EU_OTH">Born in another EU member state</option>
+                    <option value="OTH">Born outside the EU</option>
+                  </optgroup>
+                  <optgroup label="Ternary color by" data-id="ternary">
+                    <option value="ter_age">Age</option>
+                    <option value="ter_mob">Mobility</option>
+                    <option value="ter_pob">Birth place</option>
+                  </optgroup>
+                  <optgroup label="Demography" data-id="demography">
+                    <option value="ageing">Ageing Index</option>
+                    <option value="dep_ratio">Total Dependency ratio</option>
+                    <option value="oa_dep_ratio">Old-age dependency ratio</option>
+                    <option value="y_dep_ratio">Youth dependency ratio</option>
+                    <option value="median_age">Median age estimation</option>
+                  </optgroup>
+                  <optgroup label="Other" data-id="other">
+                    <option value="age_pyramid">Age pyramid</option>
+                    <option value="sex_balance">Sex balance</option>
+                    <option value="mobility_pc">Mobility</option>
+                    <option value="pob_pc">Place of birth</option>
+                  </optgroup>
+                </select>
+                <div class="ecl-select__icon">
+                  <button class="ecl-button ecl-button--ghost ecl-button--icon-only" type="button" tabindex="-1">
+                    <span class="ecl-button__container">
+                      <span class="ecl-button__label" data-ecl-label="true">Toggle dropdown</span>
+                      <svg class="ecl-icon ecl-icon--s ecl-icon--rotate-180 ecl-button__icon" focusable="false"
+                        aria-hidden="true" data-ecl-icon>
+                        <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#corner-arrow"></use>
+                      </svg>
+                    </span>
+                  </button>
                 </div>
               </div>
+            </div>
 
-              <!-- ternary-->
-              <div id="ternary-container">
-                <div class="ecl-radio">
-                  <input id="ternary" name="layer" class="ecl-radio__input" type="radio" value="ternary" />
-                  <label class="ecl-radio__label" for="ternary">
-                    <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
-                    <span class="ecl-radio__text">Ternary color</span>
-                  </label>
-                </div>
+            <!-- proportional dot checkbox-->
+            <div class="ecl-checkbox ecl-checkbox--single" id="sbtp_div" style="display: inline-block;">
+              <input name="checkbox-default" class="ecl-checkbox__input" type="checkbox" id="sbtp" value="sbtp" />
+              <label for="sbtp" class="ecl-checkbox__label proportional-checkbox-label">
+                <span class="ecl-checkbox__box">
+                  <svg class="ecl-icon ecl-icon--m ecl-checkbox__icon" focusable="false" aria-hidden="true">
+                    <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#check"></use>
+                  </svg>
+                </span>
+                <span class="ecl-checkbox__text">Dot proportional to total population</span>
+              </label>
+            </div>
 
-                <div class="subcontrols" id="ternary_select_div" style="display: none;">
-                  <!-- ternary select-->
-                  <div class="ecl-form-group">
-                    <div class="ecl-select__container ecl-select__container--m">
-                      <select class="ecl-select" id="ternary_select" name="country" aria-label="country" required
-                        aria-describedby="ternary_select-helper" data-ecl-auto-init="Select">
-                        <option value="age" selected>Age</option>
-                        <option value="mobility">Mobility</option>
-                        <option value="pob">Birth place</option>
-                      </select>
-                      <div class="ecl-select__icon">
-                        <button class="ecl-button ecl-button--ghost ecl-button--icon-only" type="button" tabindex="-1">
-                          <span class="ecl-button__container">
-                            <span class="ecl-button__label" data-ecl-label="true">Toggle dropdown</span>
-                            <svg class="ecl-icon ecl-icon--s ecl-icon--rotate-180 ecl-button__icon" focusable="false"
-                              aria-hidden="true" data-ecl-icon>
-                              <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#corner-arrow"></use>
-                            </svg>
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-              <!-- demography-->
-              <div id="demography-container">
-                <div class="ecl-radio">
-                  <input id="demography" name="layer" class="ecl-radio__input" type="radio" value="demography" />
-                  <label class="ecl-radio__label" for="demography">
-                    <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
-                    <span class="ecl-radio__text">Demography</span>
-                  </label>
-                </div>
-
-                <div class="subcontrols" id="demography_select_div" style="display: none;">
-                  <!-- demography select-->
-                  <div class="ecl-form-group">
-                    <div class="ecl-select__container ecl-select__container--m">
-                      <select class="ecl-select" id="demography_select" name="country" aria-label="country" required
-                        aria-describedby="demography_select-helper" data-ecl-auto-init="Select">
-                        <option value="ageing" selected>Ageing Index</option>
-                        <option value="dep_ratio">Total Dependency ratio</option>
-                        <option value="oa_dep_ratio">Old-age dependency ratio</option>
-                        <option value="y_dep_ratio">Youth dependency ratio</option>
-                        <option value="median_age">Median age estimation</option>
-                      </select>
-                      <div class="ecl-select__icon">
-                        <button class="ecl-button ecl-button--ghost ecl-button--icon-only" type="button" tabindex="-1">
-                          <span class="ecl-button__container">
-                            <span class="ecl-button__label" data-ecl-label="true">Toggle dropdown</span>
-                            <svg class="ecl-icon ecl-icon--s ecl-icon--rotate-180 ecl-button__icon" focusable="false"
-                              aria-hidden="true" data-ecl-icon>
-                              <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#corner-arrow"></use>
-                            </svg>
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-
-              <!-- proportional dot checkbox-->
-              <div class="ecl-checkbox ecl-checkbox--single" id="sbtp_div" style="display: none;">
-                <input name="checkbox-default" class="ecl-checkbox__input" type="checkbox" id="sbtp" value="sbtp" />
-                <label for="sbtp" class="ecl-checkbox__label proportional-checkbox-label">
-                  <span class="ecl-checkbox__box">
-                    <svg class="ecl-icon ecl-icon--m ecl-checkbox__icon" focusable="false" aria-hidden="true">
-                      <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#check"></use>
-                    </svg>
-                  </span>
-                  <span class="ecl-checkbox__text">Dot proportional to total population</span>
-                </label>
-              </div>
-
-              <hr />
-
-              <div class="ecl-radio">
-                <input id="age" name="layer" class="ecl-radio__input" type="radio" value="age" />
-                <label class="ecl-radio__label" for="age">
-                  <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
-                  <span class="ecl-radio__text">Age pyramid</span>
-                </label>
-              </div>
-
-              <div>
-                <div class="ecl-radio">
-                  <input id="sex" name="layer" class="ecl-radio__input" type="radio" value="sex" />
-                  <label class="ecl-radio__label" for="sex">
-                    <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
-                    <span class="ecl-radio__text">Sex balance</span>
-                  </label>
-                </div>
-
-                <div class="ecl-radio">
-                  <input id="mobility" name="layer" class="ecl-radio__input" type="radio" value="mobility" />
-                  <label class="ecl-radio__label" for="mobility">
-                    <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
-                    <span class="ecl-radio__text">Mobility</span>
-                  </label>
-                </div>
-
-                <div class="ecl-radio">
-                  <input id="pob" name="layer" class="ecl-radio__input" type="radio" value="pob" />
-                  <label class="ecl-radio__label" for="pob">
-                    <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
-                    <span class="ecl-radio__text">Birth place</span>
-                  </label>
-                </div>
-              </div>
-            </fieldset>
-
-            <!--
-                        <br />
-                        <hr />
-                        <input type="radio" name="layer" id="emp_age" value="emp_age" />
-                        <label for="emp_age">Employment and age</label>
-                        <br />
-                        <input type="radio" name="layer" id="emp_sex" value="emp_sex" />
-                        <label for="emp_sex">Employment and sex</label>
-                        <br />
-                        <input type="radio" name="layer" id="chernoff" value="chernoff" />
-                        <label for="chernoff">Chernoff faces for sex, age, employment</label>
-                    -->
-
-            <hr />
+            <hr>
 
             <!-- basemaps -->
             <div>

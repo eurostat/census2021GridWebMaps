@@ -61,18 +61,9 @@ const map = new gridviz.Map(document.getElementById("map"), {
 //set selected layer from URL param
 const urlParams = new URLSearchParams(window.location.search);
 
-// read layer parameter // Total population : pop // Share: share // Ternary: ternary // Sex: sex // Age: age // Mobility: mobility // Birth place: pob
-const layParam = urlParams.get("lay");
-if (layParam) {
-    const a = document.getElementById(layParam)
-    if (a) a.checked = true; else console.warn("lay param invalid:", layParam)
-}
-
-// read dropdown list values
-for (let dd of ["share_select", "ternary_select", "demography_select"]) {
-    const sel = urlParams.get(dd);
-    if (sel) document.getElementById(dd).value = sel; //else console.warn(dd, "param invalid:", sel)
-}
+// read map code from URL
+const sel = urlParams.get("map");
+if (sel) document.getElementById("map").value = sel
 
 // background theme bt
 const btParam = urlParams.get("bt");
@@ -80,7 +71,6 @@ if (btParam) {
     const a = document.getElementById(btParam)
     if (a) a.checked = true; else console.warn("bt param invalid:", btParam)
 }
-
 
 // toggle options panel collapse from URL param
 if (urlParams.get("collapsed")) document.getElementById("expand-toggle-button").click();
@@ -94,7 +84,6 @@ for (let cb of ["sbtp", "label", "boundary", "background"]) {
 // interpolate
 let interpolate = urlParams.get("interpolate")
 interpolate = interpolate != "" && interpolate != "false" && +interpolate != 0
-
 
 
 //define background layers
@@ -139,8 +128,6 @@ const updateBackgroundVisibility = () => {
     }
 }
 updateBackgroundVisibility()
-
-
 
 
 //define boundaries layer
@@ -196,6 +183,7 @@ const datasetTotal = new gridviz.MultiResolutionDataset(
     (resolution) => new gviz_par.TiledParquetGrid(map, tiledTotalGridsURL + resolution + "/"),
     { preprocess: (c) => c.T && +c.T > 0 }
 );
+
 
 //format function for percentages
 const formatPercentage = d3.format(".1f");
@@ -276,14 +264,14 @@ if (interpolate) {
 
 
 const update = () => {
-    //read GUI selection
-    const layCode = document.querySelector('input[name="layer"]:checked').value;
+
+    // get selected map code
+    const mapCode = document.getElementById("map_select").value;
+    const sbtp = document.getElementById("sbtp").checked;
 
     //enable/disable show/hide GUI components
-    document.getElementById("share_select_div").style.display = layCode == "share" ? 'inline-block' : 'none'
-    document.getElementById("ternary_select_div").style.display = layCode == "ternary" ? 'inline-block' : 'none'
-    document.getElementById("demography_select_div").style.display = layCode == "demography" ? 'inline-block' : 'none'
-    document.getElementById("sbtp_div").style.display = layCode == "share" || layCode == "ternary" || layCode == "demography" ? 'inline-block' : 'none'
+    //TODO
+    //document.getElementById("sbtp_div").style.display = layCode == "share" || layCode == "ternary" || layCode == "demography" ? 'inline-block' : 'none'
 
     //show/hide copyright html components
     const egCopyright = document.getElementById('eurogeographics-copyright');
@@ -292,10 +280,10 @@ const update = () => {
     if (tomtomCopyright) tomtomCopyright.style.display = document.getElementById("road").checked ? 'inline-block' : 'none';
 
     // set gridlayer dataset
-    gridLayer.dataset = layCode === "pop" ? datasetTotal : dataset
+    gridLayer.dataset = mapCode === "pop" ? datasetTotal : dataset
 
     //set gridlayer style
-    if (layCode === "pop") {
+    if (mapCode === "pop") {
         //total population
 
         // update legend width
@@ -310,22 +298,21 @@ const update = () => {
         gridLayer.minPixelsPerCell = interpolate ? 1.7 : 0.7;
         gridLayer.cellInfoHTML = (c) => "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 1 ? "" : "s");
 
-    } else if (layCode === "share") {
+    } else if (["Y_LT15", "Y_1564", "Y_GE65", "F", "M", "EMP", "SAME", "CHG_IN", "CHG_OUT", "NAT", "EU_OTH", "OTH"].includes(mapCode)) {
 
         //get gui info
-        const share = document.getElementById("share_select").value, share_ = "s" + share;
-        const sbtp = document.getElementById("sbtp").checked;
+        const shareCode = "s" + mapCode;
 
         // get theme
-        const theme = ["F", "M"].includes(share) ? "sex"
-            : ["Y_LT15", "Y_1564", "Y_GE65"].includes(share) ? "age"
-                : ["EMP"].includes(share) ? "emp"
-                    : ["SAME", "CHG_IN", "CHG_OUT"].includes(share) ? "mob"
-                        : ["NAT", "EU_OTH", "OTH"].includes(share) ? "pob"
+        const theme = ["F", "M"].includes(mapCode) ? "sex"
+            : ["Y_LT15", "Y_1564", "Y_GE65"].includes(mapCode) ? "age"
+                : ["EMP"].includes(mapCode) ? "emp"
+                    : ["SAME", "CHG_IN", "CHG_OUT"].includes(mapCode) ? "mob"
+                        : ["NAT", "EU_OTH", "OTH"].includes(mapCode) ? "pob"
                             : undefined
 
         //define style breaks
-        let breaks = breaksDict[share];
+        let breaks = breaksDict[mapCode];
         const classNumberColor = breaks.length + 1;
         const palette = theme == "sex" ? d3.schemeSpectral : d3.schemeYlOrRd;
         const colors = palette[classNumberColor];
@@ -337,7 +324,7 @@ const update = () => {
                 new gridviz.ShapeColorSizeStyle({
                     color: (c) => {
                         if (!c["p_" + theme]) compute[theme](c)
-                        return c[share_] == undefined ? naColor : colorClassifier(c[share_]);
+                        return c[shareCode] == undefined ? naColor : colorClassifier(c[shareCode]);
                     },
                     viewScale: gridviz.viewScaleQuantile({
                         valueFunction: (c) => +c.T,
@@ -357,7 +344,7 @@ const update = () => {
                 new gridviz.SquareColorCategoryWebGLStyle({
                     code: (c) => {
                         if (!c["p_" + theme]) compute[theme](c)
-                        return c[share_] == undefined ? "na" : classifier(c[share_])
+                        return c[shareCode] == undefined ? "na" : classifier(c[shareCode])
                     },
                     color: colDict,
                 }),
@@ -371,7 +358,7 @@ const update = () => {
         //share color legend
         style.addLegends([
             new gridviz.ColorDiscreteLegend({
-                title: legendTitles[share],
+                title: legendTitles[mapCode],
                 width: 250,
                 colors: () => colors,
                 breaks: () => breaks,
@@ -395,17 +382,15 @@ const update = () => {
         //tooltip text
         gridLayer.cellInfoHTML = (c) => {
             const pop_ = "<br>" + formatLarge(c.T) + " person" + (c.T == 1 ? "" : "s");
-            if (c[share] == undefined || c[share_] == undefined)
+            if (c[mapCode] == undefined || c[shareCode] == undefined)
                 return "Data not available" + (c.CONFIDENTIALSTATUS ? " (confidential)" : "") + pop_;
-            return "<b>" + formatPercentage(c[share_]) + " %</b><br>" + formatLarge(c[share]) + pop_;
+            return "<b>" + formatPercentage(c[shareCode]) + " %</b><br>" + formatLarge(c[mapCode]) + pop_;
         };
 
-    } else if (layCode === "ternary") {
+    } else if (["ter_age", "ter_mob", "ter_pob"].includes(mapCode)) {
 
         //get gui info
-        const theme = document.querySelector("#ternary_select").value;
-        //age, mobility, pob
-        const sbtp = document.getElementById("sbtp").checked;
+        const theme = mapCode.replace("ter_", "");
 
         const classNumberSize = 4;
 
@@ -423,7 +408,7 @@ const update = () => {
                     defaultColor: naColor,
                 }
             );
-        else if (theme == "mobility")
+        else if (theme == "mob")
             colorTernaryFun = gridviz.ternaryColorClassifier(
                 ["sCHG_OUT", "sSAME", "sCHG_IN"],
                 () => 100,
@@ -456,7 +441,7 @@ const update = () => {
                 new gridviz.ShapeColorSizeStyle({
                     color: (c) => {
                         if (theme == "age" && !c.p_age) compute.age(c);
-                        else if (theme == "mobility" && !c.p_mob) compute.mob(c);
+                        else if (theme == "mob" && !c.p_mob) compute.mob(c);
                         else if (theme == "pob" && !c.p_pob) compute.pob(c);
                         return colorTernaryFun(c) || naColor;
                     },
@@ -481,7 +466,7 @@ const update = () => {
                     () => 100,
                     { center: [0.15, 0.64, 0.21], centerCoefficient: 0.25 }
                 );
-            else if (theme == "mobility")
+            else if (theme == "mob")
                 ternaryFun = gridviz.ternaryClassifier(
                     ["sCHG_OUT", "sSAME", "sCHG_IN"],
                     () => 100,
@@ -507,7 +492,7 @@ const update = () => {
                 new gridviz.SquareColorCategoryWebGLStyle({
                     code: (c) => {
                         if (theme == "age" && !c.p_age) compute.age(c);
-                        else if (theme == "mobility" && !c.p_mob) compute.mob(c);
+                        else if (theme == "mob" && !c.p_mob) compute.mob(c);
                         else if (theme == "pob" && !c.p_pob) compute.pob(c);
                         return ternaryFun(c)
                     },
@@ -544,7 +529,7 @@ const update = () => {
                     centerCoefficient: 0.5,
                 }),
             ];
-        else if (theme == "mobility")
+        else if (theme == "mob")
             style.legends = [
                 new gridviz.TernaryLegend({
                     title: "Mobility (2020-2021)",
@@ -620,7 +605,7 @@ const update = () => {
                     "% 65 years and older"
                 );
             };
-        else if (theme == "mobility")
+        else if (theme == "mob")
             gridLayer.cellInfoHTML = (c) => {
                 let total = c.CHG_IN + c.SAME + c.CHG_OUT;
                 if (isNaN(total)) total = c.T;
@@ -655,11 +640,10 @@ const update = () => {
                 );
             };
 
-    } else if (layCode === "demography") {
+    } else if (mapCode === "demography") {
 
         //get gui info
         const theme = document.querySelector("#demography_select").value;
-        const sbtp = document.getElementById("sbtp").checked;
 
         //define style
         const breaks = breaksDict[theme]
@@ -758,7 +742,7 @@ const update = () => {
 
 
 
-    } else if (layCode === "sex") {
+    } else if (mapCode === "sex_balance") {
         //sex - color classifier
         const breaks = [-20, -7, -2, -0.5, 0.5, 2, 7, 20];
         const sexColorClassifier = gridviz.colorClassifier(breaks, d3.schemeSpectral[breaks.length + 1]);
@@ -829,7 +813,7 @@ const update = () => {
             );
         };
 
-    } else if (layCode === "age") {
+    } else if (mapCode === "age_pyramid") {
         const colAge = d3.interpolateSpectral;
         const classNumberSize = 4;
         gridLayer.styles = [
@@ -890,7 +874,7 @@ const update = () => {
                 " - 15 to 64 years<br>" +
                 formatLarge(c.Y_GE65) +
                 " - 65 years and older";
-    } else if (layCode === "mobility") {
+    } else if (mapCode === "mobility_pc") {
         const classNumberSize = 5;
         gridLayer.styles = [
             new gridviz.CompositionStyle({
@@ -947,7 +931,8 @@ const update = () => {
                 " moved within the country<br>" +
                 formatLarge(c.CHG_OUT) +
                 " moved from outside the country";
-    } else if (layCode === "pob") {
+
+    } else if (mapCode === "pob_pc") {
         const classNumberSize = 5;
         gridLayer.styles = [
             new gridviz.CompositionStyle({
@@ -1005,7 +990,7 @@ const update = () => {
                 " born outside the EU";
 
 
-    } else if (layCode === "chernoff") {
+    } else if (mapCode === "chernoff") {
         if (!chernoffImages) return;
 
         //age color - 3/4 classes
@@ -1066,7 +1051,7 @@ const update = () => {
                 "</b> employment"
             );
         };
-    } else console.error("Unexpected layer code: " + layCode);
+    } else console.error("Unexpected layer code: " + mapCode);
 
     //redraw
     map.redraw();
@@ -1082,8 +1067,9 @@ document.getElementById("home-button").addEventListener("click", (event) => {
     updateURL();
 });
 
-//layer update
-document.getElementById("layer-control").addEventListener("change", update);
+//map update
+document.getElementById("map_select").addEventListener("change", update);
+document.getElementById("sbtp").addEventListener("change", update);
 
 // show/hide labels
 document.getElementById("label").addEventListener("change", function () {
@@ -1098,8 +1084,6 @@ document.getElementById("boundary").addEventListener("change", function () {
     map.redraw();
     updateURL();
 });
-
-
 
 // show/hide background layer
 document.getElementById("background").addEventListener("change", function () {
@@ -1123,7 +1107,6 @@ document.getElementById("elevation").addEventListener("change", function () {
 });
 
 
-
 // update URL with map parameters
 //TODO should be trigerred also on map move end event
 const updateURL = () => {
@@ -1134,12 +1117,8 @@ const updateURL = () => {
     const v = map.getView();
     p.set("x", v.x.toFixed(0)); p.set("y", v.y.toFixed(0)); p.set("z", v.z.toFixed(0));
 
-    // handle layer selection
-    p.set("lay", document.querySelector('input[name="layer"]:checked').value);
-
     // handle dropdowns selection
-    for (let dd of ["share_select", "ternary_select", "demography_select"])
-        p.set(dd, document.getElementById(dd).value);
+    p.set("map", document.getElementById("map").value);
 
     // handle checkboxes
     for (let cb of ["sbtp", "label", "boundary", "background"])
@@ -1162,7 +1141,5 @@ const updateURL = () => {
     window.history.replaceState({}, '', newURL);
 };
 
-
 //initialise
 update();
-
