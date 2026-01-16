@@ -1,6 +1,5 @@
 
 //fix tooltip bug
-//add elevation background layer
 //new indicators: median age, tooltip, legend
 //reorganise code based on demography
 //add title to legends
@@ -139,29 +138,45 @@ const backgroundLayerRoad = new gridviz.BackgroundLayer({
     url: bgLayerURLRoad,
     resolutions: Array.from({ length: 15 }, (_, i) => 114688 / Math.pow(2, i)),
     origin: [0, 6000000],
-    nbPix: 512, //512 256
-    visible: document.getElementById("background").checked ? (z) => z > 11 : () => false,
+    nbPix: 512,
     pixelationCoefficient: 0.55,
     filterColor: (z) => z > 200 ? "#fff8" : "#fff4",
 })
+
+const backgroundLayerRoad2 = new gridviz.BackgroundLayer(
+    gridviz_eurostat.giscoBackgroundLayer('OSMPositronCompositeEN', 19, 'EPSG3035', {
+        pixelationCoefficient: 0.55,
+    })
+);
+
 
 const backgroundLayerElevation = new gridviz.BackgroundLayer({
     url: bgLayerURLElevation,
     resolutions: Array.from({ length: 13 }, (_, i) => 114688 / Math.pow(2, i)),
     origin: [0, 6000000],
-    nbPix: 256, //512 256
-    //visible: document.getElementById("background").checked ? (z) => z > 11 : () => false,
+    nbPix: 256,
     pixelationCoefficient: 1.5,
     filterColor: () => "#fff3",
 })
 
+// function to define or refresh background layers visibility based on GUI
+const updateBackgroundVisibility = () => {
+    if (document.getElementById("background").checked) {
+        document.getElementById("road").disabled = false
+        document.getElementById("elevation").disabled = false
+        backgroundLayerRoad.visible = document.getElementById("road").checked ? (z) => z > 11 : () => false
+        backgroundLayerRoad2.visible = document.getElementById("road").checked ? (z) => z <= 11 : () => false
+        backgroundLayerElevation.visible = document.getElementById("elevation").checked ? () => true : () => false
+    } else {
+        document.getElementById("road").disabled = true
+        document.getElementById("elevation").disabled = true
+        backgroundLayerRoad.visible = () => false;
+        backgroundLayerRoad2.visible = () => false;
+        backgroundLayerElevation.visible = () => false;
+    }
+}
+updateBackgroundVisibility()
 
-const backgroundLayer2 = new gridviz.BackgroundLayer(
-    gridviz_eurostat.giscoBackgroundLayer('OSMPositronCompositeEN', 19, 'EPSG3035', {
-        visible: document.getElementById("background").checked ? (z) => z <= 11 : () => false,
-        pixelationCoefficient: 0.55,
-    })
-);
 
 
 
@@ -201,7 +216,7 @@ gridLayer.blendOperation = () => "multiply"
 
 
 //set map layers
-map.layers = [backgroundLayerElevation, backgroundLayerRoad, backgroundLayer2, gridLayer, boundariesLayer, labelLayer];
+map.layers = [backgroundLayerElevation, backgroundLayerRoad, backgroundLayerRoad2, gridLayer, boundariesLayer, labelLayer];
 
 
 //function to compute the percentage of a cell value
@@ -1235,14 +1250,28 @@ document.getElementById("boundary").addEventListener("change", function () {
     updateURL();
 });
 
+
+
 // show/hide background layer
 document.getElementById("background").addEventListener("change", function () {
-    backgroundLayerRoad.visible = this.checked ? (z) => z > 11 : () => false;
-    backgroundLayer2.visible = this.checked ? (z) => z <= 11 : () => false;
+    updateBackgroundVisibility()
     map.redraw();
     updateURL();
 });
 
+// show/hide road background layer
+document.getElementById("road").addEventListener("change", function () {
+    updateBackgroundVisibility()
+    map.redraw();
+    updateURL();
+});
+
+// show/hide elevation background layer
+document.getElementById("elevation").addEventListener("change", function () {
+    updateBackgroundVisibility()
+    map.redraw();
+    updateURL();
+});
 
 
 
