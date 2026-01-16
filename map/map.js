@@ -1,5 +1,6 @@
 
 //fix tooltip bug
+//add elevation background layer
 //new indicators: median age, tooltip, legend
 //reorganise code based on demography
 //add title to legends
@@ -7,7 +8,6 @@
 
 //generalise interpolation
 //add chernoff faces - as GUI element, hidden
-//add elevation background layer
 //sea level rise ?
 
 /*
@@ -46,7 +46,7 @@ const tiledTotalGridsURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website
 const nuts2jsonURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/nuts2json/v2/";
 const euronymURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/euronym/v3/UTF_LATIN/";
 //const euronymURL = "https://raw.githubusercontent.com/eurostat/euronym/main/pub/v3/UTF_LATIN/"
-const bgLayerURLElevation = "https://ec.europa.eu/eurostat/cache/GISCO/mbkg/elevation_shading/";
+const bgLayerURLElevation = 'https://ec.europa.eu/eurostat/cache/GISCO/mbkg/elevation/'
 const bgLayerURLRoad = 'https://ec.europa.eu/eurostat/cache/GISCO/mbkg/road/'
 
 /*/urls for development
@@ -137,6 +137,17 @@ const backgroundLayerRoad = new gridviz.BackgroundLayer({
     filterColor: (z) => z > 200 ? "#fff8" : "#fff4",
 })
 
+const backgroundLayerElevation = new gridviz.BackgroundLayer({
+    url: bgLayerURLElevation,
+    resolutions: Array.from({ length: 13 }, (_, i) => 114688 / Math.pow(2, i)),
+    origin: [0, 6000000],
+    nbPix: 256, //512 256
+    //visible: document.getElementById("background").checked ? (z) => z > 11 : () => false,
+    pixelationCoefficient: 1.5,
+    filterColor: () => "#fff3",
+})
+
+
 const backgroundLayer2 = new gridviz.BackgroundLayer(
     gridviz_eurostat.giscoBackgroundLayer('OSMPositronCompositeEN', 19, 'EPSG3035', {
         visible: document.getElementById("background").checked ? (z) => z <= 11 : () => false,
@@ -182,7 +193,7 @@ gridLayer.blendOperation = () => "multiply"
 
 
 //set map layers
-map.layers = [backgroundLayerRoad, backgroundLayer2, gridLayer, boundariesLayer, labelLayer];
+map.layers = [backgroundLayerElevation, backgroundLayerRoad, backgroundLayer2, gridLayer, boundariesLayer, labelLayer];
 
 
 //function to compute the percentage of a cell value
