@@ -269,9 +269,8 @@ const update = () => {
     const mapCode = document.getElementById("map_select").value;
     const sbtp = document.getElementById("sbtp").checked;
 
-    //enable/disable show/hide GUI components
-    //TODO
-    //document.getElementById("sbtp_div").style.display = layCode == "share" || layCode == "ternary" || layCode == "demography" ? 'inline-block' : 'none'
+    //show/hide GUI components
+    document.getElementById("sbtp_div").style.display = ["pop", "age_pyramid", "sex_balance", "mobility_pc", "pob_pc"].includes(mapCode) ? 'none' : 'inline-block'
 
     //show/hide copyright html components
     const egCopyright = document.getElementById('eurogeographics-copyright');
@@ -640,7 +639,7 @@ const update = () => {
                 );
             };
 
-    } else if (["ageing","dep_ratio","oa_dep_ratio","y_dep_ratio","median_age"].includes(mapCode)) {
+    } else if (["ageing", "dep_ratio", "oa_dep_ratio", "y_dep_ratio", "median_age"].includes(mapCode)) {
 
         //get gui info
         const theme = mapCode
@@ -1117,7 +1116,7 @@ const updateURL = () => {
     p.set("x", v.x.toFixed(0)); p.set("y", v.y.toFixed(0)); p.set("z", v.z.toFixed(0));
 
     // handle dropdowns selection
-    p.set("map", document.getElementById("map").value);
+    p.set("map", document.getElementById("map_select").value);
 
     // handle checkboxes
     for (let cb of ["sbtp", "label", "boundary", "background"])
