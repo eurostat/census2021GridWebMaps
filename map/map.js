@@ -283,6 +283,28 @@ const preprocessMob = (c) => {
     c.p_mob = true;
 };
 
+
+//indicator computation functions
+const compute = {
+    ageing: (c) => { c.ageing = (c.Y_LT15 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_LT15 },
+    dep_ratio: (c) => { c.dep_ratio = (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * (c.Y_GE65 + c.Y_LT15) / c.Y_1564 },
+    oa_dep_ratio: (c) => { c.oa_dep_ratio = (c.Y_1564 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_1564 },
+    y_dep_ratio: (c) => { c.y_dep_ratio = (c.Y_LT15 == undefined || c.Y_1564 == undefined) ? -1 : 100 * c.Y_LT15 / c.Y_1564 },
+    median_age: (c) => {
+        //median age estimation - grouped median estimation - see Shryock & Siegel – Methods and Materials of Demography
+        const y = c.Y_LT15 || 0, m = c.Y_1564 || 0, o = c.Y_GE65 || 0
+        //half population
+        const half = (y + m + o) / 2
+        //yes, this case does happen !
+        if (m == 0 && y == o) c.median_age = 40
+        else if (half <= y) c.median_age = Math.round(14 * half / y)
+        else if (half <= y + m) c.median_age = Math.round(14 + 49 * (half - y) / m)
+        else c.median_age = Math.round(64 + 30 * (half - y - m) / o)
+    },
+}
+
+
+
 //define multi resolution dataset
 const dataset = new gridviz.MultiResolutionDataset(
     [1000, 2000, 5000, 10000, 20000, 50000, 100000],
@@ -327,7 +349,7 @@ const confidentialStyle =
 
 
 // default stroke style
-const strokeStyle = new gridviz.StrokeStyle({ strokeColor: () => "white", visible: (z) => z < 50 });
+const strokeStyle = new gridviz.StrokeStyle({ strokeColor: () => "#fff8", visible: (z) => z < 70, blendOperation: () => "source-over" });
 
 
 // class breaks
@@ -349,6 +371,16 @@ const breaksDict = {
     oa_dep_ratio: [15, 20, 25, 30, 40, 50, 75],
     y_dep_ratio: [15, 20, 25, 30, 40, 50, 75],
     median_age: [35, 40, 43, 46, 50, 55, 60, 65],
+}
+
+
+const legendTitles = {
+    //TODO add others ?
+    ageing: "Ageing Index, in seniors (65+) per 100 youth (0-14)",
+    dep_ratio: "Dependency ratio, in seniors (65+) and youth (0-14) per 100 active (15-64)",
+    oa_dep_ratio: "Old-age dependency ratio, in seniors (65+) per 100 active (15-64)",
+    y_dep_ratio: "Youth dependency ratio, in youth (0-14) per 100 active (15-64)",
+    median_age: "Median age estimate",
 }
 
 
@@ -809,41 +841,14 @@ const update = () => {
         const sbtp = document.getElementById("sbtp").checked;
 
         //define style
-        const classNumberColor = breaksDict[theme].length + 1;
+        const breaks = breaksDict[theme]
+        const classNumberColor = breaks.length + 1;
         const palette = d3.schemeSpectral //: d3.schemeYlOrRd;
         const colors = palette[classNumberColor].slice().reverse()
         const classNumberSize = 4;
 
-        //indicator computation functions
-        //TODO generalise
-        const compute = {
-            ageing: (c) => { c.ageing = (c.Y_LT15 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_LT15 },
-            dep_ratio: (c) => { c.dep_ratio = (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * (c.Y_GE65 + c.Y_LT15) / c.Y_1564 },
-            oa_dep_ratio: (c) => { c.oa_dep_ratio = (c.Y_1564 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_1564 },
-            y_dep_ratio: (c) => { c.y_dep_ratio = (c.Y_LT15 == undefined || c.Y_1564 == undefined) ? -1 : 100 * c.Y_LT15 / c.Y_1564 },
-            median_age: (c) => {
-                //median age estimation - grouped median estimation - see Shryock & Siegel – Methods and Materials of Demography
-                const y = c.Y_LT15 || 0, m = c.Y_1564 || 0, o = c.Y_GE65 || 0
-                //half population
-                const half = (y + m + o) / 2
-                //yes, this case does happen !
-                if (m == 0 && y == o) c.median_age = 40
-                else if (half <= y) c.median_age = Math.round(14 * half / y)
-                else if (half <= y + m) c.median_age = Math.round(14 + 49 * (half - y) / m)
-                else c.median_age = Math.round(64 + 30 * (half - y - m) / o)
-            },
-        }
-
-        const legendTitle = {
-            ageing: "Ageing Index, in seniors (65+) per 100 youth (0-14)",
-            dep_ratio: "Dependency ratio, in seniors (65+) and youth (0-14) per 100 active (15-64)",
-            oa_dep_ratio: "Old-age dependency ratio, in seniors (65+) per 100 active (15-64)",
-            y_dep_ratio: "Youth dependency ratio, in youth (0-14) per 100 active (15-64)",
-            median_age: "Median age estimate",
-        }
-
         if (sbtp) {
-            const colorClassifier = gridviz.colorClassifier(breaksDict[theme], colors);
+            const colorClassifier = gridviz.colorClassifier(breaks, colors);
 
             gridLayer.styles = [
                 new gridviz.ShapeColorSizeStyle({
@@ -863,7 +868,7 @@ const update = () => {
             ];
             gridLayer.minPixelsPerCell = 3;
         } else {
-            const classifier = gridviz.classifier(breaksDict[theme])
+            const classifier = gridviz.classifier(breaks)
             const colDict = { ...colors }; colDict["na"] = naColor
 
             gridLayer.styles = [
@@ -884,10 +889,10 @@ const update = () => {
         //demography color legend
         style.addLegends([
             new gridviz.ColorDiscreteLegend({
-                title: legendTitle[theme],
+                title: legendTitles[theme],
                 width: 250,
                 colors: () => colors,
-                breaks: () => breaksDict[theme],
+                breaks: () => breaks,
             }),
         ]);
 
