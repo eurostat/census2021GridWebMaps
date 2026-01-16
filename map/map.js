@@ -413,7 +413,7 @@ const update = () => {
         }
 
         // get color ternary classifier
-        let colorTernaryFun = gridviz.ternaryColorClassifier(
+        const colorTernaryFun = gridviz.ternaryColorClassifier(
             ternaryData[mapCode].codes,
             () => 100,
             ["#4daf4a", "#377eb8", "#e41a1c"],
@@ -422,8 +422,7 @@ const update = () => {
                 centerColor: "#999",
                 centerCoefficient: 0.25,
                 defaultColor: naColor,
-            }
-        )
+            })
 
         if (sbtp) {
 
@@ -448,25 +447,11 @@ const update = () => {
         } else {
 
             // get ternary classifier
-            let ternaryFun;
-            if (mapCode == "ter_age")
-                ternaryFun = gridviz.ternaryClassifier(
-                    ["sY_LT15", "sY_1564", "sY_GE65"],
-                    () => 100,
-                    { center: [0.15, 0.64, 0.21], centerCoefficient: 0.25 }
-                );
-            else if (mapCode == "ter_mob")
-                ternaryFun = gridviz.ternaryClassifier(
-                    ["sCHG_OUT", "sSAME", "sCHG_IN"],
-                    () => 100,
-                    { center: [0.05, 0.85, 0.1], centerCoefficient: 0.25 }
-                );
-            else if (mapCode == "ter_pob")
-                ternaryFun = gridviz.ternaryClassifier(
-                    ["sOTH", "sNAT", "sEU_OTH"],
-                    () => 100,
-                    { center: [0.25, 0.6, 0.15], centerCoefficient: 0.25 }
-                );
+            const ternaryFun = gridviz.ternaryClassifier(
+                ternaryData[mapCode].codes,
+                () => 100,
+                { center: ternaryData[mapCode].center, centerCoefficient: 0.25 }
+            );
 
             // colors
             const colDict = {
