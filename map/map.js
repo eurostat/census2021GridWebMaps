@@ -1,5 +1,5 @@
 //fix tooltip bug
-//new indicators: tooltip, legend
+//new indicators: tooltip
 //reorganise code based on demography
 //add title to legends
 //true age pyramid
@@ -330,6 +330,29 @@ const confidentialStyle =
 const strokeStyle = new gridviz.StrokeStyle({ strokeColor: () => "white", visible: (z) => z < 50 });
 
 
+// class breaks
+const breaksDict = {
+    F: [40, 45, 49, 50, 51, 55, 60],
+    M: [40, 45, 49, 50, 51, 55, 60],
+    Y_LT15: [5, 10, 15, 20, 30],
+    Y_1564: [50, 60, 65, 70, 80],
+    Y_GE65: [10, 20, 30, 40, 50],
+    EMP: [30, 40, 45, 50, 55, 60, 70],
+    SAME: [70, 80, 90, 95, 99],
+    CHG_IN: [0.5, 1, 5, 10, 20],
+    CHG_OUT: [0.5, 1, 2, 5, 10],
+    NAT: [60, 70, 80, 85, 90, 95, 99],
+    EU_OTH: [1, 5, 10, 15, 20, 30],
+    OTH: [1, 5, 10, 20, 30, 50],
+    ageing: [25, 50, 75, 100, 150, 200, 400],
+    dep_ratio: [30, 40, 50, 60, 80, 100, 150],
+    oa_dep_ratio: [15, 20, 25, 30, 40, 50, 75],
+    y_dep_ratio: [15, 20, 25, 30, 40, 50, 75],
+    median_age: [35, 40, 43, 46, 50, 55, 60, 65],
+}
+
+
+
 
 // total population style
 
@@ -435,23 +458,7 @@ const update = () => {
         //define style
 
         //define style breaks
-        let breaks = undefined;
-        switch (shareA) {
-            case "F": breaks = [40, 45, 49, 50, 51, 55, 60]; break;
-            case "M": breaks = [40, 45, 49, 50, 51, 55, 60]; break;
-            case "Y_LT15": breaks = [5, 10, 15, 20, 30]; break;
-            case "Y_1564": breaks = [50, 60, 65, 70, 80]; break;
-            case "Y_GE65": breaks = [10, 20, 30, 40, 50]; break;
-            case "EMP": breaks = [30, 40, 45, 50, 55, 60, 70]; break;
-            case "SAME": breaks = [70, 80, 90, 95, 99]; break;
-            case "CHG_IN": breaks = [0.5, 1, 5, 10, 20]; break;
-            case "CHG_OUT": breaks = [0.5, 1, 2, 5, 10]; break;
-            case "NAT": breaks = [60, 70, 80, 85, 90, 95, 99]; break;
-            case "EU_OTH": breaks = [1, 5, 10, 15, 20, 30]; break;
-            case "OTH": breaks = [1, 5, 10, 20, 30, 50]; break;
-            default: breaks = [30, 40, 45, 50, 55, 60, 70];
-        }
-
+        let breaks = breaksDict[shareA];
         const classNumberColor = breaks.length + 1; //6
         const palette = shareA == "M" || shareA == "F" ? d3.schemeSpectral : d3.schemeYlOrRd;
         const colors = palette[classNumberColor];
@@ -803,18 +810,7 @@ const update = () => {
         const sbtp = document.getElementById("sbtp").checked;
 
         //define style
-
-        //define style breaks
-        //TODO generalise
-        const breaks = {
-            ageing: [25, 50, 75, 100, 150, 200, 400], // seniors per 100 youth
-            dep_ratio: [30, 40, 50, 60, 80, 100, 150], //seniors and youth per 100 active
-            oa_dep_ratio: [15, 20, 25, 30, 40, 50, 75],
-            y_dep_ratio: [15, 20, 25, 30, 40, 50, 75],
-            median_age: [35, 40, 43, 46, 50, 55, 60, 65],
-        }
-
-        const classNumberColor = breaks[theme].length + 1; //6
+        const classNumberColor = breaksDict[theme].length + 1;
         const palette = d3.schemeSpectral //: d3.schemeYlOrRd;
         const colors = palette[classNumberColor].slice().reverse()
         const classNumberSize = 4;
@@ -848,7 +844,7 @@ const update = () => {
         }
 
         if (sbtp) {
-            const colorClassifier = gridviz.colorClassifier(breaks[theme], colors);
+            const colorClassifier = gridviz.colorClassifier(breaksDict[theme], colors);
 
             gridLayer.styles = [
                 new gridviz.ShapeColorSizeStyle({
@@ -868,7 +864,7 @@ const update = () => {
             ];
             gridLayer.minPixelsPerCell = 3;
         } else {
-            const classifier = gridviz.classifier(breaks[theme])
+            const classifier = gridviz.classifier(breaksDict[theme])
             const colDict = { ...colors }; colDict["na"] = naColor
 
             gridLayer.styles = [
@@ -892,7 +888,7 @@ const update = () => {
                 title: legendTitle[theme],
                 width: 250,
                 colors: () => colors,
-                breaks: () => breaks[theme],
+                breaks: () => breaksDict[theme],
             }),
         ]);
 
