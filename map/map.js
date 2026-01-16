@@ -3,6 +3,7 @@
 //reorganise code based on demography
 //true age pyramid
 //update x,y,z on view change
+// revamp breaks ?
 
 //generalise interpolation
 //add chernoff faces - as GUI element, hidden
@@ -280,19 +281,11 @@ const update = () => {
     //read GUI selection
     const layCode = document.querySelector('input[name="layer"]:checked').value;
 
-    //enable/disable GUI components
-    if (layCode != "share") {
-        document.getElementById("share_select").disabled = true;
-        document.getElementById("sbtp").disabled = true;
-    }
-    if (layCode != "ternary") {
-        document.getElementById("ternary_select").disabled = true;
-        document.getElementById("sbtp").disabled = true;
-    }
-    if (layCode != "demography") {
-        document.getElementById("demography_select").disabled = true;
-        document.getElementById("sbtp").disabled = true;
-    }
+    //enable/disable show/hide GUI components
+    document.getElementById("share_select_div").style.display = layCode == "share" ? 'inline-block' : 'none'
+    document.getElementById("ternary_select_div").style.display = layCode == "ternary" ? 'inline-block' : 'none'
+    document.getElementById("demography_select_div").style.display = layCode == "demography" ? 'inline-block' : 'none'
+    document.getElementById("sbtp_div").style.display = layCode == "share" || layCode == "ternary" || layCode == "demography" ? 'inline-block' : 'none'
 
     //show/hide copyright html components
     const egCopyright = document.getElementById('eurogeographics-copyright');
@@ -322,7 +315,6 @@ const update = () => {
     } else if (layCode === "share") {
         //unfreeze GUI
         document.getElementById("share_select").disabled = false;
-        document.getElementById("sbtp").disabled = false;
 
         //get gui info
         const share = document.getElementById("share_select").value, share_ = "s" + share;
@@ -416,7 +408,6 @@ const update = () => {
 
         //unfreeze GUI
         document.getElementById("ternary_select").disabled = false;
-        document.getElementById("sbtp").disabled = false;
 
         //get gui info
         const theme = document.querySelector("#ternary_select").value;
@@ -675,7 +666,6 @@ const update = () => {
 
         //unfreeze GUI
         document.getElementById("demography_select").disabled = false;
-        document.getElementById("sbtp").disabled = false;
 
         //get gui info
         const theme = document.querySelector("#demography_select").value;

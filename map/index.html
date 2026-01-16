@@ -131,11 +131,11 @@
                   <input id="share" name="layer" class="ecl-radio__input" type="radio" value="share" />
                   <label class="ecl-radio__label" for="share">
                     <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
-                    <span class="ecl-radio__text">Share of</span>
+                    <span class="ecl-radio__text">Share</span>
                   </label>
                 </div>
 
-                <div class="subcontrols">
+                <div class="subcontrols" id="share_select_div" style="display: none;">
                   <!-- share of select-->
                   <div class="ecl-form-group">
                     <!-- <label for="share_" id="share_-label" class="ecl-form-label">Select a share</label>
@@ -143,11 +143,11 @@
                     <div class="ecl-select__container ecl-select__container--m">
                       <select class="ecl-select" id="share_select" name="country" aria-label="country" required
                         aria-describedby="share_-helper" data-ecl-auto-init="Select">
-                        <option value="F">Women</option>
-                        <option value="M">Men</option>
                         <option value="Y_LT15">Age under 15 years</option>
                         <option value="Y_1564">Age 15 to 64 years</option>
                         <option value="Y_GE65" selected>Age 65 years and older</option>
+                        <option value="F">Women</option>
+                        <option value="M">Men</option>
                         <option value="EMP">Employed</option>
                         <option value="SAME">Residence unchanged</option>
                         <option value="CHG_IN">Residence change within the country</option>
@@ -179,11 +179,11 @@
                   <input id="ternary" name="layer" class="ecl-radio__input" type="radio" value="ternary" />
                   <label class="ecl-radio__label" for="ternary">
                     <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
-                    <span class="ecl-radio__text">Ternary color by</span>
+                    <span class="ecl-radio__text">Ternary color</span>
                   </label>
                 </div>
 
-                <div class="subcontrols">
+                <div class="subcontrols" id="ternary_select_div" style="display: none;">
                   <!-- ternary select-->
                   <div class="ecl-form-group">
                     <div class="ecl-select__container ecl-select__container--m">
@@ -216,11 +216,11 @@
                   <input id="demography" name="layer" class="ecl-radio__input" type="radio" value="demography" />
                   <label class="ecl-radio__label" for="demography">
                     <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
-                    <span class="ecl-radio__text">Demography by</span>
+                    <span class="ecl-radio__text">Demography</span>
                   </label>
                 </div>
 
-                <div class="subcontrols">
+                <div class="subcontrols" id="demography_select_div" style="display: none;">
                   <!-- demography select-->
                   <div class="ecl-form-group">
                     <div class="ecl-select__container ecl-select__container--m">
@@ -251,8 +251,8 @@
 
 
               <!-- proportional dot checkbox-->
-              <div class="ecl-checkbox ecl-checkbox--single">
-                <input name="checkbox-default" class="ecl-checkbox__input" type="checkbox" id="sbtp" value="ternary" />
+              <div class="ecl-checkbox ecl-checkbox--single" id="sbtp_div" style="display: none;">
+                <input name="checkbox-default" class="ecl-checkbox__input" type="checkbox" id="sbtp" value="sbtp" />
                 <label for="sbtp" class="ecl-checkbox__label proportional-checkbox-label">
                   <span class="ecl-checkbox__box">
                     <svg class="ecl-icon ecl-icon--m ecl-checkbox__icon" focusable="false" aria-hidden="true">
@@ -265,20 +265,20 @@
 
               <hr />
 
+              <div class="ecl-radio">
+                <input id="age" name="layer" class="ecl-radio__input" type="radio" value="age" />
+                <label class="ecl-radio__label" for="age">
+                  <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
+                  <span class="ecl-radio__text">Age pyramid</span>
+                </label>
+              </div>
+
               <div>
                 <div class="ecl-radio">
                   <input id="sex" name="layer" class="ecl-radio__input" type="radio" value="sex" />
                   <label class="ecl-radio__label" for="sex">
                     <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
                     <span class="ecl-radio__text">Sex balance</span>
-                  </label>
-                </div>
-
-                <div class="ecl-radio">
-                  <input id="age" name="layer" class="ecl-radio__input" type="radio" value="age" />
-                  <label class="ecl-radio__label" for="age">
-                    <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
-                    <span class="ecl-radio__text">Age pyramid</span>
                   </label>
                 </div>
 
