@@ -148,10 +148,10 @@ const legendTitles = {
     NAT: "Share - born in the country",
     EU_OTH: "Share - born in another EU member state",
     OTH: "Share - born outside the EU",
-    ageing: "Ageing Index, in seniors (65+) per 100 youth (0-14)",
-    dep_ratio: "Dependency ratio, in seniors (65+) and youth (0-14) per 100 active (15-64)",
+    ageing: "Ageing Index, in seniors (65+) per 100 young (0-14)",
+    dep_ratio: "Dependency ratio, in seniors (65+) and young (0-14) per 100 active (15-64)",
     oa_dep_ratio: "Old-age dependency ratio, in seniors (65+) per 100 active (15-64)",
-    y_dep_ratio: "Youth dependency ratio, in youth (0-14) per 100 active (15-64)",
+    y_dep_ratio: "Youth dependency ratio, in young (0-14) per 100 active (15-64)",
     median_age: "Median age estimate",
 }
 
