@@ -371,13 +371,6 @@ const update = () => {
                 new gridviz.SquareColorCategoryWebGLStyle({
                     code: (c) => {
                         if (!c["p_" + theme]) compute[theme](c)
-                        //return c[share_] == undefined ? naColor : colorClassifier(c[share_]);
-                        /*
-                        if (!c.p_sex && ["F", "M"].includes(share)) compute.sex(c);
-                        else if (!c.p_age && ["Y_LT15", "Y_1564", "Y_GE65"].includes(share)) compute.age(c);
-                        else if (!c.p_emp && ["EMP"].includes(share)) compute.emp(c);
-                        else if (!c.p_mob && ["SAME", "CHG_IN", "CHG_OUT"].includes(share)) compute.mob(c);
-                        else if (!c.p_pob && ["NAT", "EU_OTH", "OTH"].includes(share)) compute.pob(c);*/
                         return c[share_] == undefined ? "na" : classifier(c[share_])
                     },
                     color: colDict,
