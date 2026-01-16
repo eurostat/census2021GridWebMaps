@@ -227,13 +227,8 @@ const confidentialStyle =
 
 //
 
-
-
 // default stroke style
 const strokeStyle = new gridviz.StrokeStyle({ strokeColor: () => "#fff8", visible: (z) => z < 70, blendOperation: () => "source-over" });
-
-
-
 
 // total population style
 
@@ -335,12 +330,18 @@ const update = () => {
         const share = document.getElementById("share_select").value, share_ = "s" + share;
         const sbtp = document.getElementById("sbtp").checked;
 
-        //define style
+        // get theme
+        const theme = ["F", "M"].includes(share) ? "sex"
+            : ["Y_LT15", "Y_1564", "Y_GE65"].includes(share) ? "age"
+                : ["EMP"].includes(share) ? "emp"
+                    : ["SAME", "CHG_IN", "CHG_OUT"].includes(share) ? "mob"
+                        : ["NAT", "EU_OTH", "OTH"].includes(share) ? "pob"
+                            : undefined
 
         //define style breaks
         let breaks = breaksDict[share];
-        const classNumberColor = breaks.length + 1; //6
-        const palette = share == "M" || share == "F" ? d3.schemeSpectral : d3.schemeYlOrRd;
+        const classNumberColor = breaks.length + 1;
+        const palette = theme == "sex" ? d3.schemeSpectral : d3.schemeYlOrRd;
         const colors = palette[classNumberColor];
         const classNumberSize = 4;
 
@@ -349,11 +350,7 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.ShapeColorSizeStyle({
                     color: (c) => {
-                        if (!c.p_sex && ["F", "M"].includes(share)) compute.sex(c);
-                        else if (!c.p_age && ["Y_LT15", "Y_1564", "Y_GE65"].includes(share)) compute.age(c);
-                        else if (!c.p_emp && ["EMP"].includes(share)) compute.emp(c);
-                        else if (!c.p_mob && ["SAME", "CHG_IN", "CHG_OUT"].includes(share)) compute.mob(c);
-                        else if (!c.p_pob && ["NAT", "EU_OTH", "OTH"].includes(share)) compute.pob(c);
+                        if (!c["p_" + theme]) compute[theme](c)
                         return c[share_] == undefined ? naColor : colorClassifier(c[share_]);
                     },
                     viewScale: gridviz.viewScaleQuantile({
@@ -373,11 +370,14 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.SquareColorCategoryWebGLStyle({
                     code: (c) => {
+                        if (!c["p_" + theme]) compute[theme](c)
+                        //return c[share_] == undefined ? naColor : colorClassifier(c[share_]);
+                        /*
                         if (!c.p_sex && ["F", "M"].includes(share)) compute.sex(c);
                         else if (!c.p_age && ["Y_LT15", "Y_1564", "Y_GE65"].includes(share)) compute.age(c);
                         else if (!c.p_emp && ["EMP"].includes(share)) compute.emp(c);
                         else if (!c.p_mob && ["SAME", "CHG_IN", "CHG_OUT"].includes(share)) compute.mob(c);
-                        else if (!c.p_pob && ["NAT", "EU_OTH", "OTH"].includes(share)) compute.pob(c);
+                        else if (!c.p_pob && ["NAT", "EU_OTH", "OTH"].includes(share)) compute.pob(c);*/
                         return c[share_] == undefined ? "na" : classifier(c[share_])
                     },
                     color: colDict,
