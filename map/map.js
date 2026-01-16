@@ -127,14 +127,12 @@ const backgroundLayerElevation = new gridviz.BackgroundLayer({
 // function to define or refresh background layers visibility based on GUI
 const updateBackgroundVisibility = () => {
     if (document.getElementById("background").checked) {
-        document.getElementById("road").disabled = false
-        document.getElementById("elevation").disabled = false
+        document.getElementById("background_choice").style.display = "inline-block"
         backgroundLayerRoad.visible = document.getElementById("road").checked ? (z) => z > 11 : () => false
         backgroundLayerRoad2.visible = document.getElementById("road").checked ? (z) => z <= 11 : () => false
         backgroundLayerElevation.visible = document.getElementById("elevation").checked ? () => true : () => false
     } else {
-        document.getElementById("road").disabled = true
-        document.getElementById("elevation").disabled = true
+        document.getElementById("background_choice").style.display = "none"
         backgroundLayerRoad.visible = () => false;
         backgroundLayerRoad2.visible = () => false;
         backgroundLayerElevation.visible = () => false;
@@ -313,8 +311,6 @@ const update = () => {
         gridLayer.cellInfoHTML = (c) => "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 1 ? "" : "s");
 
     } else if (layCode === "share") {
-        //unfreeze GUI
-        document.getElementById("share_select").disabled = false;
 
         //get gui info
         const share = document.getElementById("share_select").value, share_ = "s" + share;
@@ -405,9 +401,6 @@ const update = () => {
         };
 
     } else if (layCode === "ternary") {
-
-        //unfreeze GUI
-        document.getElementById("ternary_select").disabled = false;
 
         //get gui info
         const theme = document.querySelector("#ternary_select").value;
@@ -663,9 +656,6 @@ const update = () => {
             };
 
     } else if (layCode === "demography") {
-
-        //unfreeze GUI
-        document.getElementById("demography_select").disabled = false;
 
         //get gui info
         const theme = document.querySelector("#demography_select").value;
