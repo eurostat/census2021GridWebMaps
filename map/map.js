@@ -1,6 +1,5 @@
 //TODO
 //fix tooltip location bug
-//reorganise code: ternary, other
 //true age pyramid
 //update x,y,z on view change
 //revamp breaks ?
@@ -693,8 +692,6 @@ const update = () => {
             buf.push(c.Y_GE65 + " - 65 years and older")
             return buf.join("<br>");
         };
-
-
 
 
 
