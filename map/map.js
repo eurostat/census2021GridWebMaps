@@ -397,47 +397,33 @@ const update = () => {
         const mapCode2 = mapCode.replace("ter_", "")
         const classNumberSize = 4;
 
-
+        const ternaryData = {
+            "ter_age": {
+                codes: ["sY_LT15", "sY_1564", "sY_GE65"],
+                center: [0.15, 0.64, 0.21],
+            },
+            "ter_mob": {
+                codes: ["sCHG_OUT", "sSAME", "sCHG_IN"],
+                center: [0.05, 0.85, 0.1],
+            },
+            "ter_pob": {
+                codes: ["sOTH", "sNAT", "sEU_OTH"],
+                center: [0.25, 0.6, 0.15],
+            },
+        }
 
         // get color ternary classifier
-        let colorTernaryFun;
-        if (mapCode == "ter_age")
-            colorTernaryFun = gridviz.ternaryColorClassifier(
-                ["sY_LT15", "sY_1564", "sY_GE65"],
-                () => 100,
-                ["#4daf4a", "#377eb8", "#e41a1c"],
-                {
-                    center: [0.15, 0.64, 0.21],
-                    centerColor: "#999",
-                    centerCoefficient: 0.25,
-                    defaultColor: naColor,
-                }
-            );
-        else if (mapCode == "ter_mob")
-            colorTernaryFun = gridviz.ternaryColorClassifier(
-                ["sCHG_OUT", "sSAME", "sCHG_IN"],
-                () => 100,
-                ["#4daf4a", "#377eb8", "#e41a1c"],
-                {
-                    center: [0.05, 0.85, 0.1],
-                    centerColor: "#999",
-                    centerCoefficient: 0.25,
-                    defaultColor: naColor,
-                }
-            );
-        else if (mapCode == "ter_pob")
-            colorTernaryFun = gridviz.ternaryColorClassifier(
-                ["sOTH", "sNAT", "sEU_OTH"],
-                () => 100,
-                ["#4daf4a", "#377eb8", "#e41a1c"],
-                {
-                    center: [0.25, 0.6, 0.15],
-                    centerColor: "#999",
-                    centerCoefficient: 0.25,
-                    defaultColor: naColor,
-                }
-            );
-
+        let colorTernaryFun = gridviz.ternaryColorClassifier(
+            ternaryData[mapCode].codes,
+            () => 100,
+            ["#4daf4a", "#377eb8", "#e41a1c"],
+            {
+                center: ternaryData[mapCode].center,
+                centerColor: "#999",
+                centerCoefficient: 0.25,
+                defaultColor: naColor,
+            }
+        )
 
         if (sbtp) {
 
