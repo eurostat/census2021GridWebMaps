@@ -431,9 +431,7 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.ShapeColorSizeStyle({
                     color: (c) => {
-                        if (mapCode == "ter_age" && !c.p_age) compute[mapCode2](c);
-                        else if (mapCode == "ter_mob" && !c.p_mob) compute[mapCode2](c);
-                        else if (mapCode == "ter_pob" && !c.p_pob) compute[mapCode2](c);
+                        if (!c["p_" + mapCode2]) compute[mapCode2](c);
                         return colorTernaryFun(c) || naColor;
                     },
                     viewScale: gridviz.viewScaleQuantile({
@@ -482,9 +480,7 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.SquareColorCategoryWebGLStyle({
                     code: (c) => {
-                        if (mapCode == "ter_age" && !c.p_age) compute[mapCode2](c);
-                        else if (mapCode == "ter_mob" && !c.p_mob) compute[mapCode2](c);
-                        else if (mapCode == "ter_pob" && !c.p_pob) compute[mapCode2](c);
+                        if (!c["p_" + mapCode2]) compute[mapCode2](c);
                         return ternaryFun(c)
                     },
                     color: colDict,
