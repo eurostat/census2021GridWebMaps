@@ -156,8 +156,8 @@ const backgroundLayerElevation = new gridviz.BackgroundLayer({
     resolutions: Array.from({ length: 13 }, (_, i) => 114688 / Math.pow(2, i)),
     origin: [0, 6000000],
     nbPix: 256,
-    pixelationCoefficient: 1.5,
-    filterColor: () => "#fff3",
+    pixelationCoefficient: 1,
+    filterColor: () => "#fff8",
 })
 
 // function to define or refresh background layers visibility based on GUI
