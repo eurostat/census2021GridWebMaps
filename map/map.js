@@ -110,6 +110,14 @@ for (let dd of ["share_select", "ternary_select", "demography_select"]) {
     if (sel) document.getElementById(dd).value = sel; //else console.warn(dd, "param invalid:", sel)
 }
 
+// background theme bt
+const btParam = urlParams.get("bt");
+if (btParam) {
+    const a = document.getElementById(btParam)
+    if (a) a.checked = true; else console.warn("bt param invalid:", btParam)
+}
+
+
 // toggle options panel collapse from URL param
 if (urlParams.get("collapsed")) document.getElementById("expand-toggle-button").click();
 
@@ -1258,6 +1266,9 @@ const updateURL = () => {
     // handle checkboxes
     for (let cb of ["sbtp", "label", "boundary", "background"])
         p.set(cb, document.getElementById(cb).checked ? "1" : "");
+
+    // handle background theme selection
+    p.set("bt", document.querySelector('input[name="background_theme"]:checked').value);
 
     // handle collapse
     //TODO
