@@ -197,8 +197,8 @@ const computePercentage = (c, col, totalFunction) => {
 };
 
 
-// preprocesses by theme
-const prepocessDict = {
+// preprocesses and indicator computation functions
+const compute = {
     sex: (c) => {
         if (c.CONFIDENTIALSTATUS && c.F == 0 && c.M == 0) {
             c.F = undefined;
@@ -260,7 +260,7 @@ const prepocessDict = {
         //tag as precomputed
         c.p_pob = true;
     },
-    mobility: (c) => {
+    mob: (c) => {
         if (c.CONFIDENTIALSTATUS && c.SAME == 0 && c.CHG_IN == 0 && c.CHG_OUT == 0) {
             c.SAME = undefined;
             c.CHG_IN = undefined;
@@ -274,17 +274,6 @@ const prepocessDict = {
         //tag as precomputed
         c.p_mob = true;
     },
-}
-
-const preprocessSex = prepocessDict.sex
-const preprocessAge = prepocessDict.age
-const preprocessEmp = prepocessDict.emp
-const preprocessPob = prepocessDict.pob
-const preprocessMob = prepocessDict.mobility
-
-
-//indicator computation functions
-const compute = {
     ageing: (c) => { c.ageing = (c.Y_LT15 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_LT15 },
     dep_ratio: (c) => { c.dep_ratio = (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * (c.Y_GE65 + c.Y_LT15) / c.Y_1564 },
     oa_dep_ratio: (c) => { c.oa_dep_ratio = (c.Y_1564 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_1564 },
@@ -301,7 +290,6 @@ const compute = {
         else c.median_age = Math.round(64 + 30 * (half - y - m) / o)
     },
 }
-
 
 
 //define multi resolution dataset
@@ -499,11 +487,11 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.ShapeColorSizeStyle({
                     color: (c) => {
-                        if (!c.p_sex && ["F", "M"].includes(share)) preprocessSex(c);
-                        else if (!c.p_age && ["Y_LT15", "Y_1564", "Y_GE65"].includes(share)) preprocessAge(c);
-                        else if (!c.p_emp && ["EMP"].includes(share)) preprocessEmp(c);
-                        else if (!c.p_mob && ["SAME", "CHG_IN", "CHG_OUT"].includes(share)) preprocessMob(c);
-                        else if (!c.p_pob && ["NAT", "EU_OTH", "OTH"].includes(share)) preprocessPob(c);
+                        if (!c.p_sex && ["F", "M"].includes(share)) compute.sex(c);
+                        else if (!c.p_age && ["Y_LT15", "Y_1564", "Y_GE65"].includes(share)) compute.age(c);
+                        else if (!c.p_emp && ["EMP"].includes(share)) compute.emp(c);
+                        else if (!c.p_mob && ["SAME", "CHG_IN", "CHG_OUT"].includes(share)) compute.mob(c);
+                        else if (!c.p_pob && ["NAT", "EU_OTH", "OTH"].includes(share)) compute.pob(c);
                         return c[share_] == undefined ? naColor : colorClassifier(c[share_]);
                     },
                     viewScale: gridviz.viewScaleQuantile({
@@ -523,11 +511,11 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.SquareColorCategoryWebGLStyle({
                     code: (c) => {
-                        if (!c.p_sex && ["F", "M"].includes(share)) preprocessSex(c);
-                        else if (!c.p_age && ["Y_LT15", "Y_1564", "Y_GE65"].includes(share)) preprocessAge(c);
-                        else if (!c.p_emp && ["EMP"].includes(share)) preprocessEmp(c);
-                        else if (!c.p_mob && ["SAME", "CHG_IN", "CHG_OUT"].includes(share)) preprocessMob(c);
-                        else if (!c.p_pob && ["NAT", "EU_OTH", "OTH"].includes(share)) preprocessPob(c);
+                        if (!c.p_sex && ["F", "M"].includes(share)) compute.sex(c);
+                        else if (!c.p_age && ["Y_LT15", "Y_1564", "Y_GE65"].includes(share)) compute.age(c);
+                        else if (!c.p_emp && ["EMP"].includes(share)) compute.emp(c);
+                        else if (!c.p_mob && ["SAME", "CHG_IN", "CHG_OUT"].includes(share)) compute.mob(c);
+                        else if (!c.p_pob && ["NAT", "EU_OTH", "OTH"].includes(share)) compute.pob(c);
                         return c[share_] == undefined ? "na" : classifier(c[share_])
                     },
                     color: colDict,
@@ -629,9 +617,9 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.ShapeColorSizeStyle({
                     color: (c) => {
-                        if (theme == "age" && !c.p_age) preprocessAge(c);
-                        else if (theme == "mobility" && !c.p_mob) preprocessMob(c);
-                        else if (theme == "pob" && !c.p_pob) preprocessPob(c);
+                        if (theme == "age" && !c.p_age) compute.age(c);
+                        else if (theme == "mobility" && !c.p_mob) compute.mob(c);
+                        else if (theme == "pob" && !c.p_pob) compute.pob(c);
                         return colorTernaryFun(c) || naColor;
                     },
                     viewScale: gridviz.viewScaleQuantile({
@@ -680,9 +668,9 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.SquareColorCategoryWebGLStyle({
                     code: (c) => {
-                        if (theme == "age" && !c.p_age) preprocessAge(c);
-                        else if (theme == "mobility" && !c.p_mob) preprocessMob(c);
-                        else if (theme == "pob" && !c.p_pob) preprocessPob(c);
+                        if (theme == "age" && !c.p_age) compute.age(c);
+                        else if (theme == "mobility" && !c.p_mob) compute.mob(c);
+                        else if (theme == "pob" && !c.p_pob) compute.pob(c);
                         return ternaryFun(c)
                     },
                     color: colDict,
@@ -933,7 +921,7 @@ const update = () => {
             size: (c, r, z, viewScale) => viewScale(c.T),
             viewScale: gridviz.viewScaleQuantile({
                 valueFunction: (c) => {
-                    if (!c.p_sex) preprocessSex(c);
+                    if (!c.p_sex) compute.sex(c);
                     return +c.T;
                 },
                 classNumber: classNumberSize,
