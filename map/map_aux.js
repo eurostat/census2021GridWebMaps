@@ -155,3 +155,21 @@ const legendTitles = {
     median_age: "Median age estimate",
 }
 
+
+
+
+const ternaryData = {
+    "ter_age": {
+        codes: ["sY_LT15", "sY_1564", "sY_GE65"],
+        center: [0.15, 0.64, 0.21],
+    },
+    "ter_mob": {
+        codes: ["sCHG_OUT", "sSAME", "sCHG_IN"],
+        center: [0.05, 0.85, 0.1],
+    },
+    "ter_pob": {
+        codes: ["sOTH", "sNAT", "sEU_OTH"],
+        center: [0.25, 0.6, 0.15],
+    },
+}
+
