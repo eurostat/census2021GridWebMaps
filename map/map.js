@@ -1,6 +1,5 @@
-
 //fix tooltip bug
-//new indicators: median age, tooltip, legend
+//new indicators: tooltip, legend
 //reorganise code based on demography
 //add title to legends
 //true age pyramid
@@ -10,36 +9,6 @@
 //generalise interpolation
 //add chernoff faces - as GUI element, hidden
 //sea level rise ?
-
-/*
-Demography indicators
-
-Ageing Index
-The indicator based on the ratio of individuals aged 65+ to those aged 0-15
-seniors per 100 youth
-
-Total Dependency ratio: Combines both youth and old-age dependency ratios.
-
-Old-age dependency ratio: The ratio of individuals aged 65+ to those aged 16-64. It reflects the pressure on the working-age population to support the elderly.
-
-Youth dependency ratio: This is the ratio of individuals aged 0-15 to those aged 16-64. It indicates the burden on the working-age population to support the youth.
-
-Median age estimation
-Calculate Total Population: total_population = pop_0_15 + pop_16_64 + pop_65_plus
-Find Median Position: median_position = total_population / 2
-Determine median age group
-if median_position < pop_0_15
-                median_age = 15 * (median_position / pop_0_15)
-else if median_position < pop_16_64
-                offset_in_16_64 = median_position - pop_0_15
-                median_age = 16 + 48 * (offset_in_16_64 / pop_16_64)
-else ...
-                offset_in_65_plus = median_position - (pop_0_15 + pop_16_64)
-                median_age = 65 + 15 * (offset_in_65_plus / pop_65_plus)
-                (with 15 years for dispersion)
-year of maximum population
- */
-
 
 //urls for production
 const tiledGridsURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles/";
@@ -870,6 +839,14 @@ const update = () => {
             },
         }
 
+        const legendTitle = {
+            ageing: "", // seniors per 100 youth
+            dep_ratio: "", //seniors and youth per 100 active
+            oa_dep_ratio: "",
+            y_dep_ratio: "",
+            median_age: "Median age estimate",
+        }
+
         if (sbtp) {
             const colorClassifier = gridviz.colorClassifier(breaks[theme], colors);
 
@@ -907,7 +884,30 @@ const update = () => {
             gridLayer.minPixelsPerCell = 0.7;
         }
 
-        //TODO legends
+        //demography color legend
+        style.addLegends([
+            new gridviz.ColorDiscreteLegend({
+                title: legendTitle[theme],
+                width: 250,
+                colors: () => colors,
+                breaks: () => breaks,
+            }),
+        ]);
+
+        //na legend
+        style.legends.push(naLegend);
+
+        //population size legend
+        if (sbtp)
+            style.addLegends(
+                gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
+                    title: "Population",
+                    fillColor: "#666",
+                    labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
+                })
+            );
+
+
         //TODO tooltip
         gridLayer.cellInfoHTML = (c) => {
             return (
