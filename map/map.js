@@ -640,10 +640,10 @@ const update = () => {
                 );
             };
 
-    } else if (mapCode === "demography") {
+    } else if (["ageing","dep_ratio","oa_dep_ratio","y_dep_ratio","median_age"].includes(mapCode)) {
 
         //get gui info
-        const theme = document.querySelector("#demography_select").value;
+        const theme = mapCode
 
         //define style
         const breaks = breaksDict[theme]
@@ -715,8 +715,7 @@ const update = () => {
             );
 
 
-        //TODO tooltip
-
+        //tooltip
         gridLayer.cellInfoHTML = (c) => {
             const buf = []
             let line = "<b>" + c[theme].toFixed(0) + "</b>"
