@@ -431,7 +431,7 @@ const update = () => {
     const egCopyright = document.getElementById('eurogeographics-copyright');
     if (egCopyright) egCopyright.style.display = document.getElementById("boundary").checked ? 'inline-block' : 'none';
     const tomtomCopyright = document.getElementById('tomtom-copyright');
-    if (tomtomCopyright) tomtomCopyright.style.display = document.getElementById("background").checked ? 'inline-block' : 'none';
+    if (tomtomCopyright) tomtomCopyright.style.display = document.getElementById("road").checked ? 'inline-block' : 'none';
 
     // set gridlayer dataset
     gridLayer.dataset = layCode === "pop" ? datasetTotal : dataset
