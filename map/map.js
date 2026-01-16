@@ -858,10 +858,12 @@ const update = () => {
             oa_dep_ratio: (c) => { c.oa_dep_ratio = (c.Y_1564 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_1564 },
             y_dep_ratio: (c) => { c.y_dep_ratio = (c.Y_LT15 == undefined || c.Y_1564 == undefined) ? -1 : 100 * c.Y_LT15 / c.Y_1564 },
             median_age: (c) => {
+                //median age estimation
                 const y = c.Y_LT15 || 0, m = c.Y_1564 || 0, o = c.Y_GE65 || 0
-                const mid = (y+m+o)/2
-                //TODO
-                c.median_age = 50
+                const mid = (y + m + o) / 2
+                if (mid <= y) c.median_age = Math.round(15 * mid / y)
+                if (mid <= y + m) c.median_age = Math.round(15 + (64 - 15) * (mid - y) / m)
+                else c.median_age = Math.round(64 + (95 - 64) * (mid - y - m) / o)
             },
         }
 
