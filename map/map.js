@@ -763,12 +763,10 @@ const update = () => {
             if (theme == "median_age") line += " years"
             buf.push(line)
 
-            if (sbtp) {
-                let total = c.Y_LT15 + c.Y_1564 + c.Y_GE65;
-                if (isNaN(total)) total = c.T;
-                const tot_ = formatLarge(total) + " person" + (total == 1 ? "" : "s");
-                buf.push(tot_)
-            }
+            let total = c.Y_LT15 + c.Y_1564 + c.Y_GE65;
+            if (isNaN(total)) total = c.T;
+            const tot_ = formatLarge(total) + " person" + (total == 1 ? "" : "s");
+            buf.push(tot_)
 
             buf.push(c.Y_LT15 + " - under 15 years")
             if (theme != "ageing") buf.push(c.Y_1564 + " - 15 to 64 years")
