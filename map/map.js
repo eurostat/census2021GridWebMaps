@@ -842,7 +842,7 @@ const update = () => {
             dep_ratio: [30, 40, 50, 60, 80, 100, 150], //seniors and youth per 100 active
             oa_dep_ratio: [15, 20, 25, 30, 40, 50, 75],
             y_dep_ratio: [15, 20, 25, 30, 40, 50, 75],
-            median_age: [35, 40, 45, 50, 55, 60, 65],
+            median_age: [35, 40, 43, 46, 50, 55, 60, 65],
         }
 
         const classNumberColor = breaks[theme].length + 1; //6
@@ -858,15 +858,15 @@ const update = () => {
             oa_dep_ratio: (c) => { c.oa_dep_ratio = (c.Y_1564 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_1564 },
             y_dep_ratio: (c) => { c.y_dep_ratio = (c.Y_LT15 == undefined || c.Y_1564 == undefined) ? -1 : 100 * c.Y_LT15 / c.Y_1564 },
             median_age: (c) => {
-                //median age estimation
+                //median age estimation - grouped median estimation - see Shryock & Siegel – Methods and Materials of Demography
                 const y = c.Y_LT15 || 0, m = c.Y_1564 || 0, o = c.Y_GE65 || 0
                 //half population
                 const half = (y + m + o) / 2
                 //yes, this case does happen !
                 if (m == 0 && y == o) c.median_age = 40
                 else if (half <= y) c.median_age = Math.round(15 * half / y)
-                else if (half <= y + m) c.median_age = Math.round(15 + (64 - 15) * (half - y) / m)
-                else c.median_age = Math.round(64 + (95 - 64) * (half - y - m) / o)
+                else if (half <= y + m) c.median_age = Math.round(15 + 49 * (half - y) / m)
+                else c.median_age = Math.round(64 + 30 * (half - y - m) / o)
             },
         }
 
