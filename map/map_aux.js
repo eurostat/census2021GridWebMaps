@@ -1,5 +1,18 @@
 
 
+
+//function to compute the percentage of a cell value
+const computePercentage = (c, col, totalFunction) => {
+    const total = totalFunction(c);
+    if (total == 0 || c[col] == undefined) {
+        c["s" + col] = undefined;
+        return;
+    }
+    c["s" + col] = (c[col] / total) * 100;
+    c["s" + col] = c["s" + col] > 100 ? 100 : c["s" + col] < 0 ? 0 : c["s" + col];
+};
+
+
 // preprocesses and indicator computation functions
 const compute = {
     sex: (c) => {
