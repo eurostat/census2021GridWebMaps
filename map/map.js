@@ -1,34 +1,18 @@
+//TODO
 //fix tooltip bug
-//new indicators: tooltip
 //reorganise code based on demography
+//new indicators: tooltip
 //add title to legends
 //true age pyramid
-//stroke not visible
 //update x,y,z on view change
 
 //generalise interpolation
 //add chernoff faces - as GUI element, hidden
 //sea level rise ?
 
-//urls for production
-const tiledGridsURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles/";
-const tiledTotalGridsURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles_total/";
-const nuts2jsonURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/nuts2json/v2/";
-const euronymURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/euronym/v3/UTF_LATIN/";
-//const euronymURL = "https://raw.githubusercontent.com/eurostat/euronym/main/pub/v3/UTF_LATIN/"
-const bgLayerURLElevation = 'https://ec.europa.eu/eurostat/cache/GISCO/mbkg/elevation/'
-const bgLayerURLRoad = 'https://ec.europa.eu/eurostat/cache/GISCO/mbkg/road/'
-
-/*/urls for development
-  const tiledGridsURL = "http://127.0.0.1:5500/"
-  const nuts2jsonURL = undefined
-  const euronymURL = undefined
-  const bgLayerURL = 'https://raw.githubusercontent.com/jgaffuri/mbxyz/main/pub/elevation_shading/'
-*/
-
-const DEFAULTMAPSETTINGS = { x: 4096489, y: 2829097, z: 2000, backgroundColor: "white" };
-
 /*
+    Notes on data
+
   "T" >= Total population
 
   "F" >= Women
@@ -48,6 +32,17 @@ const DEFAULTMAPSETTINGS = { x: 4096489, y: 2829097, z: 2000, backgroundColor: "
   "EU_OTH" >= Born in another EU member state
   "OTH" >= Born outside the EU
   */
+
+
+const tiledGridsURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles/";
+const tiledTotalGridsURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles_total/";
+const nuts2jsonURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/nuts2json/v2/";
+const euronymURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/euronym/v3/UTF_LATIN/";
+const bgLayerURLElevation = 'https://ec.europa.eu/eurostat/cache/GISCO/mbkg/elevation/'
+const bgLayerURLRoad = 'https://ec.europa.eu/eurostat/cache/GISCO/mbkg/road/'
+
+const DEFAULTMAPSETTINGS = { x: 4096489, y: 2829097, z: 2000, backgroundColor: "white" };
+
 
 //define map with initial view
 const map = new gridviz.Map(document.getElementById("map"), {
