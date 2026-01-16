@@ -5,6 +5,7 @@
 //add title to legends
 //true age pyramid
 //stroke not visible
+//update x,y,z on view change
 
 //generalise interpolation
 //add chernoff faces - as GUI element, hidden
@@ -856,7 +857,12 @@ const update = () => {
             dep_ratio: (c) => { c.dep_ratio = (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * (c.Y_GE65 + c.Y_LT15) / c.Y_1564 },
             oa_dep_ratio: (c) => { c.oa_dep_ratio = (c.Y_1564 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_1564 },
             y_dep_ratio: (c) => { c.y_dep_ratio = (c.Y_LT15 == undefined || c.Y_1564 == undefined) ? -1 : 100 * c.Y_LT15 / c.Y_1564 },
-            median_age: (c) => { c.median_age = 50 },
+            median_age: (c) => {
+                const y = c.Y_LT15 || 0, m = c.Y_1564 || 0, o = c.Y_GE65 || 0
+                const mid = (y+m+o)/2
+                //TODO
+                c.median_age = 50
+            },
         }
 
         if (sbtp) {
