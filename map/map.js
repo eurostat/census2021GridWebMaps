@@ -2,7 +2,6 @@
 //fix tooltip location bug
 //reorganise code based on demography
 //new indicators: tooltip
-//add title to legends
 //true age pyramid
 //update x,y,z on view change
 
