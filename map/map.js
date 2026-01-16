@@ -1,5 +1,4 @@
 //TODO
-//generalise interpolation
 //fix tooltip location bug
 //reorganise code: ternary, other
 //true age pyramid
@@ -8,6 +7,8 @@
 
 //add chernoff faces - as GUI element, hidden
 //sea level rise ?
+//generalise interpolation
+
 
 /*
   Notes on data
@@ -293,10 +294,9 @@ const update = () => {
         totPopLegend.width = Math.min(window.innerWidth - 40, 400)
 
         // link legend, style and layer
-        //gridLayer.styles = [interpTotPopStyle, strokeStyle,];
         gridLayer.styles = [totPopStyle];
         if (interpolate) gridLayer.styles = interpolateStyles(gridLayer.styles, 'T');
-        if (!interpolate) gridLayer.styles.push(strokeStyle)
+        else gridLayer.styles.push(strokeStyle)
 
         //set layer parameters
         gridLayer.minPixelsPerCell = interpolate ? 1.7 : 0.7;
@@ -351,9 +351,10 @@ const update = () => {
                         return c[shareCode] == undefined ? "na" : classifier(c[shareCode])
                     },
                     color: colDict,
-                }),
-                strokeStyle
+                })
             ];
+            //if (interpolate) gridLayer.styles = interpolateStyles(gridLayer.styles, shareCode);
+            /*else*/ gridLayer.styles.push(strokeStyle)
             gridLayer.minPixelsPerCell = interpolate ? 1.7 : 0.7
         }
 
@@ -393,14 +394,14 @@ const update = () => {
 
     } else if (["ter_age", "ter_mob", "ter_pob"].includes(mapCode)) {
 
-        //get gui info
-        const theme = mapCode.replace("ter_", "");
-
+        const mapCode2 = mapCode.replace("ter_", "")
         const classNumberSize = 4;
+
+
 
         // get color ternary classifier
         let colorTernaryFun;
-        if (theme == "age")
+        if (mapCode == "ter_age")
             colorTernaryFun = gridviz.ternaryColorClassifier(
                 ["sY_LT15", "sY_1564", "sY_GE65"],
                 () => 100,
@@ -412,7 +413,7 @@ const update = () => {
                     defaultColor: naColor,
                 }
             );
-        else if (theme == "mob")
+        else if (mapCode == "ter_mob")
             colorTernaryFun = gridviz.ternaryColorClassifier(
                 ["sCHG_OUT", "sSAME", "sCHG_IN"],
                 () => 100,
@@ -424,7 +425,7 @@ const update = () => {
                     defaultColor: naColor,
                 }
             );
-        else if (theme == "pob")
+        else if (mapCode == "ter_pob")
             colorTernaryFun = gridviz.ternaryColorClassifier(
                 ["sOTH", "sNAT", "sEU_OTH"],
                 () => 100,
@@ -444,9 +445,9 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.ShapeColorSizeStyle({
                     color: (c) => {
-                        if (theme == "age" && !c.p_age) compute.age(c);
-                        else if (theme == "mob" && !c.p_mob) compute.mob(c);
-                        else if (theme == "pob" && !c.p_pob) compute.pob(c);
+                        if (mapCode == "ter_age" && !c.p_age) compute[mapCode2](c);
+                        else if (mapCode == "ter_mob" && !c.p_mob) compute[mapCode2](c);
+                        else if (mapCode == "ter_pob" && !c.p_pob) compute[mapCode2](c);
                         return colorTernaryFun(c) || naColor;
                     },
                     viewScale: gridviz.viewScaleQuantile({
@@ -464,19 +465,19 @@ const update = () => {
 
             // get ternary classifier
             let ternaryFun;
-            if (theme == "age")
+            if (mapCode == "ter_age")
                 ternaryFun = gridviz.ternaryClassifier(
                     ["sY_LT15", "sY_1564", "sY_GE65"],
                     () => 100,
                     { center: [0.15, 0.64, 0.21], centerCoefficient: 0.25 }
                 );
-            else if (theme == "mob")
+            else if (mapCode == "ter_mob")
                 ternaryFun = gridviz.ternaryClassifier(
                     ["sCHG_OUT", "sSAME", "sCHG_IN"],
                     () => 100,
                     { center: [0.05, 0.85, 0.1], centerCoefficient: 0.25 }
                 );
-            else if (theme == "pob")
+            else if (mapCode == "ter_pob")
                 ternaryFun = gridviz.ternaryClassifier(
                     ["sOTH", "sNAT", "sEU_OTH"],
                     () => 100,
@@ -495,9 +496,9 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.SquareColorCategoryWebGLStyle({
                     code: (c) => {
-                        if (theme == "age" && !c.p_age) compute.age(c);
-                        else if (theme == "mob" && !c.p_mob) compute.mob(c);
-                        else if (theme == "pob" && !c.p_pob) compute.pob(c);
+                        if (mapCode == "ter_age" && !c.p_age) compute[mapCode2](c);
+                        else if (mapCode == "ter_mob" && !c.p_mob) compute[mapCode2](c);
+                        else if (mapCode == "ter_pob" && !c.p_pob) compute[mapCode2](c);
                         return ternaryFun(c)
                     },
                     color: colDict,
@@ -511,7 +512,7 @@ const update = () => {
 
         const style = gridLayer.styles[0];
         const legendWidth = 150;
-        if (theme == "age")
+        if (mapCode == "ter_age")
             style.legends = [
                 new gridviz.TernaryLegend({
                     title: "Age",
@@ -533,7 +534,7 @@ const update = () => {
                     centerCoefficient: 0.5,
                 }),
             ];
-        else if (theme == "mob")
+        else if (mapCode == "ter_mob")
             style.legends = [
                 new gridviz.TernaryLegend({
                     title: "Mobility (2020-2021)",
@@ -555,7 +556,7 @@ const update = () => {
                     centerCoefficient: 0.5,
                 }),
             ];
-        else if (theme == "pob")
+        else if (mapCode == "ter_pob")
             style.legends = [
                 new gridviz.TernaryLegend({
                     title: "Birth place",
@@ -592,7 +593,7 @@ const update = () => {
             );
 
         //tooltip text
-        if (theme == "age")
+        if (mapCode == "ter_age")
             gridLayer.cellInfoHTML = (c) => {
                 let total = c.Y_LT15 + c.Y_1564 + c.Y_GE65;
                 if (isNaN(total)) total = c.T;
@@ -609,7 +610,7 @@ const update = () => {
                     "% 65 years and older"
                 );
             };
-        else if (theme == "mob")
+        else if (mapCode == "ter_mob")
             gridLayer.cellInfoHTML = (c) => {
                 let total = c.CHG_IN + c.SAME + c.CHG_OUT;
                 if (isNaN(total)) total = c.T;
@@ -626,7 +627,7 @@ const update = () => {
                     "% moved from outside the country"
                 );
             };
-        else if (theme == "pob")
+        else if (mapCode == "ter_pob")
             gridLayer.cellInfoHTML = (c) => {
                 let total = c.NAT + c.EU_OTH + c.OTH;
                 if (isNaN(total)) total = c.T;
