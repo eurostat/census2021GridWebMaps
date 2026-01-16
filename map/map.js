@@ -861,8 +861,10 @@ const update = () => {
                 //median age estimation
                 const y = c.Y_LT15 || 0, m = c.Y_1564 || 0, o = c.Y_GE65 || 0
                 const mid = (y + m + o) / 2
-                if (mid <= y) c.median_age = Math.round(15 * mid / y)
-                if (mid <= y + m) c.median_age = Math.round(15 + (64 - 15) * (mid - y) / m)
+                //yes, this case does happen !
+                if(m==0 && y==o) c.median_age = 40
+                else if (mid <= y) c.median_age = Math.round(15 * mid / y)
+                else if (mid <= y + m) c.median_age = Math.round(15 + (64 - 15) * (mid - y) / m)
                 else c.median_age = Math.round(64 + (95 - 64) * (mid - y - m) / o)
             },
         }
