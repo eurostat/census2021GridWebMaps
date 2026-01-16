@@ -1,5 +1,5 @@
 //TODO
-//fix tooltip bug
+//fix tooltip location bug
 //reorganise code based on demography
 //new indicators: tooltip
 //add title to legends
@@ -11,7 +11,7 @@
 //sea level rise ?
 
 /*
-    Notes on data
+  Notes on data
 
   "T" >= Total population
 
@@ -196,87 +196,91 @@ const computePercentage = (c, col, totalFunction) => {
     c["s" + col] = c["s" + col] > 100 ? 100 : c["s" + col] < 0 ? 0 : c["s" + col];
 };
 
-//'x', 'y', 'T', 'M', 'F', 'Y_LT15', 'Y_1564', 'Y_GE65', 'EMP', 'NAT', 'EU_OTH', 'OTH', 'SAME', 'CHG_IN', 'CHG_OUT', 'CONFIDENTIALSTATUS'
 
-const preprocessSex = (c) => {
-    if (c.CONFIDENTIALSTATUS && c.F == 0 && c.M == 0) {
-        c.F = undefined;
-        c.M = undefined;
-    }
+// preprocesses by theme
+const prepocessDict = {
+    sex: (c) => {
+        if (c.CONFIDENTIALSTATUS && c.F == 0 && c.M == 0) {
+            c.F = undefined;
+            c.M = undefined;
+        }
 
-    if (c.F == undefined || c.M == undefined) {
-        c.indMF = undefined;
-        return;
-    }
+        if (c.F == undefined || c.M == undefined) {
+            c.indMF = undefined;
+            return;
+        }
 
-    //if (c.F + c.M != c.T) console.error("Error found in sex total", c.F + c.M, c.T)
+        //if (c.F + c.M != c.T) console.error("Error found in sex total", c.F + c.M, c.T)
 
-    //male/female index
-    c.indMF = (100 * (c.M - c.F)) / (c.M + c.F);
+        //male/female index
+        c.indMF = (100 * (c.M - c.F)) / (c.M + c.F);
 
-    //compute percentages
-    computePercentage(c, "F", (c) => c.M + c.F);
-    computePercentage(c, "M", (c) => c.M + c.F);
+        //compute percentages
+        computePercentage(c, "F", (c) => c.M + c.F);
+        computePercentage(c, "M", (c) => c.M + c.F);
 
-    //tag as precomputed
-    c.p_sex = true;
-};
+        //tag as precomputed
+        c.p_sex = true;
+    },
+    age: (c) => {
+        if (c.CONFIDENTIALSTATUS && c.Y_LT15 == 0 && c.Y_1564 == 0 && c.Y_GE65 == 0) {
+            c.Y_LT15 = undefined;
+            c.Y_1564 = undefined;
+            c.Y_GE65 = undefined;
+        }
 
-const preprocessAge = (c) => {
-    if (c.CONFIDENTIALSTATUS && c.Y_LT15 == 0 && c.Y_1564 == 0 && c.Y_GE65 == 0) {
-        c.Y_LT15 = undefined;
-        c.Y_1564 = undefined;
-        c.Y_GE65 = undefined;
-    }
+        //compute percentages
+        computePercentage(c, "Y_LT15", (c) => c.Y_LT15 + c.Y_1564 + c.Y_GE65);
+        computePercentage(c, "Y_1564", (c) => c.Y_LT15 + c.Y_1564 + c.Y_GE65);
+        computePercentage(c, "Y_GE65", (c) => c.Y_LT15 + c.Y_1564 + c.Y_GE65);
+        //tag as precomputed
+        c.p_age = true;
+    },
+    emp: (c) => {
+        if (c.CONFIDENTIALSTATUS && c.EMP == 0) {
+            c.EMP = undefined;
+        }
 
-    //compute percentages
-    computePercentage(c, "Y_LT15", (c) => c.Y_LT15 + c.Y_1564 + c.Y_GE65);
-    computePercentage(c, "Y_1564", (c) => c.Y_LT15 + c.Y_1564 + c.Y_GE65);
-    computePercentage(c, "Y_GE65", (c) => c.Y_LT15 + c.Y_1564 + c.Y_GE65);
-    //tag as precomputed
-    c.p_age = true;
-};
+        //compute percentages
+        computePercentage(c, "EMP", (c) => c.T); //TODO sure?
+        //tag as precomputed
+        c.p_emp = true;
+    },
+    pob: (c) => {
+        if (c.CONFIDENTIALSTATUS && c.NAT == 0 && c.EU_OTH == 0 && c.OTH == 0) {
+            c.NAT = undefined;
+            c.EU_OTH = undefined;
+            c.OTH = undefined;
+        }
 
-const preprocessEmp = (c) => {
-    if (c.CONFIDENTIALSTATUS && c.EMP == 0) {
-        c.EMP = undefined;
-    }
+        //compute percentages
+        computePercentage(c, "NAT", (c) => c.NAT + c.EU_OTH + c.OTH);
+        computePercentage(c, "EU_OTH", (c) => c.NAT + c.EU_OTH + c.OTH);
+        computePercentage(c, "OTH", (c) => c.NAT + c.EU_OTH + c.OTH);
+        //tag as precomputed
+        c.p_pob = true;
+    },
+    mobility: (c) => {
+        if (c.CONFIDENTIALSTATUS && c.SAME == 0 && c.CHG_IN == 0 && c.CHG_OUT == 0) {
+            c.SAME = undefined;
+            c.CHG_IN = undefined;
+            c.CHG_OUT = undefined;
+        }
 
-    //compute percentages
-    computePercentage(c, "EMP", (c) => c.T); //TODO sure?
-    //tag as precomputed
-    c.p_emp = true;
-};
+        //compute percentages
+        computePercentage(c, "SAME", (c) => c.SAME + c.CHG_IN + c.CHG_OUT);
+        computePercentage(c, "CHG_IN", (c) => c.SAME + c.CHG_IN + c.CHG_OUT);
+        computePercentage(c, "CHG_OUT", (c) => c.SAME + c.CHG_IN + c.CHG_OUT);
+        //tag as precomputed
+        c.p_mob = true;
+    },
+}
 
-const preprocessPob = (c) => {
-    if (c.CONFIDENTIALSTATUS && c.NAT == 0 && c.EU_OTH == 0 && c.OTH == 0) {
-        c.NAT = undefined;
-        c.EU_OTH = undefined;
-        c.OTH = undefined;
-    }
-
-    //compute percentages
-    computePercentage(c, "NAT", (c) => c.NAT + c.EU_OTH + c.OTH);
-    computePercentage(c, "EU_OTH", (c) => c.NAT + c.EU_OTH + c.OTH);
-    computePercentage(c, "OTH", (c) => c.NAT + c.EU_OTH + c.OTH);
-    //tag as precomputed
-    c.p_pob = true;
-};
-
-const preprocessMob = (c) => {
-    if (c.CONFIDENTIALSTATUS && c.SAME == 0 && c.CHG_IN == 0 && c.CHG_OUT == 0) {
-        c.SAME = undefined;
-        c.CHG_IN = undefined;
-        c.CHG_OUT = undefined;
-    }
-
-    //compute percentages
-    computePercentage(c, "SAME", (c) => c.SAME + c.CHG_IN + c.CHG_OUT);
-    computePercentage(c, "CHG_IN", (c) => c.SAME + c.CHG_IN + c.CHG_OUT);
-    computePercentage(c, "CHG_OUT", (c) => c.SAME + c.CHG_IN + c.CHG_OUT);
-    //tag as precomputed
-    c.p_mob = true;
-};
+const preprocessSex = prepocessDict.sex
+const preprocessAge = prepocessDict.age
+const preprocessEmp = prepocessDict.emp
+const preprocessPob = prepocessDict.pob
+const preprocessMob = prepocessDict.mobility
 
 
 //indicator computation functions
@@ -351,8 +355,8 @@ const strokeStyle = new gridviz.StrokeStyle({ strokeColor: () => "#fff8", visibl
 const breaksDict = {
     F: [40, 45, 49, 50, 51, 55, 60],
     M: [40, 45, 49, 50, 51, 55, 60],
-    Y_LT15: [5, 10, 15, 20, 30],
-    Y_1564: [50, 60, 65, 70, 80],
+    Y_LT15: [5, 10, 15, 20, 25, 30],
+    Y_1564: [50, 60, 65, 70, 75, 80],
     Y_GE65: [10, 20, 30, 40, 50],
     EMP: [30, 40, 45, 50, 55, 60, 70],
     SAME: [70, 80, 90, 95, 99],
