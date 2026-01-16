@@ -4,6 +4,7 @@
 //reorganise code based on demography
 //add title to legends
 //true age pyramid
+//stroke not visible
 
 //generalise interpolation
 //add chernoff faces - as GUI element, hidden
