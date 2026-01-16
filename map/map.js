@@ -451,16 +451,15 @@ const update = () => {
         document.getElementById("sbtp").disabled = false;
 
         //get gui info
-        const shareA = document.getElementById("share_select").value;
-        const shareB = "s" + shareA;
+        const share = document.getElementById("share_select").value, share_ = "s" + share;
         const sbtp = document.getElementById("sbtp").checked;
 
         //define style
 
         //define style breaks
-        let breaks = breaksDict[shareA];
+        let breaks = breaksDict[share];
         const classNumberColor = breaks.length + 1; //6
-        const palette = shareA == "M" || shareA == "F" ? d3.schemeSpectral : d3.schemeYlOrRd;
+        const palette = share == "M" || share == "F" ? d3.schemeSpectral : d3.schemeYlOrRd;
         const colors = palette[classNumberColor];
         const classNumberSize = 4;
 
@@ -469,12 +468,12 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.ShapeColorSizeStyle({
                     color: (c) => {
-                        if (!c.p_sex && ["F", "M"].includes(shareA)) preprocessSex(c);
-                        else if (!c.p_age && ["Y_LT15", "Y_1564", "Y_GE65"].includes(shareA)) preprocessAge(c);
-                        else if (!c.p_emp && ["EMP"].includes(shareA)) preprocessEmp(c);
-                        else if (!c.p_mob && ["SAME", "CHG_IN", "CHG_OUT"].includes(shareA)) preprocessMob(c);
-                        else if (!c.p_pob && ["NAT", "EU_OTH", "OTH"].includes(shareA)) preprocessPob(c);
-                        return c[shareB] == undefined ? naColor : colorClassifier(c[shareB]);
+                        if (!c.p_sex && ["F", "M"].includes(share)) preprocessSex(c);
+                        else if (!c.p_age && ["Y_LT15", "Y_1564", "Y_GE65"].includes(share)) preprocessAge(c);
+                        else if (!c.p_emp && ["EMP"].includes(share)) preprocessEmp(c);
+                        else if (!c.p_mob && ["SAME", "CHG_IN", "CHG_OUT"].includes(share)) preprocessMob(c);
+                        else if (!c.p_pob && ["NAT", "EU_OTH", "OTH"].includes(share)) preprocessPob(c);
+                        return c[share_] == undefined ? naColor : colorClassifier(c[share_]);
                     },
                     viewScale: gridviz.viewScaleQuantile({
                         valueFunction: (c) => +c.T,
@@ -493,12 +492,12 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.SquareColorCategoryWebGLStyle({
                     code: (c) => {
-                        if (!c.p_sex && ["F", "M"].includes(shareA)) preprocessSex(c);
-                        else if (!c.p_age && ["Y_LT15", "Y_1564", "Y_GE65"].includes(shareA)) preprocessAge(c);
-                        else if (!c.p_emp && ["EMP"].includes(shareA)) preprocessEmp(c);
-                        else if (!c.p_mob && ["SAME", "CHG_IN", "CHG_OUT"].includes(shareA)) preprocessMob(c);
-                        else if (!c.p_pob && ["NAT", "EU_OTH", "OTH"].includes(shareA)) preprocessPob(c);
-                        return c[shareB] == undefined ? "na" : classifier(c[shareB])
+                        if (!c.p_sex && ["F", "M"].includes(share)) preprocessSex(c);
+                        else if (!c.p_age && ["Y_LT15", "Y_1564", "Y_GE65"].includes(share)) preprocessAge(c);
+                        else if (!c.p_emp && ["EMP"].includes(share)) preprocessEmp(c);
+                        else if (!c.p_mob && ["SAME", "CHG_IN", "CHG_OUT"].includes(share)) preprocessMob(c);
+                        else if (!c.p_pob && ["NAT", "EU_OTH", "OTH"].includes(share)) preprocessPob(c);
+                        return c[share_] == undefined ? "na" : classifier(c[share_])
                     },
                     color: colDict,
                 }),
@@ -535,9 +534,9 @@ const update = () => {
         //tooltip text
         gridLayer.cellInfoHTML = (c) => {
             const pop_ = "<br>" + formatLarge(c.T) + " person" + (c.T == 1 ? "" : "s");
-            if (c[shareA] == undefined || c[shareB] == undefined)
+            if (c[share] == undefined || c[share_] == undefined)
                 return "Data not available" + (c.CONFIDENTIALSTATUS ? " (confidential)" : "") + pop_;
-            return "<b>" + formatPercentage(c[shareB]) + " %</b><br>" + formatLarge(c[shareA]) + pop_;
+            return "<b>" + formatPercentage(c[share_]) + " %</b><br>" + formatLarge(c[share]) + pop_;
         };
 
     } else if (layCode === "ternary") {
