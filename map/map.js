@@ -375,19 +375,8 @@ const update = () => {
 
         gridLayer.minPixelsPerCell = 12;
 
-        //age
-        gridLayer.styles[0].legends = [
-            new gridviz.ColorCategoryLegend({
-                title: "Age",
-                colorLabel: [
-                    [colAge(0.2), "Under 15 years"],
-                    [colAge(0.4), "15 to 64 years"],
-                    [colAge(0.9), "65 years and older"],
-                ],
-            }),
-        ];
-
-        //population
+        //legends
+        gridLayer.styles[0].legends = [agePyramidLegend(colAge)];
         gridLayer.styles[0].addLegends(popSizeLegend(classNumberSize, "square"))
 
         gridLayer.cellInfoHTML = agePyramidTooltip;

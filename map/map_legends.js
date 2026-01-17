@@ -23,7 +23,7 @@ const totPopLegend = new gridviz.ColorDiscreteLegend({
 })
 
 //share and demography legend
-const colDiscreteLegend = (mapCode, colors, breaks, labelFormat=undefined) =>
+const colDiscreteLegend = (mapCode, colors, breaks, labelFormat = undefined) =>
     new gridviz.ColorDiscreteLegend({
         title: legendTitles[mapCode],
         width: Math.min(window.innerWidth - 40, 250),
@@ -33,7 +33,7 @@ const colDiscreteLegend = (mapCode, colors, breaks, labelFormat=undefined) =>
     })
 
 
-    //ternary legends
+//ternary legends
 const legendWidth = Math.min(window.innerWidth - 40, 150);
 
 const ternaryLegends = {
@@ -95,3 +95,12 @@ const ternaryLegends = {
         centerCoefficient: 0.5,
     })
 }
+
+const agePyramidLegend = colAge => new gridviz.ColorCategoryLegend({
+    title: "Age",
+    colorLabel: [
+        [colAge(0.2), "Under 15 years"],
+        [colAge(0.4), "15 to 64 years"],
+        [colAge(0.9), "65 years and older"],
+    ],
+})
