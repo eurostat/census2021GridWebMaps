@@ -83,6 +83,24 @@ interpolate = interpolate != "" && interpolate != "false" && +interpolate != 0
 updateBackgroundVisibility()
 
 
+
+//define multi resolution datasets
+
+const dataset = new gridviz.MultiResolutionDataset(
+    [1000, 2000, 5000, 10000, 20000, 50000, 100000],
+    (resolution) => new gviz_par.TiledParquetGrid(map, tiledGridsURL + resolution + "/"),
+    { preprocess: (c) => c.T && +c.T > 0 }
+);
+
+const datasetTotal = new gridviz.MultiResolutionDataset(
+    [1000, 2000, 5000, 10000, 20000, 50000, 100000],
+    (resolution) => new gviz_par.TiledParquetGrid(map, tiledTotalGridsURL + resolution + "/"),
+    { preprocess: (c) => c.T && +c.T > 0 }
+);
+
+
+
+
 //make grid layer
 const gridLayer = new gridviz.GridLayer(undefined, []);
 gridLayer.blendOperation = () => "multiply"
