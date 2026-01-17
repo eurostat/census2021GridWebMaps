@@ -227,7 +227,9 @@ const update = () => {
         const style = gridLayer.styles[0];
 
         //add legends
-        style.addLegends([shareLegend(mapCode, colors, breaks), naLegend]);
+        style.addLegends([
+            colDiscreteLegend(mapCode, colors, breaks, (v, i) => v + (i == 1 || i == breaks.length ? "%" : "")),
+            naLegend]);
         if (sbtp) style.addLegends(popSizeLegend(classNumberSize));
 
         //tooltip text
@@ -342,19 +344,7 @@ const update = () => {
         const style = gridLayer.styles[0]
 
         //demography color legend
-        style.addLegends([
-            new gridviz.ColorDiscreteLegend({
-                title: legendTitles[mapCode],
-                width: 250,
-                colors: () => colors,
-                breaks: () => breaks,
-            }),
-        ]);
-
-        //na legend
-        style.legends.push(naLegend);
-
-        //population size legend
+        style.addLegends([colDiscreteLegend(mapCode, colors, breaks), naLegend]);
         if (sbtp) style.addLegends(popSizeLegend(classNumberSize))
 
         //tooltip

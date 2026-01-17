@@ -22,19 +22,18 @@ const totPopLegend = new gridviz.ColorDiscreteLegend({
     labelFormat: formatLarge,
 })
 
-//share legend
-const shareLegend = (mapCode, colors, breaks) =>
+//share and demography legend
+const colDiscreteLegend = (mapCode, colors, breaks, labelFormat=undefined) =>
     new gridviz.ColorDiscreteLegend({
         title: legendTitles[mapCode],
         width: Math.min(window.innerWidth - 40, 250),
         colors: () => colors,
         breaks: () => breaks,
-        labelFormat: (v, i) => v + (i == 1 || i == breaks.length ? "%" : ""),
+        labelFormat: labelFormat,
     })
 
 
-//ternary legends
-
+    //ternary legends
 const legendWidth = Math.min(window.innerWidth - 40, 150);
 
 const ternaryLegends = {
