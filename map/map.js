@@ -598,11 +598,8 @@ const update = () => {
 
     } else if (["ageing", "dep_ratio", "oa_dep_ratio", "y_dep_ratio", "median_age"].includes(mapCode)) {
 
-        //get gui info
-        const theme = mapCode
-
         //define style
-        const breaks = breaksDict[theme]
+        const breaks = breaksDict[mapCode]
         const classNumberColor = breaks.length + 1;
         const palette = d3.schemeSpectral //: d3.schemeYlOrRd;
         const colors = palette[classNumberColor].slice().reverse()
@@ -614,8 +611,8 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.ShapeColorSizeStyle({
                     color: (c) => {
-                        if (c[theme] == undefined) compute[theme](c)
-                        return c[theme] < 0 ? naColor : colorClassifier(c[theme]);
+                        if (c[mapCode] == undefined) compute[mapCode](c)
+                        return c[mapCode] < 0 ? naColor : colorClassifier(c[mapCode]);
                     },
                     viewScale: gridviz.viewScaleQuantile({
                         valueFunction: (c) => +c.T,
@@ -635,8 +632,8 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.SquareColorCategoryWebGLStyle({
                     code: (c) => {
-                        if (c[theme] == undefined) compute[theme](c)
-                        return c[theme] < 0 ? "na" : classifier(c[theme]);
+                        if (c[mapCode] == undefined) compute[mapCode](c)
+                        return c[mapCode] < 0 ? "na" : classifier(c[mapCode]);
                     },
                     color: colDict,
                 }),
@@ -650,7 +647,7 @@ const update = () => {
         //demography color legend
         style.addLegends([
             new gridviz.ColorDiscreteLegend({
-                title: legendTitles[theme],
+                title: legendTitles[mapCode],
                 width: 250,
                 colors: () => colors,
                 breaks: () => breaks,
@@ -671,27 +668,33 @@ const update = () => {
             );
 
 
+
+        const getTooltipDemography = () => {
+            return (c) => {
+                const buf = []
+                let line = "<b>" + c[mapCode].toFixed(0) + "</b>"
+                if (mapCode == "ageing") line += " age (65+) per 100 age (0-14)"
+                if (mapCode == "dep_ratio") line += " age (65+) or (0-14) per 100 age (15-64)"
+                if (mapCode == "oa_dep_ratio") line += " age (65+) per 100 age (15-64)"
+                if (mapCode == "y_dep_ratio") line += " age (0-14) per 100 age (15-64)"
+                if (mapCode == "median_age") line += " years"
+                buf.push(line)
+
+                let total = c.Y_LT15 + c.Y_1564 + c.Y_GE65;
+                if (isNaN(total)) total = c.T;
+                const tot_ = formatLarge(total) + " person" + (total == 1 ? "" : "s");
+                buf.push(tot_)
+
+                buf.push(c.Y_LT15 + " - under 15 years")
+                if (mapCode != "ageing") buf.push(c.Y_1564 + " - 15 to 64 years")
+                buf.push(c.Y_GE65 + " - 65 years and older")
+                return buf.join("<br>");
+            }
+        }
+
+
         //tooltip
-        gridLayer.cellInfoHTML = (c) => {
-            const buf = []
-            let line = "<b>" + c[theme].toFixed(0) + "</b>"
-            if (theme == "ageing") line += " seniors (65+) per 100 young (0-14)"
-            if (theme == "dep_ratio") line += " seniors (65+) and young (0-14) per 100 active (15-64)"
-            if (theme == "oa_dep_ratio") line += " seniors (65+) per 100 active (15-64)"
-            if (theme == "y_dep_ratio") line += " in young (0-14) per 100 active (15-64)"
-            if (theme == "median_age") line += " years"
-            buf.push(line)
-
-            let total = c.Y_LT15 + c.Y_1564 + c.Y_GE65;
-            if (isNaN(total)) total = c.T;
-            const tot_ = formatLarge(total) + " person" + (total == 1 ? "" : "s");
-            buf.push(tot_)
-
-            buf.push(c.Y_LT15 + " - under 15 years")
-            if (theme != "ageing") buf.push(c.Y_1564 + " - 15 to 64 years")
-            buf.push(c.Y_GE65 + " - 65 years and older")
-            return buf.join("<br>");
-        };
+        gridLayer.cellInfoHTML = getTooltipDemography();
 
 
 
