@@ -136,30 +136,6 @@ const breaksDict = {
     median_age: [35, 40, 43, 46, 50, 55, 60, 65],
 }
 
-//usual residence 12 months before the census date (unchanged, within the reporting country, outside of the reporting country)
-//place of birth (in the reporting country, in another EU country, outside the EU)
-
-const legendTitles = {
-    F: "Share of women",
-    M: "Share of men",
-    Y_LT15: "Share - aged under 15",
-    Y_1564: "Share - aged 15 to 64 years",
-    Y_GE65: "Share - aged 65 years and older",
-    EMP: "Share of employed persons",
-    SAME: "Share - residence unchanged",
-    CHG_IN: "Share - residence change within country",
-    CHG_OUT: "Share - residence change from other country",
-    NAT: "Share - born in the country",
-    EU_OTH: "Share - born in another EU member state",
-    OTH: "Share - born outside the EU",
-    ageing: "Ageing Index", //, in seniors (65+) per 100 young (0-14)",
-    dep_ratio: "Dependency ratio", //, in seniors (65+) and young (0-14) per 100 active (15-64)",
-    oa_dep_ratio: "Old-age dependency ratio", //, in seniors (65+) per 100 active (15-64)",
-    y_dep_ratio: "Youth dependency ratio", //, in young (0-14) per 100 active (15-64)",
-    median_age: "Median age estimate",
-}
-
-
 
 
 const ternaryData = {

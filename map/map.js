@@ -376,8 +376,7 @@ const update = () => {
         gridLayer.minPixelsPerCell = 12;
 
         //legends
-        gridLayer.styles[0].legends = [agePyramidLegend(colAge)];
-        gridLayer.styles[0].addLegends(popSizeLegend(classNumberSize, "square"))
+        gridLayer.styles[0].legends = [agePyramidLegend(colAge), popSizeLegend(classNumberSize, "square")];
 
         gridLayer.cellInfoHTML = agePyramidTooltip;
 
@@ -405,23 +404,12 @@ const update = () => {
 
         gridLayer.minPixelsPerCell = 3;
 
-        style.legends = [];
-
-        //sex color legend
-        style.legends.push(
-            new gridviz.ColorDiscreteLegend({
-                title: "Women / men balance, in %",
-                width: 300,
-                colors: () => sexColorClassifier.colors,
-                breaks: () => sexColorClassifier.breaks,
-            })
-        );
-
-        //na legend
-        style.legends.push(naLegend);
-
-        //population size legend
-        style.addLegends(popSizeLegend(classNumberSize));
+        //legends
+        style.legends = [
+            colDiscreteLegend(mapCode, sexColorClassifier.colors, sexColorClassifier.breaks, undefined, 300),
+            naLegend,
+            popSizeLegend(classNumberSize)
+        ]
 
         gridLayer.cellInfoHTML = sexBalanceTooltip
 
