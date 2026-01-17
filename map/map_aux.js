@@ -177,3 +177,40 @@ const ternaryData = {
     },
 }
 
+
+
+
+
+// update URL with map parameters
+//TODO should be trigerred also on map move end event
+const updateURL = (map) => {
+    //get parameters
+    const p = new URLSearchParams(window.location.search);
+
+    // map viewport
+    const v = map.getView();
+    p.set("x", v.x.toFixed(0)); p.set("y", v.y.toFixed(0)); p.set("z", v.z.toFixed(0));
+
+    // handle dropdowns selection
+    p.set("map", document.getElementById("map_select").value);
+
+    // handle checkboxes
+    for (let cb of ["sbtp", "label", "boundary", "background"])
+        p.set(cb, document.getElementById(cb).checked ? "1" : "");
+
+    // handle background theme selection
+    p.set("bt", document.querySelector('input[name="background_theme"]:checked').value);
+
+    // handle collapse
+    //TODO
+    //document.getElementById("expandable-content").classList.contains("collapsed")
+    //p.set("collapsed", document.getElementById("sidebar").classList.contains("collapsed") ? "1" : "");
+    //if (urlParams.get("collapsed")) document.getElementById("expand-toggle-button").click();
+
+    //interpolate
+    p.set("interpolate", interpolate ? "1" : "");
+
+    //set URL with map parameters
+    const newURL = `${window.location.pathname}?${p.toString()}`;
+    window.history.replaceState({}, '', newURL);
+};
