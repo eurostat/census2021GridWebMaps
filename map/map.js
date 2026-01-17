@@ -386,7 +386,7 @@ const update = () => {
         const sexColorClassifier = gridviz.colorClassifier(breaks, d3.schemeSpectral[breaks.length + 1]);
 
         const classNumberSize = 4;
-        const style = new gridviz.ShapeColorSizeStyle({
+        gridLayer.styles = [new gridviz.ShapeColorSizeStyle({
             color: (c) => (c.indMF == undefined ? naColor : sexColorClassifier(c.indMF)),
             size: (c, r, z, viewScale) => viewScale(c.T),
             viewScale: gridviz.viewScaleQuantile({
@@ -399,13 +399,12 @@ const update = () => {
                 maxSizeFactor: 1.2,
             }),
             shape: () => "circle",
-        });
-        gridLayer.styles = [style];
+        })];
 
         gridLayer.minPixelsPerCell = 3;
 
         //legends
-        style.legends = [
+        gridLayer.styles[0].legends = [
             colDiscreteLegend(mapCode, sexColorClassifier.colors, sexColorClassifier.breaks, undefined, 300),
             naLegend,
             popSizeLegend(classNumberSize)
