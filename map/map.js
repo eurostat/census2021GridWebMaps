@@ -532,57 +532,7 @@ const update = () => {
             );
 
         //tooltip text
-        if (mapCode == "ter_age")
-            gridLayer.cellInfoHTML = (c) => {
-                let total = c.Y_LT15 + c.Y_1564 + c.Y_GE65;
-                if (isNaN(total)) total = c.T;
-                const tot_ = "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>";
-                if (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined)
-                    return tot_ + "Decomposition data not available" + (c.CONFIDENTIALSTATUS ? "<br>(confidential)" : "");
-                return (
-                    tot_ +
-                    formatPercentage(c.sY_LT15) +
-                    "% under 15 years<br>" +
-                    formatPercentage(c["sY_1564"]) +
-                    "% 15 to 64 years<br>" +
-                    formatPercentage(c.sY_GE65) +
-                    "% 65 years and older"
-                );
-            };
-        else if (mapCode == "ter_mob")
-            gridLayer.cellInfoHTML = (c) => {
-                let total = c.CHG_IN + c.SAME + c.CHG_OUT;
-                if (isNaN(total)) total = c.T;
-                const tot_ = "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>";
-                if (c.CHG_IN == undefined || c.SAME == undefined || c.CHG_OUT == undefined)
-                    return tot_ + "Decomposition data not available" + (c.CONFIDENTIALSTATUS ? "<br>(confidential)" : "");
-                return (
-                    tot_ +
-                    formatPercentage(c.sSAME) +
-                    "% residence unchanged<br>" +
-                    formatPercentage(c.sCHG_IN) +
-                    "% moved within the country<br>" +
-                    formatPercentage(c.sCHG_OUT) +
-                    "% moved from outside the country"
-                );
-            };
-        else if (mapCode == "ter_pob")
-            gridLayer.cellInfoHTML = (c) => {
-                let total = c.NAT + c.EU_OTH + c.OTH;
-                if (isNaN(total)) total = c.T;
-                const tot_ = "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>";
-                if (c.NAT == undefined || c.EU_OTH == undefined || c.OTH == undefined)
-                    return tot_ + "Decomposition data not available" + (c.CONFIDENTIALSTATUS ? "<br>(confidential)" : "");
-                return (
-                    tot_ +
-                    formatPercentage(c.sNAT) +
-                    "% born in the country<br>" +
-                    formatPercentage(c.sEU_OTH) +
-                    "% born in another EU member state<br>" +
-                    formatPercentage(c.sOTH) +
-                    "% born outside the EU"
-                );
-            };
+        gridLayer.cellInfoHTML = ternaryTooltip[mapCode]
 
     } else if (["ageing", "dep_ratio", "oa_dep_ratio", "y_dep_ratio", "median_age"].includes(mapCode)) {
 
