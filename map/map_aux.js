@@ -1,7 +1,4 @@
 
-console.log("kjhhkjhgghjhjghgj")
-
-
 
 //format function for percentages
 const formatPercentage = d3.format(".1f");

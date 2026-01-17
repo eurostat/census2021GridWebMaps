@@ -483,7 +483,9 @@ const update = () => {
         gridLayer.cellInfoHTML = pobPCTooltip
 
     } else if (mapCode === "chernoff") {
+        console.log(mapCode)
 
+        /*
         //age color - 3/4 classes
         const ageClassifier = gridviz.ternaryClassifier(["sY_LT15", "sY_1564", "sY_GE65"], (c) => 100, {
             center: [0.15, 0.64, 0.21],
@@ -523,6 +525,7 @@ const update = () => {
         gridLayer.minPixelsPerCell = 40;
 
         gridLayer.cellInfoHTML = chernoffTooltip(ageClassifier, sexClassifier, empClassifier)
+*/
 
     } else console.error("Unexpected map code: " + mapCode);
 
