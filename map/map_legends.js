@@ -129,3 +129,13 @@ const agePyramidLegend = colAge => new gridviz.ColorCategoryLegend({
         [colAge(0.9), "65 years and older"],
     ],
 })
+
+
+const pobLegend = new gridviz.ColorCategoryLegend({
+    title: "Place of birth",
+    colorLabel: [
+        ["#fed9a6", "Born in the country"],
+        ["#7570b3", "Born in another EU member state"],
+        ["#d95f02", "Born outside the EU"],
+    ],
+})

@@ -472,20 +472,11 @@ const update = () => {
 
         gridLayer.minPixelsPerCell = 12;
 
-        //place of birth
+        //legends
         gridLayer.styles[0].legends = [
-            new gridviz.ColorCategoryLegend({
-                title: "Place of birth",
-                colorLabel: [
-                    ["#fed9a6", "Born in the country"],
-                    ["#7570b3", "Born in another EU member state"],
-                    ["#d95f02", "Born outside the EU"],
-                ],
-            }),
+            pobLegend,
+            popSizeLegend(classNumberSize)
         ];
-
-        //population
-        gridLayer.styles[0].addLegends(popSizeLegend(classNumberSize))
 
         gridLayer.cellInfoHTML = pobPCTooltip
 
