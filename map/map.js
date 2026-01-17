@@ -1,10 +1,9 @@
 //TODO
-// factor legends
-//true age pyramid
-//revamp tooltips
-//revamp breaks
 //fix tooltip location bug
 //update x,y,z on view change
+//true age pyramid
+
+//revamp tooltips, breaks, legends
 
 //add chernoff faces - as GUI element, hidden
 //sea level rise ?
