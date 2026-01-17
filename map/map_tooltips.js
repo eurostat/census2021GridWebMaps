@@ -161,3 +161,28 @@ const pobPCTooltip = (c) =>
         " born in another EU member state<br>" +
         formatLarge(c.OTH) +
         " born outside the EU";
+
+
+const chernoffTooltip = (ageClassifier, sexClassifier, empClassifier) => (c) => {
+    const a = ageClassifier(c);
+    const s = sexClassifier(c);
+    const e = empClassifier(c.sEMP);
+    return (
+        "" +
+        c.T +
+        " person" +
+        (c.T ? "s" : "") +
+        "<br>Over-representation of <b>" +
+        (s == "m" ? "men" : "women") +
+        "</b>" +
+        "<br>" +
+        (a == "0"
+            ? "younger than <b>15</b>"
+            : a == "1"
+                ? "aged between <b>15 and 64</b>"
+                : "aged <b>65</b> and older") +
+        "<br>with <b>" +
+        (e == 0 ? "low" : e == 1 ? "average" : "high") +
+        "</b> employment"
+    );
+}
