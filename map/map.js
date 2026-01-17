@@ -149,12 +149,6 @@ const update = () => {
     //show/hide GUI components
     document.getElementById("sbtp_div").style.display = ["pop", "age_pyramid", "sex_balance", "mobility_pc", "pob_pc"].includes(mapCode) ? 'none' : 'inline-block'
 
-    //show/hide copyright html components
-    const egCopyright = document.getElementById('eurogeographics-copyright');
-    if (egCopyright) egCopyright.style.display = document.getElementById("boundary").checked ? 'inline-block' : 'none';
-    const tomtomCopyright = document.getElementById('tomtom-copyright');
-    if (tomtomCopyright) tomtomCopyright.style.display = document.getElementById("road").checked ? 'inline-block' : 'none';
-
     // set gridlayer dataset
     gridLayer.dataset = mapCode === "pop" ? datasetTotal : dataset
 

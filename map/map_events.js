@@ -23,26 +23,28 @@ document.getElementById("label").addEventListener("change", function () {
 document.getElementById("boundary").addEventListener("change", function () {
     boundariesLayer.visible = this.checked ? undefined : () => false;
     map.redraw();
+
+    //show/hide copyright html components
+    document.getElementById('eurogeographics-copyright').style.display = document.getElementById("boundary").checked ? 'inline-block' : 'none';
+
     updateURL(map);
 });
 
-// show/hide background layer
-document.getElementById("background").addEventListener("change", function () {
-    updateBackgroundVisibility()
-    map.redraw();
-    updateURL(map);
-});
 
-// show/hide road background layer
-document.getElementById("road").addEventListener("change", function () {
-    updateBackgroundVisibility()
-    map.redraw();
-    updateURL(map);
-});
 
-// show/hide elevation background layer
-document.getElementById("elevation").addEventListener("change", function () {
+
+// background
+const bckEvent = () => {
     updateBackgroundVisibility()
     map.redraw();
+
+    //show/hide copyright html components
+    document.getElementById('tomtom-copyright').style.display = document.getElementById("road").checked && document.getElementById("background").checked ? 'inline-block' : 'none';
+
     updateURL(map);
-});
+}
+
+document.getElementById("background").addEventListener("change", bckEvent);
+document.getElementById("road").addEventListener("change", bckEvent);
+document.getElementById("elevation").addEventListener("change", bckEvent);
+
