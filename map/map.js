@@ -480,7 +480,6 @@ const update = () => {
         gridLayer.cellInfoHTML = pobPCTooltip
 
     } else if (mapCode === "chernoff") {
-        if (!chernoffImages) return;
 
         //age color - 3/4 classes
         const ageClassifier = gridviz.ternaryClassifier(["sY_LT15", "sY_1564", "sY_GE65"], (c) => 100, {
@@ -497,14 +496,13 @@ const update = () => {
 
         const classNumberSize = 3;
         const style = new gridviz.ImageStyle({
-            imageCode: (c) => {
-                const a = +ageClassifier(c);
-                const ageCode = a == 0 ? "y" : a == 1 ? "m" : "o";
-                const sexCode = sexClassifier(c);
-                const empCode = empClassifier(c.sEMP);
-                return sexCode + ageCode + empCode;
+            image: (c) => {
+                const a = +ageClassifier(c)
+                const ageCode = a == 0 ? 'y' : a == 1 ? 'm' : 'o'
+                const sexCode = sexClassifier(c)
+                const empCode = empClassifier(c.sEMP)
+                return 'https://jgaffuri.github.io/chernoff-faces/out/v1/' + sexCode + ageCode + empCode + '.png'
             },
-            images: chernoffImages,
             size: (c, r, z, viewScale) => viewScale(c.T),
             viewScale: gridviz.viewScaleQuantile({
                 valueFunction: (c) => +c.T,
