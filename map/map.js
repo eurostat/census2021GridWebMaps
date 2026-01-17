@@ -136,6 +136,7 @@ let totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
 //link legend
 totPopStyle.legends = [totPopLegend];
 
+console.log("ddkgdfj")
 
 
 
@@ -144,6 +145,8 @@ const update = () => {
     // get selected map code
     const mapCode = document.getElementById("map_select").value;
     const sbtp = document.getElementById("sbtp").checked;
+
+    console.log(mapCode)
 
     //show/hide GUI components
     document.getElementById("sbtp_div").style.display = ["pop", "age_pyramid", "sex_balance", "mobility_pc", "pob_pc"].includes(mapCode) ? 'none' : 'inline-block'
@@ -488,7 +491,10 @@ const update = () => {
         });
 
         //sex code
-        const sexClassifier = (c) => (c.indMF <= 0 ? "f" : "m");
+        const sexClassifier = (c) => {
+            console.log(c.indMF)
+            return c.indMF <= 0 ? "f" : "m"
+        };
 
         //employment class
         const breaks = [45, 55];
@@ -497,6 +503,7 @@ const update = () => {
         const classNumberSize = 3;
         const style = new gridviz.ImageStyle({
             image: (c) => {
+                console.log("aaa")
                 const a = +ageClassifier(c)
                 const ageCode = a == 0 ? 'y' : a == 1 ? 'm' : 'o'
                 const sexCode = sexClassifier(c)
