@@ -1,7 +1,7 @@
 //TODO
+//true age pyramid
 //fix tooltip location bug
 //update x,y,z on view change
-//true age pyramid
 
 //revamp tooltips, breaks, legends
 
