@@ -226,29 +226,9 @@ const update = () => {
 
         const style = gridLayer.styles[0];
 
-        //share color legend
-        style.addLegends([
-            new gridviz.ColorDiscreteLegend({
-                title: legendTitles[mapCode],
-                width: 250,
-                colors: () => colors,
-                breaks: () => breaks,
-                labelFormat: (v, i) => v + (i == 1 || i == breaks.length ? "%" : ""),
-            }),
-        ]);
-
-        //na legend
-        style.legends.push(naLegend);
-
-        //population size legend
-        if (sbtp)
-            style.addLegends(
-                gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
-                    title: "Population",
-                    fillColor: "#666",
-                    labelFormat: (v) => formatLarge(gridviz.nice(v)),
-                })
-            );
+        //add legends
+        style.addLegends([shareLegend(mapCode, colors, breaks), naLegend]);
+        if (sbtp) style.addLegends(popSizeLegend(classNumberSize));
 
         //tooltip text
         gridLayer.cellInfoHTML = shareTooltip(shareCode, mapCode)
@@ -396,14 +376,7 @@ const update = () => {
         style.legends.push(naLegend);
 
         //population legend
-        if (sbtp)
-            style.addLegends(
-                gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
-                    title: "Population",
-                    fillColor: "#666",
-                    labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
-                })
-            );
+        if (sbtp) style.addLegends(popSizeLegend(classNumberSize))
 
         //tooltip text
         gridLayer.cellInfoHTML = ternaryTooltip[mapCode]
@@ -470,14 +443,7 @@ const update = () => {
         style.legends.push(naLegend);
 
         //population size legend
-        if (sbtp)
-            style.addLegends(
-                gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
-                    title: "Population",
-                    fillColor: "#666",
-                    labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
-                })
-            );
+        if (sbtp) style.addLegends(popSizeLegend(classNumberSize))
 
         //tooltip
         gridLayer.cellInfoHTML = getTooltipDemography(mapCode);
@@ -520,14 +486,7 @@ const update = () => {
         ];
 
         //population
-        gridLayer.styles[0].addLegends(
-            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
-                title: "Population",
-                shape: "square",
-                fillColor: "#666",
-                labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
-            })
-        );
+        gridLayer.styles[0].addLegends(popSizeLegend(classNumberSize, "square"))
 
         gridLayer.cellInfoHTML = agePyramidTooltip;
 
@@ -571,13 +530,7 @@ const update = () => {
         style.legends.push(naLegend);
 
         //population size legend
-        style.addLegends(
-            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
-                title: "Population",
-                fillColor: "#666",
-                labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
-            })
-        );
+        style.addLegends(popSizeLegend(classNumberSize));
 
         gridLayer.cellInfoHTML = sexBalanceTooltip
 
@@ -616,13 +569,7 @@ const update = () => {
         ];
 
         //population
-        gridLayer.styles[0].addLegends(
-            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
-                title: "Population",
-                fillColor: "#666",
-                labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
-            })
-        );
+        gridLayer.styles[0].addLegends(popSizeLegend(classNumberSize))
 
         gridLayer.cellInfoHTML = mobilityPCTooltip
 
@@ -660,13 +607,7 @@ const update = () => {
         ];
 
         //population
-        gridLayer.styles[0].addLegends(
-            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
-                title: "Population",
-                fillColor: "#666",
-                labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
-            })
-        );
+        gridLayer.styles[0].addLegends(popSizeLegend(classNumberSize))
 
         gridLayer.cellInfoHTML = pobPCTooltip
 
