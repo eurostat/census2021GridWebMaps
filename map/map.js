@@ -2,6 +2,7 @@
 //fix tooltip location bug
 //true age pyramid
 //update x,y,z on view change
+//revamp tooltips
 //revamp breaks ?
 
 //add chernoff faces - as GUI element, hidden
@@ -291,7 +292,7 @@ const update = () => {
 
         //set layer parameters
         gridLayer.minPixelsPerCell = interpolate ? 1.7 : 0.7;
-        gridLayer.cellInfoHTML = (c) => "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 1 ? "" : "s");
+        gridLayer.cellInfoHTML = totPopTooltip;
 
     } else if (["Y_LT15", "Y_1564", "Y_GE65", "F", "M", "EMP", "SAME", "CHG_IN", "CHG_OUT", "NAT", "EU_OTH", "OTH"].includes(mapCode)) {
 
@@ -376,12 +377,7 @@ const update = () => {
             );
 
         //tooltip text
-        gridLayer.cellInfoHTML = (c) => {
-            const pop_ = "<br>" + formatLarge(c.T) + " person" + (c.T == 1 ? "" : "s");
-            if (c[mapCode] == undefined || c[shareCode] == undefined)
-                return "Data not available" + (c.CONFIDENTIALSTATUS ? " (confidential)" : "") + pop_;
-            return "<b>" + formatPercentage(c[shareCode]) + " %</b><br>" + formatLarge(c[mapCode]) + pop_;
-        };
+        gridLayer.cellInfoHTML = shareTooltip(shareCode, mapCode)
 
     } else if (["ter_age", "ter_mob", "ter_pob"].includes(mapCode)) {
 

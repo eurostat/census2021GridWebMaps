@@ -1,5 +1,18 @@
 
 
+const totPopTooltip = (c) => "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 1 ? "" : "s")
+
+
+const shareTooltip = (shareCode, mapCode) => (c) => {
+    const pop_ = "<br>" + formatLarge(c.T) + " person" + (c.T == 1 ? "" : "s");
+    if (c[mapCode] == undefined || c[shareCode] == undefined)
+        return "Data not available" + (c.CONFIDENTIALSTATUS ? " (confidential)" : "") + pop_;
+    return "<b>" + formatPercentage(c[shareCode]) + " %</b><br>" + formatLarge(c[mapCode]) + pop_;
+};
+
+
+
+
 const getTooltipDemography = (mapCode) => {
     return (c) => {
         const buf = []
