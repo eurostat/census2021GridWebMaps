@@ -14,3 +14,17 @@ const confidentialStyle =
           visible: z => z < 150
     })*/
 
+
+// interoplator function
+const interpolateStyles = (styles, prop) => {
+    //define interpolator
+    const interpTotPopStyle = new gridviz.Interpolator({
+        value: (c) => c[prop],
+        targetResolution: (r, z) => z,
+        interpolatedProperty: prop,
+    })
+    //apply styles
+    interpTotPopStyle.styles = styles
+    return [interpTotPopStyle]
+}
+

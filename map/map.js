@@ -100,8 +100,6 @@ const datasetTotal = new gridviz.MultiResolutionDataset(
 );
 
 
-
-
 //make grid layer
 const gridLayer = new gridviz.GridLayer(undefined, []);
 gridLayer.blendOperation = () => "multiply"
@@ -109,7 +107,6 @@ gridLayer.blendOperation = () => "multiply"
 
 //set map layers
 map.layers = [backgroundLayerElevation, backgroundLayerRoad, backgroundLayerRoad2, gridLayer, boundariesLayer, labelLayer];
-
 
 
 // total population style
@@ -137,29 +134,8 @@ let totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
     color: { ...colors },
 })
 
-//legend
-const totPopLegend = new gridviz.ColorDiscreteLegend({
-    title: "Population",
-    width: Math.min(window.innerWidth - 40, 400),
-    colors: () => colors,
-    breaks: (viewScale) => viewScale?.breaks.map((b) => gridviz.nice(b)),
-    labelFormat: formatLarge,
-})
+//link legend
 totPopStyle.legends = [totPopLegend];
-
-
-// interoplator function
-const interpolateStyles = (styles, prop) => {
-    //define interpolator
-    const interpTotPopStyle = new gridviz.Interpolator({
-        value: (c) => c[prop],
-        targetResolution: (r, z) => z,
-        interpolatedProperty: prop,
-    })
-    //apply styles
-    interpTotPopStyle.styles = styles
-    return [interpTotPopStyle]
-}
 
 
 
