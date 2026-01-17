@@ -184,14 +184,6 @@ const datasetTotal = new gridviz.MultiResolutionDataset(
     { preprocess: (c) => c.T && +c.T > 0 }
 );
 
-
-//format function for percentages
-const formatPercentage = d3.format(".1f");
-
-//format function for large numbers
-const _f = d3.format(",.0f");
-const formatLarge = (v) => _f(v).replace(/,/g, " ");
-
 //default color for not available data
 const naColor = "#ccc";
 
@@ -670,7 +662,54 @@ const update = () => {
         //tooltip
         gridLayer.cellInfoHTML = getTooltipDemography(mapCode);
 
+    } else if (mapCode === "age_pyramid") {
+        const colAge = d3.interpolateSpectral;
+        const classNumberSize = 4;
+        gridLayer.styles = [
+            new gridviz.CompositionStyle({
+                color: {
+                    Y_LT15: colAge(0.2),
+                    Y_1564: colAge(0.4),
+                    Y_GE65: colAge(0.9),
+                },
+                type: () => "flag", //flag, piechart, ring, segment, radar, agepyramid, halftone
+                size: (c, r, z, scale) => scale(c.T),
+                viewScale: gridviz.viewScaleQuantile({
+                    valueFunction: (c) => +c.T,
+                    classNumber: classNumberSize,
+                    minSizePix: 8,
+                    maxSizeFactor: 0.9,
+                }),
+                //viewScale: gridviz.sizeScale({ valueFunction: (c) => +c.T, exponent: 0.1 }),
+                //stripesOrientation: () => 90,
+            }),
+        ];
 
+        gridLayer.minPixelsPerCell = 12;
+
+        //age
+        gridLayer.styles[0].legends = [
+            new gridviz.ColorCategoryLegend({
+                title: "Age",
+                colorLabel: [
+                    [colAge(0.2), "Under 15 years"],
+                    [colAge(0.4), "15 to 64 years"],
+                    [colAge(0.9), "65 years and older"],
+                ],
+            }),
+        ];
+
+        //population
+        gridLayer.styles[0].addLegends(
+            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
+                title: "Population",
+                shape: "square",
+                fillColor: "#666",
+                labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
+            })
+        );
+
+        gridLayer.cellInfoHTML = agePyramidTooltip;
 
     } else if (mapCode === "sex_balance") {
         //sex - color classifier
@@ -720,90 +759,8 @@ const update = () => {
             })
         );
 
-        gridLayer.cellInfoHTML = (c) => {
-            let tot = c.F + c.M;
-            if (isNaN(tot)) tot = c.T;
-            const pop_ = "<b>" + formatLarge(tot) + "</b> person" + (tot == 1 ? "" : "s") + "<br>";
-            if (c.F == undefined || c.M == undefined)
-                return "Data not available" + (c.CONFIDENTIALSTATUS ? " (confidential)" : "") + "<br>" + pop_;
-            return (
-                pop_ +
-                formatLarge(c.M) +
-                " m" +
-                (c.M == 1 ? "a" : "e") +
-                "n<br>" +
-                formatLarge(c.F) +
-                " wom" +
-                (c.F == 1 ? "a" : "e") +
-                "n<br>" +
-                "Difference: <b>" +
-                (c.indMF > 0 ? "+" : "") +
-                formatPercentage(c.indMF) +
-                " % men</b>"
-            );
-        };
+        gridLayer.cellInfoHTML = sexBalanceTooltip
 
-    } else if (mapCode === "age_pyramid") {
-        const colAge = d3.interpolateSpectral;
-        const classNumberSize = 4;
-        gridLayer.styles = [
-            new gridviz.CompositionStyle({
-                color: {
-                    Y_LT15: colAge(0.2),
-                    Y_1564: colAge(0.4),
-                    Y_GE65: colAge(0.9),
-                },
-                type: () => "flag", //flag, piechart, ring, segment, radar, agepyramid, halftone
-                size: (c, r, z, scale) => scale(c.T),
-                viewScale: gridviz.viewScaleQuantile({
-                    valueFunction: (c) => +c.T,
-                    classNumber: classNumberSize,
-                    minSizePix: 8,
-                    maxSizeFactor: 0.9,
-                }),
-                //viewScale: gridviz.sizeScale({ valueFunction: (c) => +c.T, exponent: 0.1 }),
-                //stripesOrientation: () => 90,
-            }),
-        ];
-
-        gridLayer.minPixelsPerCell = 12;
-
-        //age
-        gridLayer.styles[0].legends = [
-            new gridviz.ColorCategoryLegend({
-                title: "Age",
-                colorLabel: [
-                    [colAge(0.2), "Under 15 years"],
-                    [colAge(0.4), "15 to 64 years"],
-                    [colAge(0.9), "65 years and older"],
-                ],
-            }),
-        ];
-
-        //population
-        gridLayer.styles[0].addLegends(
-            gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {
-                title: "Population",
-                shape: "square",
-                fillColor: "#666",
-                labelFormat: (v) => formatLarge(gridviz.nice(v)), //Math.round,
-            })
-        );
-
-        gridLayer.cellInfoHTML = (c) =>
-            c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined
-                ? undefined
-                : "<b>" +
-                formatLarge(c.Y_LT15 + c.Y_1564 + c.Y_GE65) +
-                "</b> person" +
-                (c.Y_LT15 + c.Y_1564 + c.Y_GE65 == 1 ? "" : "s") +
-                "<br>" +
-                formatLarge(c.Y_LT15) +
-                " - under 15 years<br>" +
-                formatLarge(c.Y_1564) +
-                " - 15 to 64 years<br>" +
-                formatLarge(c.Y_GE65) +
-                " - 65 years and older";
     } else if (mapCode === "mobility_pc") {
         const classNumberSize = 5;
         gridLayer.styles = [
@@ -847,20 +804,7 @@ const update = () => {
             })
         );
 
-        gridLayer.cellInfoHTML = (c) =>
-            c.SAME == undefined || c.CHG_IN == undefined || c.CHG_OUT == undefined
-                ? undefined
-                : "<b>" +
-                formatLarge(c.SAME + c.CHG_IN + c.CHG_OUT) +
-                "</b> person" +
-                (c.SAME + c.CHG_IN + c.CHG_OUT == 1 ? "" : "s") +
-                "<br>" +
-                formatLarge(c.SAME) +
-                " residence unchanged<br>" +
-                formatLarge(c.CHG_IN) +
-                " moved within the country<br>" +
-                formatLarge(c.CHG_OUT) +
-                " moved from outside the country";
+        gridLayer.cellInfoHTML = mobilityPCTooltip
 
     } else if (mapCode === "pob_pc") {
         const classNumberSize = 5;
@@ -904,21 +848,7 @@ const update = () => {
             })
         );
 
-        gridLayer.cellInfoHTML = (c) =>
-            c.NAT == undefined || c.EU_OTH == undefined || c.OTH == undefined
-                ? undefined
-                : "<b>" +
-                formatLarge(c.NAT + c.EU_OTH + c.OTH) +
-                "</b> person" +
-                (c.NAT + c.EU_OTH + c.OTH == 1 ? "" : "s") +
-                "<br>" +
-                formatLarge(c.NAT) +
-                " born in the country<br>" +
-                formatLarge(c.EU_OTH) +
-                " born in another EU member state<br>" +
-                formatLarge(c.OTH) +
-                " born outside the EU";
-
+        gridLayer.cellInfoHTML = pobPCTooltip
 
     } else if (mapCode === "chernoff") {
         if (!chernoffImages) return;

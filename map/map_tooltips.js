@@ -23,3 +23,74 @@ const getTooltipDemography = (mapCode) => {
     }
 }
 
+
+
+const agePyramidTooltip = (c) =>
+    c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined
+        ? undefined
+        : "<b>" +
+        formatLarge(c.Y_LT15 + c.Y_1564 + c.Y_GE65) +
+        "</b> person" +
+        (c.Y_LT15 + c.Y_1564 + c.Y_GE65 == 1 ? "" : "s") +
+        "<br>" +
+        formatLarge(c.Y_LT15) +
+        " - under 15 years<br>" +
+        formatLarge(c.Y_1564) +
+        " - 15 to 64 years<br>" +
+        formatLarge(c.Y_GE65) +
+        " - 65 years and older"
+
+
+const sexBalanceTooltip = (c) => {
+    let tot = c.F + c.M;
+    if (isNaN(tot)) tot = c.T;
+    const pop_ = "<b>" + formatLarge(tot) + "</b> person" + (tot == 1 ? "" : "s") + "<br>";
+    if (c.F == undefined || c.M == undefined)
+        return "Data not available" + (c.CONFIDENTIALSTATUS ? " (confidential)" : "") + "<br>" + pop_;
+    return (
+        pop_ +
+        formatLarge(c.M) +
+        " m" +
+        (c.M == 1 ? "a" : "e") +
+        "n<br>" +
+        formatLarge(c.F) +
+        " wom" +
+        (c.F == 1 ? "a" : "e") +
+        "n<br>" +
+        "Difference: <b>" +
+        (c.indMF > 0 ? "+" : "") +
+        formatPercentage(c.indMF) +
+        " % men</b>"
+    );
+};
+
+const mobilityPCTooltip = (c) =>
+    c.SAME == undefined || c.CHG_IN == undefined || c.CHG_OUT == undefined
+        ? undefined
+        : "<b>" +
+        formatLarge(c.SAME + c.CHG_IN + c.CHG_OUT) +
+        "</b> person" +
+        (c.SAME + c.CHG_IN + c.CHG_OUT == 1 ? "" : "s") +
+        "<br>" +
+        formatLarge(c.SAME) +
+        " residence unchanged<br>" +
+        formatLarge(c.CHG_IN) +
+        " moved within the country<br>" +
+        formatLarge(c.CHG_OUT) +
+        " moved from outside the country";
+
+
+const pobPCTooltip = (c) =>
+    c.NAT == undefined || c.EU_OTH == undefined || c.OTH == undefined
+        ? undefined
+        : "<b>" +
+        formatLarge(c.NAT + c.EU_OTH + c.OTH) +
+        "</b> person" +
+        (c.NAT + c.EU_OTH + c.OTH == 1 ? "" : "s") +
+        "<br>" +
+        formatLarge(c.NAT) +
+        " born in the country<br>" +
+        formatLarge(c.EU_OTH) +
+        " born in another EU member state<br>" +
+        formatLarge(c.OTH) +
+        " born outside the EU";
