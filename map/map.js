@@ -710,7 +710,7 @@ const update = () => {
 
         gridLayer.cellInfoHTML = chernoffTooltip(ageClassifier, sexClassifier, empClassifier)
 
-    } else console.error("Unexpected layer code: " + mapCode);
+    } else console.error("Unexpected map code: " + mapCode);
 
     //redraw
     map.redraw();
@@ -719,3 +719,4 @@ const update = () => {
 
 //initialise
 update();
+
