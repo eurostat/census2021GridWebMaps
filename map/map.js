@@ -93,20 +93,6 @@ map.layers = [backgroundLayerElevation, backgroundLayerRoad, backgroundLayerRoad
 
 
 
-//define multi resolution dataset
-const dataset = new gridviz.MultiResolutionDataset(
-    [1000, 2000, 5000, 10000, 20000, 50000, 100000],
-    (resolution) => new gviz_par.TiledParquetGrid(map, tiledGridsURL + resolution + "/"),
-    { preprocess: (c) => c.T && +c.T > 0 }
-);
-
-//define multi resolution dataset
-const datasetTotal = new gridviz.MultiResolutionDataset(
-    [1000, 2000, 5000, 10000, 20000, 50000, 100000],
-    (resolution) => new gviz_par.TiledParquetGrid(map, tiledTotalGridsURL + resolution + "/"),
-    { preprocess: (c) => c.T && +c.T > 0 }
-);
-
 //default color for not available data
 const naColor = "#ccc";
 

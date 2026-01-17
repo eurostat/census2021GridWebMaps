@@ -77,3 +77,21 @@ const labelLayer = new gridviz.LabelLayer(
         visible: document.getElementById("label").checked ? undefined : () => false,
     })
 );
+
+
+
+
+//define multi resolution datasets
+
+const dataset = new gridviz.MultiResolutionDataset(
+    [1000, 2000, 5000, 10000, 20000, 50000, 100000],
+    (resolution) => new gviz_par.TiledParquetGrid(map, tiledGridsURL + resolution + "/"),
+    { preprocess: (c) => c.T && +c.T > 0 }
+);
+
+const datasetTotal = new gridviz.MultiResolutionDataset(
+    [1000, 2000, 5000, 10000, 20000, 50000, 100000],
+    (resolution) => new gviz_par.TiledParquetGrid(map, tiledTotalGridsURL + resolution + "/"),
+    { preprocess: (c) => c.T && +c.T > 0 }
+);
+
