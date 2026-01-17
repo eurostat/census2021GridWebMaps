@@ -1,5 +1,5 @@
 //TODO
-// factor legends, events
+// factor legends
 //true age pyramid
 //revamp tooltips
 //revamp breaks
@@ -790,7 +790,6 @@ const update = () => {
     map.redraw();
     updateURL(map);
 };
-
 
 //initialise
 update();
