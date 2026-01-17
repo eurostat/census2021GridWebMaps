@@ -238,18 +238,6 @@ const update = () => {
         const mapCode2 = mapCode.replace("ter_", "")
         const classNumberSize = 4;
 
-        // get color ternary classifier
-        const colorTernaryFun = gridviz.ternaryColorClassifier(
-            ternaryData[mapCode].codes,
-            () => 100,
-            [ternaryColorsDict["0"], ternaryColorsDict["1"], ternaryColorsDict["2"]],
-            {
-                center: ternaryData[mapCode].center,
-                centerColor: ternaryColorsDict.center,
-                centerCoefficient: 0.25,
-                defaultColor: naColor,
-            })
-
         if (sbtp) {
 
             // prop circles
@@ -257,7 +245,7 @@ const update = () => {
                 new gridviz.ShapeColorSizeStyle({
                     color: (c) => {
                         if (!c["p_" + mapCode2]) compute[mapCode2](c);
-                        return colorTernaryFun(c) || naColor;
+                        return colorTernaryClassifiers[mapCode](c) || naColor;
                     },
                     viewScale: gridviz.viewScaleQuantile({
                         valueFunction: (c) => +c.T,
@@ -294,79 +282,10 @@ const update = () => {
             gridLayer.minPixelsPerCell = 0.7;
         }
 
-        //legends
-
         const style = gridLayer.styles[0];
-        const legendWidth = 150;
-        if (mapCode == "ter_age")
-            style.legends = [
-                new gridviz.TernaryLegend({
-                    title: "Age",
-                    classifier: colorTernaryFun,
-                    width: legendWidth,
-                    tooltip: map.tooltip,
-                    texts: {
-                        0: "Over-representation of persons aged <15",
-                        1: "Over-representation of persons aged 15 to 64",
-                        2: "Over-representation of persons aged >=65",
-                        12: "Under-representation of persons aged <15",
-                        "02": "Under-representation of<br>persons aged 15 to 64",
-                        "01": "Under-representation of persons aged >=65",
-                        center: "Balanced representation of age groups",
-                    },
-                    leftText: "Under 15",
-                    topText: "15 to 64",
-                    rightText: "65 and older",
-                    centerCoefficient: 0.5,
-                }),
-            ];
-        else if (mapCode == "ter_mob")
-            style.legends = [
-                new gridviz.TernaryLegend({
-                    title: "Mobility (2020-2021)",
-                    classifier: colorTernaryFun,
-                    width: legendWidth,
-                    tooltip: map.tooltip,
-                    texts: {
-                        0: "Over-representation of persons<br>that moved from outside the country",
-                        1: "Over-representation of persons<br>with residence unchanged",
-                        2: "Over-representation of persons<br>that moved within the country",
-                        12: "Under-representation of persons<br>that moved from outside the country",
-                        "02": "Under-representation of persons<br>with residence unchanged",
-                        "01": "Under-representation of persons<br>that moved within the country",
-                        center: "Balanced representation of mobility groups",
-                    },
-                    leftText: "Outside",
-                    topText: "No change",
-                    rightText: "Inside country",
-                    centerCoefficient: 0.5,
-                }),
-            ];
-        else if (mapCode == "ter_pob")
-            style.legends = [
-                new gridviz.TernaryLegend({
-                    title: "Birth place",
-                    classifier: colorTernaryFun,
-                    width: legendWidth,
-                    tooltip: map.tooltip,
-                    texts: {
-                        0: "Over-representation of persons<br>born outside the EU",
-                        1: "Over-representation of persons<br>born in the country",
-                        2: "Over-representation of persons<br>born in another EU member state",
-                        12: "Under-representation of persons<br>born outside the EU",
-                        "02": "Under-representation of persons<br>born in the country",
-                        "01": "Under-representation of persons<br>born in another EU member state",
-                        center: "Balanced representation",
-                    },
-                    leftText: "Rest of the world",
-                    topText: "Same country",
-                    rightText: "EU",
-                    centerCoefficient: 0.5,
-                }),
-            ];
 
-        //na legend
-        style.legends.push(naLegend);
+        //legends
+        style.legends = [ternaryLegends[mapCode], naLegend];
 
         //population legend
         if (sbtp) style.addLegends(popSizeLegend(classNumberSize))
