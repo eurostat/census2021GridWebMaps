@@ -28,3 +28,11 @@ const interpolateStyles = (styles, prop) => {
     return [interpTotPopStyle]
 }
 
+
+
+const ternaryColorsDict = {
+    center: "#999",
+    "0": "#4daf4a", "1": "#377eb8", "2": "#e41a1c",
+    "m01": "rgb(79, 150, 133)", "m02": "rgb(174, 127, 48)", "m12": "rgb(171, 96, 106)",
+    "unknown": naColor,
+};

@@ -180,7 +180,6 @@ const ternaryData = {
 
 
 
-
 // update URL with map parameters
 //TODO should be trigerred also on map move end event
 const updateURL = (map) => {

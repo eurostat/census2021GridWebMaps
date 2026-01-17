@@ -242,10 +242,10 @@ const update = () => {
         const colorTernaryFun = gridviz.ternaryColorClassifier(
             ternaryData[mapCode].codes,
             () => 100,
-            ["#4daf4a", "#377eb8", "#e41a1c"],
+            [ternaryColorsDict["0"], ternaryColorsDict["1"], ternaryColorsDict["2"]],
             {
                 center: ternaryData[mapCode].center,
-                centerColor: "#999",
+                centerColor: ternaryColorsDict.center,
                 centerCoefficient: 0.25,
                 defaultColor: naColor,
             })
@@ -270,6 +270,7 @@ const update = () => {
                 })
             ];
             gridLayer.minPixelsPerCell = 3;
+
         } else {
 
             // get ternary classifier
@@ -279,14 +280,6 @@ const update = () => {
                 { center: ternaryData[mapCode].center, centerCoefficient: 0.25 }
             );
 
-            // colors
-            const colDict = {
-                center: "#999",
-                "0": "#4daf4a", "1": "#377eb8", "2": "#e41a1c",
-                "m01": "rgb(79, 150, 133)", "m02": "rgb(174, 127, 48)", "m12": "rgb(171, 96, 106)",
-                "unknown": naColor,
-            };
-
             //pixel style
             gridLayer.styles = [
                 new gridviz.SquareColorCategoryWebGLStyle({
@@ -294,7 +287,7 @@ const update = () => {
                         if (!c["p_" + mapCode2]) compute[mapCode2](c);
                         return ternaryFun(c)
                     },
-                    color: colDict,
+                    color: ternaryColorsDict,
                 }),
                 strokeStyle
             ];
