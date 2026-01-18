@@ -1,12 +1,11 @@
 //TODO
 // check NaN, confidential
-// check new dataset ?
+// check new dataset version ?
 //fix tooltip location bug
 //update x,y,z on view change
-
 //revamp tooltips, breaks, legends
-
 //add chernoff faces - as GUI element, hidden
+
 //sea level rise ?
 //generalise interpolation
 
