@@ -34,7 +34,7 @@ const backgroundLayerElevation = new gridviz.BackgroundLayer({
 })
 
 // function to define or refresh background layers visibility based on GUI
-const updateBackgroundVisibility = () => {
+const updateLayersVisibility = () => {
     if (document.getElementById("background").checked) {
         document.getElementById("background_choice").style.display = "inline-block"
         backgroundLayerRoad.visible = document.getElementById("road").checked ? (z) => z > 11 : () => false
@@ -46,6 +46,8 @@ const updateBackgroundVisibility = () => {
         backgroundLayerRoad2.visible = () => false;
         backgroundLayerElevation.visible = () => false;
     }
+    labelLayer.visible = document.getElementById("label").checked ? ()=>true : ()=>false
+    boundariesLayer.visible = document.getElementById("boundary").checked ? ()=>true : ()=>false
 }
 
 

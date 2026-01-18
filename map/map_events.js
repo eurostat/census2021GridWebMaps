@@ -35,7 +35,7 @@ document.getElementById("boundary").addEventListener("change", function () {
 
 // background
 const bckEvent = () => {
-    updateBackgroundVisibility()
+    updateLayersVisibility()
     map.redraw();
 
     //show/hide copyright html components

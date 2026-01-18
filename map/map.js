@@ -80,7 +80,7 @@ interpolate = interpolate != "" && interpolate != "false" && +interpolate != 0
 
 
 //
-updateBackgroundVisibility()
+updateLayersVisibility()
 
 
 
