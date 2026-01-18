@@ -1,7 +1,6 @@
 //TODO
-//revamp tooltips, legends
-// boundary purple ?
 // check new dataset version ?
+//revamp tooltips, legends
 // check NaN, confidential
 //fix tooltip location bug
 //update x,y,z on view change
