@@ -425,9 +425,12 @@ const update = () => {
 
         const classNumberSize = 4;
         gridLayer.styles = [new gridviz.ShapeColorSizeStyle({
-            color: (c) => (c.indMF == undefined ? naColor : sexColorClassifier(c.indMF)),
-            size: (c, r, z, viewScale) => viewScale(c.T),
-            viewScale: gridviz.viewScaleQuantile({
+            color: (c) => {
+                if (c.p_sex == undefined) compute.sex(c)
+                return (c.indMF == undefined ? naColor : sexColorClassifier(c.indMF))
+            },
+            size: sbtp ? (c, r, z, viewScale) => viewScale(c.T) : undefined,
+            viewScale: sbtp ? gridviz.viewScaleQuantile({
                 valueFunction: (c) => {
                     if (!c.p_sex) compute.sex(c);
                     return +c.T;
@@ -435,8 +438,8 @@ const update = () => {
                 classNumber: classNumberSize,
                 minSizePix: 2.5,
                 maxSizeFactor: 1.2,
-            }),
-            shape: () => "circle",
+            }) : undefined,
+            shape: sbtp ? () => "circle" : undefined,
         })];
 
         gridLayer.minPixelsPerCell = 3;
@@ -445,8 +448,8 @@ const update = () => {
         gridLayer.styles[0].legends = [
             colDiscreteLegend(mapCode, sexColorClassifier.colors, sexColorClassifier.breaks, undefined, 300),
             naLegend,
-            popSizeLegend(classNumberSize)
         ]
+        if (sbtp) gridLayer.styles[0].legends.push(popSizeLegend(classNumberSize))
 
         gridLayer.cellInfoHTML = sexBalanceTooltip
 
@@ -460,33 +463,19 @@ const update = () => {
                     CHG_OUT: "#d95f02", //orange
                 },
                 type: () => "piechart", //flag, piechart, ring, segment, radar, agepyramid, halftone
-                size: (c, r, z, scale) => scale(c.T),
-                viewScale: gridviz.viewScaleQuantile({
+                size: sbtp? (c, r, z, scale) => scale(c.T) : undefined,
+                viewScale: sbtp? gridviz.viewScaleQuantile({
                     valueFunction: (c) => +c.T,
                     classNumber: classNumberSize,
                     minSizePix: 6,
                     maxSizeFactor: 1.2,
-                }),
+                }) : undefined,
             }),
         ];
 
         gridLayer.minPixelsPerCell = 12;
-
-        //mobility
-        gridLayer.styles[0].legends = [
-            new gridviz.ColorCategoryLegend({
-                title: "Mobility, compared to January 1, 2020",
-                colorLabel: [
-                    ["#fed9a6", "Residence unchanged"],
-                    ["#7570b3", "Moved within the country"],
-                    ["#d95f02", "Moved from outside the country"],
-                ],
-            }),
-        ];
-
-        //population
-        gridLayer.styles[0].addLegends(popSizeLegend(classNumberSize))
-
+        gridLayer.styles[0].legends = [mobLegend];
+        if (sbtp) gridLayer.styles[0].addLegends(popSizeLegend(classNumberSize))
         gridLayer.cellInfoHTML = mobilityPCTooltip
 
     } else if (mapCode === "pob_pc") {

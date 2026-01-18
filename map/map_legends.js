@@ -132,7 +132,14 @@ const agePyramidLegend = agePyramidColors => new gridviz.ColorCategoryLegend({
     ],
 })
 
-
+const mobLegend = new gridviz.ColorCategoryLegend({
+    title: "Mobility, compared to January 1, 2020",
+    colorLabel: [
+        ["#fed9a6", "Residence unchanged"],
+        ["#7570b3", "Moved within the country"],
+        ["#d95f02", "Moved from outside the country"],
+    ],
+})
 
 const pobLegend = new gridviz.ColorCategoryLegend({
     title: "Place of birth",
