@@ -137,18 +137,13 @@ let totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
 //link legend
 totPopStyle.legends = [totPopLegend];
 
-console.log("ddkgdfj")
-
-
 
 const update = () => {
 
     // get selected map code
     const mapCode = document.getElementById("map_select").value;
     const sbtp = document.getElementById("sbtp").checked;
-    console.log(mapCode, sbtp)
-
-    console.log(mapCode)
+    //console.log(mapCode, sbtp)
 
     //show/hide GUI components
     document.getElementById("sbtp_div").style.display = ["pop", "age_pyramid", "sex_balance", "mobility_pc", "pob_pc"].includes(mapCode) ? 'none' : 'inline-block'
@@ -356,17 +351,14 @@ const update = () => {
 
     } else if (mapCode === "age_pyramid") {
 
-
-        console.log("todo fytfhg")
-
-        //const colAge = d3.interpolateSpectral;
-        //const classNumberSize = 4;
+        const colAge = d3.interpolateSpectral;
+        const classNumberSize = 4;
         gridLayer.styles = [
-            /*new gridviz.Style({
+            new gridviz.Style({
                 drawFun: (cells, geoCanvas, r) => {
                     console.log("todo")
                 }
-            })*/
+            })
 
                 /*new gridviz.CompositionStyle({
                 color: {
@@ -390,9 +382,9 @@ const update = () => {
         gridLayer.minPixelsPerCell = 12;
 
         //legends
-        //gridLayer.styles[0].legends = [agePyramidLegend(colAge), popSizeLegend(classNumberSize, "square")];
+        gridLayer.styles[0].legends = [agePyramidLegend(colAge), popSizeLegend(classNumberSize, "square")];
 
-        //gridLayer.cellInfoHTML = agePyramidTooltip;
+        gridLayer.cellInfoHTML = agePyramidTooltip;
 
     } else if (mapCode === "sex_balance") {
         //sex - color classifier
