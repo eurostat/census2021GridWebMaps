@@ -357,11 +357,11 @@ const update = () => {
 
         const classNumberSize = 4;
         const sizeVS = gridviz.viewScaleQuantile({
-                        valueFunction: (c) => +c.T,
-                        classNumber: classNumberSize,
-                        minSizePix: 8,
-                        maxSizeFactor: 0.9
-                    })
+            valueFunction: (c) => +c.T,
+            classNumber: classNumberSize,
+            minSizePix: 8,
+            maxSizeFactor: 0.9
+        })
         //viewScale: gridviz.sizeScale({ valueFunction: (c) => +c.T, exponent: 0.1 }),
 
         gridLayer.styles = [
@@ -387,7 +387,7 @@ const update = () => {
                         // max width
                         const maxCatPop = d3.max(cats, p => cell[p] / w[p])
 
-                        let cumulHg = 0
+                        let cumulHg = marginG + (resolution - sizeG) / 2
                         for (cat of cats) {
 
                             //set category color
@@ -402,7 +402,7 @@ const update = () => {
                             const hG = w[cat] * sizeG / 90
 
                             //draw bar
-                            ctx.fillRect(cell.x + (resolution - wG) / 2, cell.y + cumulHg + marginG, wG, hG)
+                            ctx.fillRect(cell.x + (resolution - wG) / 2, cell.y + cumulHg, wG, hG)
 
                             cumulHg += hG
                         }
