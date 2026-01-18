@@ -41,10 +41,10 @@ const popSizeLegend = (classNumberSize, shape = "circle") => gridviz.sizeDiscret
 //total population legend
 const totPopLegend = new gridviz.ColorDiscreteLegend({
     title: "Population",
-    width: Math.min(window.innerWidth - 40, 400),
+    width: Math.min(window.innerWidth - 40, 450),
     colors: () => colors,
     breaks: (viewScale) => viewScale?.breaks.map((b) => gridviz.nice(b)),
-    labelFormat: formatLarge,
+    //labelFormat: formatLarge,
 })
 
 //share and demography legend
