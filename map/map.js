@@ -1,5 +1,6 @@
 //TODO
 //true age pyramid
+// NaN, confidential
 //fix tooltip location bug
 //update x,y,z on view change
 
@@ -353,6 +354,7 @@ const update = () => {
         gridLayer.cellInfoHTML = getTooltipDemography(mapCode);
 
     } else if (mapCode === "age_pyramid") {
+
         const colAge = d3.interpolateSpectral;
         const classNumberSize = 4;
         gridLayer.styles = [

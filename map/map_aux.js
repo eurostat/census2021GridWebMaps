@@ -1,5 +1,4 @@
 
-
 //format function for percentages
 const formatPercentage = d3.format(".1f");
 
@@ -132,7 +131,7 @@ const breaksDict = {
     EU_OTH: [1, 5, 10, 15, 20, 30],
     OTH: [1, 5, 10, 20, 30, 50],
     ageing: [25, 50, 75, 100, 150, 200, 400],
-    dep_ratio: [30, 40, 50, 60, 80, 100, 150],
+    dep_ratio: [20, 30, 40, 50, 75, 100, 150],
     oa_dep_ratio: [15, 20, 25, 30, 40, 50, 75],
     y_dep_ratio: [15, 20, 25, 30, 40, 50, 75],
     median_age: [35, 40, 43, 46, 50, 55, 60, 65],
