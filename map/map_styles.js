@@ -65,7 +65,8 @@ const ternaryData = {
     },
     "ter_pob": {
         codes: ["sOTH", "sNAT", "sEU_OTH"],
-        center: [0.03, 0.95, 0.02],
+        center: [0.06, 0.9, 0.04],
+        //center: [0.03, 0.95, 0.02],
         //center: [0.25, 0.6, 0.15],
     },
 }
