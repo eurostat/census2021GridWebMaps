@@ -146,7 +146,7 @@ const update = () => {
     //console.log(mapCode, sbtp)
 
     //show/hide GUI components
-    document.getElementById("sbtp_div").style.display = ["pop", "age_pyramid", "sex_balance", "mobility_pc", "pob_pc"].includes(mapCode) ? 'none' : 'inline-block'
+    document.getElementById("sbtp_div").style.display = ["pop", "pob_pc"].includes(mapCode) ? 'none' : 'inline-block'
 
     // set gridlayer dataset
     gridLayer.dataset = mapCode === "pop" ? datasetTotal : dataset
@@ -376,13 +376,13 @@ const update = () => {
                     //get max length
                     //const maxCatPop = d3.max(cells, c => d3.max(cats, p => c[p] / w[p]))
 
-                    const vs = sizeVS(cells, resolution, z)
+                    const vs = sbtp ? sizeVS(cells, resolution, z) : undefined
 
                     //draw calls
                     for (let cell of cells) {
 
                         // symbol size, depending on total population
-                        const sizeG = vs(cell.T) - 2 * marginG
+                        const sizeG = (sbtp ? vs(cell.T) : resolution) - 2 * marginG
 
                         // max width
                         const maxCatPop = d3.max(cats, p => cell[p] / w[p])
@@ -414,7 +414,8 @@ const update = () => {
         ]
 
         gridLayer.minPixelsPerCell = 12
-        gridLayer.styles[0].legends = [agePyramidLegend(agePyramidColors), popSizeLegend(classNumberSize, "square")]
+        gridLayer.styles[0].legends = [agePyramidLegend(agePyramidColors)]
+        if (sbtp) gridLayer.styles[0].legends.push(popSizeLegend(classNumberSize, "square"))
         gridLayer.cellInfoHTML = agePyramidTooltip
 
     } else if (mapCode === "sex_balance") {
