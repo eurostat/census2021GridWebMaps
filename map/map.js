@@ -352,31 +352,77 @@ const update = () => {
     } else if (mapCode === "age_pyramid") {
 
         const colAge = d3.interpolateSpectral;
-        const classNumberSize = 4;
+        const colors = { Y_LT15: colAge(0.2), Y_1564: colAge(0.4), Y_GE65: colAge(0.9) }
+        const w = { Y_LT15: 15, Y_1564: 50, Y_GE65: 25 }
+        const cats = Object.keys(w) //["Y_LT15","Y_1564","Y_GE65"]
+
+        //TODO by size
+        //const classNumberSize = 4;
+
         gridLayer.styles = [
             new gridviz.Style({
-                drawFun: (cells, geoCanvas, r) => {
-                    console.log("todo")
+                drawFun: (cells, geoCanvas, resolution) => {
+
+                    //
+                    const z = geoCanvas.view.z
+                    const ctx = geoCanvas.offscreenCtx
+                    const marginG = 2*z //2 pixels
+
+                    //get max population and max length
+                    const maxPop = d3.max(cells, c => c.T)
+                    const maxCatPop = d3.max(cells, c => d3.max(cats, p => c[p] / w[p]))
+
+                    console.log(maxPop, maxCatPop)
+
+                    //draw calls
+                    for (let cell of cells) {
+
+                        const sizeG = resolution - 2*marginG
+
+                        let cumulHg = 0
+                        for (cat of cats) {
+
+                            //set category color
+                            ctx.fillStyle = colors[cat]
+
+                            //get category value
+                            const val = cell[cat]
+
+                            //compute category length - in geo
+                            /** @type {number} */
+                            const wG = sizeG //(sG * val) / maxVal
+                            const hG = w[cat] * sizeG / 90
+
+                            //draw bar
+                            ctx.fillRect(cell.x + (resolution - wG) / 2, cell.y + cumulHg + marginG, wG, hG)
+
+                            cumulHg += hG
+                        }
+
+
+                    }
+
+
                 }
             })
 
-                /*new gridviz.CompositionStyle({
-                color: {
-                    Y_LT15: colAge(0.2),
-                    Y_1564: colAge(0.4),
-                    Y_GE65: colAge(0.9),
-                },
-                type: () => "flag", //flag, piechart, ring, segment, radar, agepyramid, halftone
-                size: (c, r, z, scale) => scale(c.T),
-                viewScale: gridviz.viewScaleQuantile({
-                    valueFunction: (c) => +c.T,
-                    classNumber: classNumberSize,
-                    minSizePix: 8,
-                    maxSizeFactor: 0.9,
-                }),
-                //viewScale: gridviz.sizeScale({ valueFunction: (c) => +c.T, exponent: 0.1 }),
-                //stripesOrientation: () => 90,
-            }),*/
+            /*new gridviz.CompositionStyle({
+            color: {
+                Y_LT15: colAge(0.2),
+                Y_1564: colAge(0.4),
+                Y_GE65: colAge(0.9),
+            },
+            type: () => "flag", //flag, piechart, ring, segment, radar, agepyramid, halftone
+            size: (c, r, z, scale) => scale(c.T),
+            viewScale: gridviz.viewScaleQuantile({
+                valueFunction: (c) => +c.T,
+                classNumber: classNumberSize,
+                minSizePix: 8,
+                maxSizeFactor: 0.9,
+            }),
+            //viewScale: gridviz.sizeScale({ valueFunction: (c) => +c.T, exponent: 0.1 }),
+            //stripesOrientation: () => 90,
+        }),*/
         ]
 
         gridLayer.minPixelsPerCell = 12;
