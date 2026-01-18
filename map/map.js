@@ -146,6 +146,7 @@ const update = () => {
     // get selected map code
     const mapCode = document.getElementById("map_select").value;
     const sbtp = document.getElementById("sbtp").checked;
+    console.log(mapCode, sbtp)
 
     console.log(mapCode)
 
@@ -355,10 +356,19 @@ const update = () => {
 
     } else if (mapCode === "age_pyramid") {
 
-        const colAge = d3.interpolateSpectral;
-        const classNumberSize = 4;
+
+        console.log("todo fytfhg")
+
+        //const colAge = d3.interpolateSpectral;
+        //const classNumberSize = 4;
         gridLayer.styles = [
-            new gridviz.CompositionStyle({
+            /*new gridviz.Style({
+                drawFun: (cells, geoCanvas, r) => {
+                    console.log("todo")
+                }
+            })*/
+
+                /*new gridviz.CompositionStyle({
                 color: {
                     Y_LT15: colAge(0.2),
                     Y_1564: colAge(0.4),
@@ -374,15 +384,15 @@ const update = () => {
                 }),
                 //viewScale: gridviz.sizeScale({ valueFunction: (c) => +c.T, exponent: 0.1 }),
                 //stripesOrientation: () => 90,
-            }),
-        ];
+            }),*/
+        ]
 
         gridLayer.minPixelsPerCell = 12;
 
         //legends
-        gridLayer.styles[0].legends = [agePyramidLegend(colAge), popSizeLegend(classNumberSize, "square")];
+        //gridLayer.styles[0].legends = [agePyramidLegend(colAge), popSizeLegend(classNumberSize, "square")];
 
-        gridLayer.cellInfoHTML = agePyramidTooltip;
+        //gridLayer.cellInfoHTML = agePyramidTooltip;
 
     } else if (mapCode === "sex_balance") {
         //sex - color classifier
