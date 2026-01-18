@@ -1,6 +1,6 @@
 //TODO
-//true age pyramid
-// NaN, confidential
+// check NaN, confidential
+// check new dataset ?
 //fix tooltip location bug
 //update x,y,z on view change
 
