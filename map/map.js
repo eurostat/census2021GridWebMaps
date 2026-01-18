@@ -398,8 +398,8 @@ const update = () => {
                             cumulHg += hG
                         }
                     }
-                    //update legends
-                    //this.updateLegends({ style: this, resolution: resolution, z: z })
+                    //update legend
+                    gridLayer.styles[0].updateLegends()
                 }
             })
 
@@ -417,7 +417,6 @@ const update = () => {
 
         gridLayer.minPixelsPerCell = 12
         gridLayer.styles[0].legends = [agePyramidLegend(agePyramidColors) /*, popSizeLegend(classNumberSize, "square")*/]
-        gridLayer.styles[0].updateLegends()
         gridLayer.cellInfoHTML = agePyramidTooltip
 
     } else if (mapCode === "sex_balance") {

@@ -126,9 +126,9 @@ const ternaryLegends = {
 const agePyramidLegend = agePyramidColors => new gridviz.ColorCategoryLegend({
     title: "Age",
     colorLabel: [
-        [agePyramidColors.Y_LT15, "Under 15 years"],
-        [agePyramidColors.Y_1564, "15 to 64 years"],
         [agePyramidColors.Y_GE65, "65 years and older"],
+        [agePyramidColors.Y_1564, "15 to 64 years"],
+        [agePyramidColors.Y_LT15, "Under 15 years"],
     ],
 })
 
