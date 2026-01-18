@@ -356,6 +356,13 @@ const update = () => {
         const cats = Object.keys(w) //["Y_LT15","Y_1564","Y_GE65"]
 
         const classNumberSize = 4;
+        const sizeVS = gridviz.viewScaleQuantile({
+                        valueFunction: (c) => +c.T,
+                        classNumber: classNumberSize,
+                        minSizePix: 8,
+                        maxSizeFactor: 0.9
+                    })
+        //viewScale: gridviz.sizeScale({ valueFunction: (c) => +c.T, exponent: 0.1 }),
 
         gridLayer.styles = [
             new gridviz.Style({
@@ -364,18 +371,20 @@ const update = () => {
                     //
                     const z = geoCanvas.view.z
                     const ctx = geoCanvas.offscreenCtx
-                    const marginG = 2 * z //2 pixels
+                    const marginG = 2 * z //2 pixels margin
 
-                    //get max population and max length
-                    const maxPop = d3.max(cells, c => c.T)
+                    //get max length
                     //const maxCatPop = d3.max(cells, c => d3.max(cats, p => c[p] / w[p]))
+
+                    const vs = sizeVS(cells, resolution, z)
 
                     //draw calls
                     for (let cell of cells) {
 
-                        //TODO use maxPop
-                        const sizeG = resolution - 2 * marginG
+                        // symbol size, depending on total population
+                        const sizeG = vs(cell.T) - 2 * marginG
 
+                        // max width
                         const maxCatPop = d3.max(cats, p => cell[p] / w[p])
 
                         let cumulHg = 0
@@ -389,7 +398,7 @@ const update = () => {
 
                             //compute category length - in geo
                             /** @type {number} */
-                            const wG = sizeG * catPop / maxCatPop //(sG * val) / maxVal
+                            const wG = sizeG * catPop / maxCatPop
                             const hG = w[cat] * sizeG / 90
 
                             //draw bar
@@ -399,24 +408,13 @@ const update = () => {
                         }
                     }
                     //update legend
-                    gridLayer.styles[0].updateLegends()
+                    gridLayer.styles[0].updateLegends({ style: gridLayer.styles[0], resolution: resolution, z: z, viewScale: vs })
                 }
             })
-
-            /*new gridviz.CompositionStyle({
-            size: (c, r, z, scale) => scale(c.T),
-            viewScale: gridviz.viewScaleQuantile({
-                valueFunction: (c) => +c.T,
-                classNumber: classNumberSize,
-                minSizePix: 8,
-                maxSizeFactor: 0.9,
-            }),
-            //viewScale: gridviz.sizeScale({ valueFunction: (c) => +c.T, exponent: 0.1 }),
-        }),*/
         ]
 
         gridLayer.minPixelsPerCell = 12
-        gridLayer.styles[0].legends = [agePyramidLegend(agePyramidColors) /*, popSizeLegend(classNumberSize, "square")*/]
+        gridLayer.styles[0].legends = [agePyramidLegend(agePyramidColors), popSizeLegend(classNumberSize, "square")]
         gridLayer.cellInfoHTML = agePyramidTooltip
 
     } else if (mapCode === "sex_balance") {
