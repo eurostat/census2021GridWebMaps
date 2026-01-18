@@ -463,8 +463,8 @@ const update = () => {
                     CHG_OUT: "#d95f02", //orange
                 },
                 type: () => "piechart", //flag, piechart, ring, segment, radar, agepyramid, halftone
-                size: sbtp? (c, r, z, scale) => scale(c.T) : undefined,
-                viewScale: sbtp? gridviz.viewScaleQuantile({
+                size: sbtp ? (c, r, z, scale) => scale(c.T) : undefined,
+                viewScale: sbtp ? gridviz.viewScaleQuantile({
                     valueFunction: (c) => +c.T,
                     classNumber: classNumberSize,
                     minSizePix: 6,
@@ -488,23 +488,18 @@ const update = () => {
                     OTH: "#d95f02", //orange
                 },
                 type: () => "halftone", //flag, piechart, ring, segment, radar, agepyramid, halftone
-                size: (c, r, z, scale) => scale(c.T),
-                viewScale: gridviz.viewScaleQuantile({
+                size: sbtp? (c, r, z, scale) => scale(c.T) : undefined,
+                viewScale: sbtp? gridviz.viewScaleQuantile({
                     valueFunction: (c) => +c.T,
                     classNumber: classNumberSize,
                     minSizePix: 8,
-                }),
+                }) : undefined,
             }),
         ];
 
         gridLayer.minPixelsPerCell = 12;
-
-        //legends
-        gridLayer.styles[0].legends = [
-            pobLegend,
-            popSizeLegend(classNumberSize)
-        ];
-
+        gridLayer.styles[0].legends = [pobLegend,];
+        //if (sbtp) gridLayer.styles[0].legends.push(popSizeLegend(classNumberSize))
         gridLayer.cellInfoHTML = pobPCTooltip
 
     } else if (mapCode === "chernoff") {
