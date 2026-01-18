@@ -1,5 +1,5 @@
 //TODO
-//revamp tooltips, breaks, legends
+//revamp tooltips, legends
 // boundary purple ?
 // check new dataset version ?
 // check NaN, confidential

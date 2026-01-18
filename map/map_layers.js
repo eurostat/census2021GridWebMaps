@@ -57,7 +57,8 @@ const boundariesLayer = new gridviz.GeoJSONLayer(
     gridviz_eurostat.getEurostatBoundariesLayer({
         baseURL: nuts2jsonURL,
         showOth: false,
-        color: (f, zf) => {
+        col: "#cc6699", scale: "03M",
+        /*color: (f, zf) => {
             const p = f.properties;
             if (p.id >= 100000) return "#bcbcbc";
             if (p.co === "T") return "#888";
@@ -65,10 +66,11 @@ const boundariesLayer = new gridviz.GeoJSONLayer(
             else if (zf < 1000) return p.lvl >= 3 ? "" : "#888";
             else if (zf < 2000) return p.lvl >= 2 ? "" : "#888";
             else return p.lvl >= 1 ? "" : "#888";
-        },
+        },*/
         visible: document.getElementById("boundary").checked ? undefined : () => false,
     })
 );
+
 
 //make label layer
 const labelLayer = new gridviz.LabelLayer(
