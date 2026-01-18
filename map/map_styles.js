@@ -52,6 +52,24 @@ const interpolateStyles = (styles, prop) => {
 
 
 
+
+
+const ternaryData = {
+    "ter_age": {
+        codes: ["sY_LT15", "sY_1564", "sY_GE65"],
+        center: [0.15, 0.64, 0.21],
+    },
+    "ter_mob": {
+        codes: ["sCHG_OUT", "sSAME", "sCHG_IN"],
+        center: [0.03, 0.90, 0.07],
+    },
+    "ter_pob": {
+        codes: ["sOTH", "sNAT", "sEU_OTH"],
+        center: [0.03, 0.95, 0.02],
+        //center: [0.25, 0.6, 0.15],
+    },
+}
+
 const ternaryColorsDict = {
     center: "#999",
     "0": "#4daf4a", "1": "#377eb8", "2": "#e41a1c",
