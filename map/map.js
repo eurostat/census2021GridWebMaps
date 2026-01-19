@@ -31,6 +31,22 @@
   "NAT" >= Born in the country
   "EU_OTH" >= Born in another EU member state
   "OTH" >= Born outside the EU
+
+
+T - Total population
+M - Male Population
+F - Female Population 
+Y_LT15 - Age Under 15 years
+Y_1564 - Age 15 to 64 years
+Y_GE65 - Age 65 years and over
+EMP - Employed persons
+NAT -  Place of birth in reporting country
+EU_OTH Place of birth in other EU Member State
+OTH - Place of birth elsewhere
+SAME - Place of usual residence one year prior to the census unchanged
+CHG_IN - Place of usual residence one year prior to the census: move within reporting country
+CHG_OUT - Place of usual residence one year prior to the census: move from outside of the reporting country
+
   */
 
 
