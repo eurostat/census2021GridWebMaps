@@ -190,10 +190,6 @@ const update = () => {
         gridLayer.cellInfoHTML = totPopTooltip;
 
     } else if (["Y_LT15", "Y_1564", "Y_GE65", "F", "M", "EMP", "SAME", "CHG_IN", "CHG_OUT", "NAT", "EU_OTH", "OTH"].includes(mapCode)) {
-        gridLayer.dataset = dataset___
-
-        //get gui info
-        const shareCode = "s" + mapCode;
 
         // get theme
         const theme = ["F", "M"].includes(mapCode) ? "sex"
@@ -202,6 +198,11 @@ const update = () => {
                     : ["SAME", "CHG_IN", "CHG_OUT"].includes(mapCode) ? "mob"
                         : ["NAT", "EU_OTH", "OTH"].includes(mapCode) ? "pob"
                             : undefined
+
+        gridLayer.dataset = dataset[theme]
+
+        //get gui info
+        const shareCode = "s" + mapCode;
 
         //define style breaks
         let breaks = breaksDict[mapCode];
