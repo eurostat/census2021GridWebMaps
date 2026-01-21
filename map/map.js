@@ -140,12 +140,11 @@ const popCols = { ...colors }; popCols.cf = naColor
 //style
 let totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
     viewScale: cells => {
-        [min, max] = d3.extent(cells.filter(c => c.T != -1), c => c.T)
+        const max = d3.max(cells, c => c.T)
         const breaks = []
         for (let i = 1; i < classNumber; i++) {
             let t = i / classNumber
             t = scaleTPop(t)
-            //breaks.push(min + (max - min) * t)
             breaks.push(max * t)
         }
         return gridviz.classifier(breaks)
