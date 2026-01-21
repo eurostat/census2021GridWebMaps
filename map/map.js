@@ -1,7 +1,9 @@
 //TODO
 //use new dataset: tiles/tiles_sex/   total age sex emp mob pob all
+// revamp precompute functions - do on loading !
 // check hungary issue ?
-//revamp tooltips, legends
+// style confidential figures - when value = -1
+//revamp tooltips (show confidentiality status), legends
 //fix tooltip location bug
 
 //add chernoff faces
