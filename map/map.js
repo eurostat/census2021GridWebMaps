@@ -1,5 +1,5 @@
 //TODO
-//use new dataset: tiles/tiles_sex/   total age sex emp mob pob all
+// use new dataset
 // revamp precompute functions - do on loading? !
 // check hungary issue ?
 // style confidential figures - when value = -1
@@ -103,16 +103,14 @@ updateLayersVisibility()
 
 
 //define multi resolution datasets
-
-const dataset = {
-    total: new gridviz.MultiResolutionDataset(
+for (let theme of ["total", "age", "sex", "emp", "mob", "pob", "all"]) {
+    dataset[theme] = new gridviz.MultiResolutionDataset(
         [1000, 2000, 5000, 10000, 20000, 50000, 100000],
-        (resolution) => new gviz_par.TiledParquetGrid(map, tilesURL + "tiles_total/" + resolution + "/"),
-        { preprocess: (c) => c.T && (+c.T > 0 || +c.T == -1) }
-    )
+        (resolution) => new gviz_par.TiledParquetGrid(map, tilesURL + "tiles_" + theme + "/" + resolution + "/"),
+        { preprocess: (c) => c.T && (+c.T > 0 || +c.T == -1) })
 }
 
-
+//TODO OBSOLETE
 const dataset___ = new gridviz.MultiResolutionDataset(
     [1000, 2000, 5000, 10000, 20000, 50000, 100000],
     (resolution) => new gviz_par.TiledParquetGrid(map, tiledGridsURL + resolution + "/"),
