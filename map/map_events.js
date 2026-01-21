@@ -30,9 +30,6 @@ document.getElementById("boundary").addEventListener("change", function () {
     updateURL(map);
 });
 
-
-
-
 // background
 const bckEvent = () => {
     updateLayersVisibility()
