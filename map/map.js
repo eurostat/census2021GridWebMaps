@@ -259,9 +259,10 @@ const update = () => {
         gridLayer.cellInfoHTML = shareTooltip(shareCode, mapCode)
 
     } else if (["ter_age", "ter_mob", "ter_pob"].includes(mapCode)) {
-        gridLayer.dataset = dataset___
 
         const mapCode2 = mapCode.replace("ter_", "")
+        gridLayer.dataset = dataset[mapCode2]
+
         const classNumberSize = 4;
 
         if (sbtp) {
@@ -320,7 +321,7 @@ const update = () => {
         gridLayer.cellInfoHTML = ternaryTooltip[mapCode]
 
     } else if (["ageing", "dep_ratio", "oa_dep_ratio", "y_dep_ratio", "median_age"].includes(mapCode)) {
-        gridLayer.dataset = dataset___
+        gridLayer.dataset = dataset.age
 
         //define style
         const breaks = breaksDict[mapCode]
@@ -378,7 +379,7 @@ const update = () => {
         gridLayer.cellInfoHTML = getTooltipDemography(mapCode);
 
     } else if (mapCode === "age_pyramid") {
-        gridLayer.dataset = dataset___
+        gridLayer.dataset = dataset.age
 
         const agePyramidColors = { Y_LT15: d3.interpolateSpectral(0.2), Y_1564: d3.interpolateSpectral(0.4), Y_GE65: d3.interpolateSpectral(0.9) }
         const w = { Y_LT15: 15, Y_1564: 50, Y_GE65: 25 }
@@ -448,7 +449,7 @@ const update = () => {
         gridLayer.cellInfoHTML = agePyramidTooltip
 
     } else if (mapCode === "sex_balance") {
-        gridLayer.dataset = dataset___
+        gridLayer.dataset = dataset.sex
 
         //sex - color classifier
         const breaks = [-20, -7, -2, -0.5, 0.5, 2, 7, 20];
@@ -485,7 +486,7 @@ const update = () => {
         gridLayer.cellInfoHTML = sexBalanceTooltip
 
     } else if (mapCode === "mobility_pc") {
-        gridLayer.dataset = dataset___
+        gridLayer.dataset = dataset.mob
 
         const classNumberSize = 5;
         gridLayer.styles = [
@@ -512,7 +513,7 @@ const update = () => {
         gridLayer.cellInfoHTML = mobilityPCTooltip
 
     } else if (mapCode === "pob_pc") {
-        gridLayer.dataset = dataset___
+        gridLayer.dataset = dataset.pob
 
         const classNumberSize = 5;
         gridLayer.styles = [
@@ -541,7 +542,7 @@ const update = () => {
         console.log(mapCode)
 
         /*
-        gridLayer.dataset = dataset___
+        gridLayer.dataset = dataset.all
         //age color - 3/4 classes
         const ageClassifier = gridviz.ternaryClassifier(["sY_LT15", "sY_1564", "sY_GE65"], (c) => 100, {
             center: [0.15, 0.64, 0.21],
