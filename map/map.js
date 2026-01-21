@@ -1,7 +1,7 @@
 //TODO
 // dep ratio issue
 // age pyramid issue
-// estonia issue
+// estonia issue: if CI==-9999 and v>=0, keep value
 // check and debug
 // improve legend text + tooltip
 // revamp precompute functions - do on loading? !
@@ -181,6 +181,7 @@ const update = () => {
 
         //set layer parameters
         gridLayer.minPixelsPerCell = interpolate ? 1.7 : 0.7;
+        //gridLayer.cellInfoHTML = gridviz.GridLayer.defaultCellInfoHTML;
         gridLayer.cellInfoHTML = totPopTooltip;
 
     } else if (["Y_LT15", "Y_1564", "Y_GE65", "F", "M", "EMP", "SAME", "CHG_IN", "CHG_OUT", "NAT", "EU_OTH", "OTH"].includes(mapCode)) {
