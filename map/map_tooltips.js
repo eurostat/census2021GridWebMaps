@@ -108,26 +108,24 @@ const getTooltipDemography = (mapCode) => {
 
 
 const agePyramidTooltip = (c) =>
-    c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined ? undefined :
-        c.Y_LT15 == -1 || c.Y_1564 == -1 || c.Y_GE65 == -1 ? undefined :
-            "<b>" +
-            formatLarge(c.Y_LT15 + c.Y_1564 + c.Y_GE65) +
-            "</b> person" +
-            (c.Y_LT15 + c.Y_1564 + c.Y_GE65 == 1 ? "" : "s") +
-            "<br>" +
-            formatLarge(c.Y_LT15) +
-            " - under 15 years<br>" +
-            formatLarge(c.Y_1564) +
-            " - 15 to 64 years<br>" +
-            formatLarge(c.Y_GE65) +
-            " - 65 years and older"
+    c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined || c.Y_LT15 == -1 || c.Y_1564 == -1 || c.Y_GE65 == -1 ? undefined :
+        "<b>" +
+        formatLarge(c.Y_LT15 + c.Y_1564 + c.Y_GE65) +
+        "</b> person" +
+        (c.Y_LT15 + c.Y_1564 + c.Y_GE65 == 1 ? "" : "s") +
+        "<br>" +
+        formatLarge(c.Y_LT15) +
+        " - under 15 years<br>" +
+        formatLarge(c.Y_1564) +
+        " - 15 to 64 years<br>" +
+        formatLarge(c.Y_GE65) +
+        " - 65 years and older"
 
 
 const sexBalanceTooltip = (c) => {
     if (c.F == undefined || c.F == undefined) return "Data not available"
     if (c.F == -1 || c.F == -1) return "Data not available (confidential)"
     let tot = c.F + c.M;
-    if (isNaN(tot)) tot = c.T;
     const pop_ = "<b>" + formatLarge(tot) + "</b> person" + (tot == 1 ? "" : "s") + "<br>";
     if (c.F == undefined || c.M == undefined)
         return "Data not available" /*+ (c.CONFIDENTIALSTATUS ? " (confidential)" : "")*/ + "<br>" + pop_;
@@ -149,9 +147,8 @@ const sexBalanceTooltip = (c) => {
 };
 
 const mobilityPCTooltip = (c) =>
-    c.SAME == undefined || c.CHG_IN == undefined || c.CHG_OUT == undefined
-        ? undefined
-        : "<b>" +
+    c.SAME == undefined || c.CHG_IN == undefined || c.CHG_OUT == undefined || c.SAME == -1 || c.CHG_IN == -1 || c.CHG_OUT == -1 ? undefined :
+        "<b>" +
         formatLarge(c.SAME + c.CHG_IN + c.CHG_OUT) +
         "</b> person" +
         (c.SAME + c.CHG_IN + c.CHG_OUT == 1 ? "" : "s") +
@@ -165,9 +162,8 @@ const mobilityPCTooltip = (c) =>
 
 
 const pobPCTooltip = (c) =>
-    c.NAT == undefined || c.EU_OTH == undefined || c.OTH == undefined
-        ? undefined
-        : "<b>" +
+    c.NAT == undefined || c.EU_OTH == undefined || c.OTH == undefined || c.NAT == -1 || c.EU_OTH == -1 || c.OTH == -1 ? undefined :
+        "<b>" +
         formatLarge(c.NAT + c.EU_OTH + c.OTH) +
         "</b> person" +
         (c.NAT + c.EU_OTH + c.OTH == 1 ? "" : "s") +
