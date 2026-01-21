@@ -83,7 +83,7 @@ const compute = {
     dep_ratio: (c) => {
         if (c.Y_LT15 == -1 || c.Y_1564 == -1 || c.Y_GE65 == -1) c.dep_ratio = -1
         else if (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined) c.dep_ratio = undefined
-        else c.ageing = 100 * (c.Y_GE65 + c.Y_LT15) / c.Y_1564
+        else c.dep_ratio = 100 * (c.Y_GE65 + c.Y_LT15) / c.Y_1564
     },
     oa_dep_ratio: (c) => {
         if (c.Y_1564 == -1 || c.Y_GE65 == -1) c.oa_dep_ratio = -1
