@@ -107,7 +107,7 @@ const dataset = {
     total: new gridviz.MultiResolutionDataset(
         [1000, 2000, 5000, 10000, 20000, 50000, 100000],
         (resolution) => new gviz_par.TiledParquetGrid(map, tilesURL + "tiles_total/" + resolution + "/"),
-        { preprocess: (c) => c.T && (+c.T > 0 || +c.T==-1) }
+        { preprocess: (c) => c.T && (+c.T > 0 || +c.T == -1) }
     )
 }
 
@@ -135,11 +135,12 @@ const colors = []
 const classNumber = 8;
 for (let i = 0; i <= (classNumber - 1); i++) colors.push(d3.interpolateYlOrRd(i / (classNumber - 1)))
 const scaleTPop = gridviz.exponentialScale(7) //exponentialScale logarithmicScale
+const popCols = { ...colors }; popCols.cf = naColor
 
 //style
 let totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
     viewScale: cells => {
-        [min, max] = d3.extent(cells, c => c.T)
+        [min, max] = d3.extent(cells.filter(c => c.T != -1), c => c.T)
         const breaks = []
         for (let i = 1; i < classNumber; i++) {
             let t = i / classNumber
@@ -149,8 +150,12 @@ let totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
         }
         return gridviz.classifier(breaks)
     },
-    code: (c, r, z, classifier) => classifier(c.T),
-    color: { ...colors },
+    code: (c, r, z, classifier) => {
+        const v = c.T
+        if (v == -1) { console.log(c); return "cf" }
+        return classifier(v)
+    },
+    color: popCols,
 })
 
 //link legend
