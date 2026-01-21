@@ -80,16 +80,19 @@ const ternaryColorsDict = {
 
 
 
-const colorTernaryClassifierFun = (mapCode) => gridviz.ternaryColorClassifier(
-    ternaryData[mapCode].codes,
-    () => 100,
-    [ternaryColorsDict["0"], ternaryColorsDict["1"], ternaryColorsDict["2"]],
-    {
-        center: ternaryData[mapCode].center,
-        centerColor: ternaryColorsDict.center,
-        centerCoefficient: 0.25,
-        defaultColor: naColor,
-    })
+const colorTernaryClassifierFun = (mapCode) => {
+    const tcl = gridviz.ternaryColorClassifier(
+        ternaryData[mapCode].codes,
+        () => 100,
+        [ternaryColorsDict["0"], ternaryColorsDict["1"], ternaryColorsDict["2"]],
+        {
+            center: ternaryData[mapCode].center,
+            centerColor: ternaryColorsDict.center,
+            centerCoefficient: 0.25,
+            defaultColor: naColor,
+        })
+    return tcl //((c) => tcl(c))
+}
 
 const colorTernaryClassifiers = {}
 for (let mapCode of ["ter_age", "ter_mob", "ter_pob"])

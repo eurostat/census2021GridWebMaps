@@ -6,6 +6,7 @@
 //revamp tooltips (show confidentiality status), legends
 //fix tooltip location bug
 //age pyramid size: size by bar length only ?
+//ternary: check confidential data case
 
 //add chernoff faces
 //sea level rise ?
@@ -128,7 +129,7 @@ const colors = []
 const classNumber = 8;
 for (let i = 0; i <= (classNumber - 1); i++) colors.push(d3.interpolateYlOrRd(i / (classNumber - 1)))
 const scaleTPop = gridviz.exponentialScale(7) //exponentialScale logarithmicScale
-const popCols = { ...colors }; popCols.cf = naColor
+const popCols = { ...colors }; popCols.na = naColor
 
 //style
 let totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
@@ -144,7 +145,7 @@ let totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
     },
     code: (c, r, z, classifier) => {
         const v = c.T
-        if (v == -1) return "cf"
+        if (v == -1 || v == undefined) return "na"
         return classifier(v)
     },
     color: popCols,
@@ -208,7 +209,8 @@ const update = () => {
                 new gridviz.ShapeColorSizeStyle({
                     color: (c) => {
                         if (!c["p_" + theme]) compute[theme](c)
-                        return c[shareCode] == undefined ? naColor : colorClassifier(c[shareCode]);
+                        const v = c[shareCode]
+                        return v == undefined || v == -1 ? naColor : colorClassifier(v);
                     },
                     viewScale: gridviz.viewScaleQuantile({
                         valueFunction: (c) => +c.T,
@@ -228,7 +230,8 @@ const update = () => {
                 new gridviz.SquareColorCategoryWebGLStyle({
                     code: (c) => {
                         if (!c["p_" + theme]) compute[theme](c)
-                        return c[shareCode] == undefined ? "na" : classifier(c[shareCode])
+                        const v = c[shareCode]
+                        return v == undefined || v == -1 ? "na" : classifier(v)
                     },
                     color: colDict,
                 })
@@ -411,16 +414,22 @@ const update = () => {
                         let cumulHg = marginG + (resolution - sizeG) / 2
                         for (cat of cats) {
 
+                            // height of the bar
+                            const hG = w[cat] * sizeG / 90
+
+                            //get value
+                            const v = cell[cat]
+                            if (!v || v == -1) { cumulHg += hG; continue }
+
                             //set category color
                             ctx.fillStyle = agePyramidColors[cat]
 
                             //get category value
-                            const catPop = cell[cat] / w[cat]
+                            const catPop = v / w[cat]
 
                             //compute category length - in geo
                             /** @type {number} */
                             const wG = sizeG * catPop / maxCatPop
-                            const hG = w[cat] * sizeG / 90
 
                             //draw bar
                             ctx.fillRect(cell.x + (resolution - wG) / 2, cell.y + cumulHg, wG, hG)
@@ -450,7 +459,7 @@ const update = () => {
         gridLayer.styles = [new gridviz.ShapeColorSizeStyle({
             color: (c) => {
                 if (c.p_sex == undefined) compute.sex(c)
-                return (c.indMF == undefined ? naColor : sexColorClassifier(c.indMF))
+                return (c.indMF == undefined || c.indMF == -1 ? naColor : sexColorClassifier(c.indMF))
             },
             size: sbtp ? (c, r, z, viewScale) => viewScale(c.T) : undefined,
             viewScale: sbtp ? gridviz.viewScaleQuantile({
@@ -465,7 +474,7 @@ const update = () => {
             shape: sbtp ? () => "circle" : undefined,
         })];
 
-        gridLayer.minPixelsPerCell = 3;
+        gridLayer.minPixelsPerCell = sbtp ? 3 : 1.7;
 
         //legends
         gridLayer.styles[0].legends = [
@@ -495,6 +504,7 @@ const update = () => {
                     minSizePix: 6,
                     maxSizeFactor: 1.2,
                 }) : undefined,
+                filter: c => c.SAME != undefined && c.CHG_IN != undefined && c.CHG_OUT != undefined && c.SAME != -1 && c.CHG_IN != -1 && c.CHG_OUT != -1
             }),
         ];
 
