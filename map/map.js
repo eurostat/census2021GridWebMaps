@@ -172,12 +172,10 @@ const update = () => {
     //show/hide GUI components
     document.getElementById("sbtp_div").style.display = ["pop", "pob_pc"].includes(mapCode) ? 'none' : 'inline-block'
 
-    // set gridlayer dataset
-    gridLayer.dataset = mapCode === "pop" ? dataset.total : dataset___
-
     //set gridlayer style
     if (mapCode === "pop") {
         //total population
+        gridLayer.dataset = dataset.total
 
         // update legend width
         totPopLegend.width = Math.min(window.innerWidth - 40, 400)
@@ -192,6 +190,7 @@ const update = () => {
         gridLayer.cellInfoHTML = totPopTooltip;
 
     } else if (["Y_LT15", "Y_1564", "Y_GE65", "F", "M", "EMP", "SAME", "CHG_IN", "CHG_OUT", "NAT", "EU_OTH", "OTH"].includes(mapCode)) {
+        gridLayer.dataset = dataset___
 
         //get gui info
         const shareCode = "s" + mapCode;
@@ -259,6 +258,7 @@ const update = () => {
         gridLayer.cellInfoHTML = shareTooltip(shareCode, mapCode)
 
     } else if (["ter_age", "ter_mob", "ter_pob"].includes(mapCode)) {
+        gridLayer.dataset = dataset___
 
         const mapCode2 = mapCode.replace("ter_", "")
         const classNumberSize = 4;
@@ -319,6 +319,7 @@ const update = () => {
         gridLayer.cellInfoHTML = ternaryTooltip[mapCode]
 
     } else if (["ageing", "dep_ratio", "oa_dep_ratio", "y_dep_ratio", "median_age"].includes(mapCode)) {
+        gridLayer.dataset = dataset___
 
         //define style
         const breaks = breaksDict[mapCode]
@@ -374,6 +375,7 @@ const update = () => {
         gridLayer.cellInfoHTML = getTooltipDemography(mapCode);
 
     } else if (mapCode === "age_pyramid") {
+        gridLayer.dataset = dataset___
 
         const agePyramidColors = { Y_LT15: d3.interpolateSpectral(0.2), Y_1564: d3.interpolateSpectral(0.4), Y_GE65: d3.interpolateSpectral(0.9) }
         const w = { Y_LT15: 15, Y_1564: 50, Y_GE65: 25 }
@@ -443,6 +445,8 @@ const update = () => {
         gridLayer.cellInfoHTML = agePyramidTooltip
 
     } else if (mapCode === "sex_balance") {
+        gridLayer.dataset = dataset___
+
         //sex - color classifier
         const breaks = [-20, -7, -2, -0.5, 0.5, 2, 7, 20];
         const sexColorClassifier = gridviz.colorClassifier(breaks, d3.schemeSpectral[breaks.length + 1]);
@@ -478,6 +482,8 @@ const update = () => {
         gridLayer.cellInfoHTML = sexBalanceTooltip
 
     } else if (mapCode === "mobility_pc") {
+        gridLayer.dataset = dataset___
+
         const classNumberSize = 5;
         gridLayer.styles = [
             new gridviz.CompositionStyle({
@@ -503,6 +509,8 @@ const update = () => {
         gridLayer.cellInfoHTML = mobilityPCTooltip
 
     } else if (mapCode === "pob_pc") {
+        gridLayer.dataset = dataset___
+
         const classNumberSize = 5;
         gridLayer.styles = [
             new gridviz.CompositionStyle({
@@ -530,6 +538,7 @@ const update = () => {
         console.log(mapCode)
 
         /*
+        gridLayer.dataset = dataset___
         //age color - 3/4 classes
         const ageClassifier = gridviz.ternaryClassifier(["sY_LT15", "sY_1564", "sY_GE65"], (c) => 100, {
             center: [0.15, 0.64, 0.21],
