@@ -1,6 +1,6 @@
 //TODO
 //use new dataset: tiles/tiles_sex/   total age sex emp mob pob all
-// revamp precompute functions - do on loading !
+// revamp precompute functions - do on loading? !
 // check hungary issue ?
 // style confidential figures - when value = -1
 //revamp tooltips (show confidentiality status), legends
@@ -103,15 +103,18 @@ updateLayersVisibility()
 
 //define multi resolution datasets
 
-const dataset = new gridviz.MultiResolutionDataset(
+const dataset = {
+    total: new gridviz.MultiResolutionDataset(
+        [1000, 2000, 5000, 10000, 20000, 50000, 100000],
+        (resolution) => new gviz_par.TiledParquetGrid(map, tilesURL + "tiles_total/" + resolution + "/"),
+        { preprocess: (c) => c.T && (+c.T > 0 || +c.T==-1) }
+    )
+}
+
+
+const dataset___ = new gridviz.MultiResolutionDataset(
     [1000, 2000, 5000, 10000, 20000, 50000, 100000],
     (resolution) => new gviz_par.TiledParquetGrid(map, tiledGridsURL + resolution + "/"),
-    { preprocess: (c) => c.T && +c.T > 0 }
-);
-
-const datasetTotal = new gridviz.MultiResolutionDataset(
-    [1000, 2000, 5000, 10000, 20000, 50000, 100000],
-    (resolution) => new gviz_par.TiledParquetGrid(map, tiledTotalGridsURL + resolution + "/"),
     { preprocess: (c) => c.T && +c.T > 0 }
 );
 
@@ -165,7 +168,7 @@ const update = () => {
     document.getElementById("sbtp_div").style.display = ["pop", "pob_pc"].includes(mapCode) ? 'none' : 'inline-block'
 
     // set gridlayer dataset
-    gridLayer.dataset = mapCode === "pop" ? datasetTotal : dataset
+    gridLayer.dataset = mapCode === "pop" ? dataset.total : dataset___
 
     //set gridlayer style
     if (mapCode === "pop") {
@@ -504,8 +507,8 @@ const update = () => {
                     OTH: "#d95f02", //orange
                 },
                 type: () => "halftone", //flag, piechart, ring, segment, radar, agepyramid, halftone
-                size: sbtp? (c, r, z, scale) => scale(c.T) : undefined,
-                viewScale: sbtp? gridviz.viewScaleQuantile({
+                size: sbtp ? (c, r, z, scale) => scale(c.T) : undefined,
+                viewScale: sbtp ? gridviz.viewScaleQuantile({
                     valueFunction: (c) => +c.T,
                     classNumber: classNumberSize,
                     minSizePix: 8,
