@@ -59,6 +59,7 @@ const map = new gridviz.Map(document.getElementById("map"), {
     y: DEFAULTMAPSETTINGS.y,
     z: DEFAULTMAPSETTINGS.z,
     zoomExtent: [5, 10000],
+    onZoomFun: (e) => { updateURL(map) },
 })
     .addZoomButtons()
     .setViewFromURL()
@@ -152,7 +153,7 @@ let totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
     },
     code: (c, r, z, classifier) => {
         const v = c.T
-        if (v == -1) { console.log(c); return "cf" }
+        if (v == -1) return "cf"
         return classifier(v)
     },
     color: popCols,

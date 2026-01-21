@@ -1,6 +1,10 @@
 
 
-const totPopTooltip = (c) => "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 1 ? "" : "s")
+const totPopTooltip = (c) => {
+    const v = c.T
+    if(v==-1) return "Data not available (confidential)"
+    else return "<b>" + formatLarge(v) + "</b> person" + (v == 1 ? "" : "s")
+}
 
 
 const shareTooltip = (shareCode, mapCode) => (c) => {
