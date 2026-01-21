@@ -1,9 +1,9 @@
 //TODO
-// use new dataset
+// dep ratio issue
+// age pyramid issue
+// estonia issue
 // revamp precompute functions - do on loading? !
 // check hungary issue ?
-// style confidential figures - when value = -1
-//revamp tooltips (show confidentiality status), legends
 //fix tooltip location bug
 //age pyramid size: size by bar length only ?
 //ternary: check confidential data case
