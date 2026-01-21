@@ -2,6 +2,8 @@
 // dep ratio issue
 // age pyramid issue
 // estonia issue
+// check and debug
+// improve legend text + tooltip
 // revamp precompute functions - do on loading? !
 // check hungary issue ?
 //fix tooltip location bug
