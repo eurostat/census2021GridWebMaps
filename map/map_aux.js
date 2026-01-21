@@ -76,26 +76,39 @@ const compute = {
         c.p_mob = true;
     },
     ageing: (c) => {
-        if (c.Y_LT15 == -1 || c.Y_GE65 == -1)
-            c.ageing = -1
-        if (c.Y_LT15 == undefined || c.Y_GE65 == undefined)
-            c.ageing = undefined
-        else
-            c.ageing = 100 * c.Y_GE65 / c.Y_LT15
+        if (c.Y_LT15 == -1 || c.Y_GE65 == -1) c.ageing = -1
+        else if (c.Y_LT15 == undefined || c.Y_GE65 == undefined) c.ageing = undefined
+        else c.ageing = 100 * c.Y_GE65 / c.Y_LT15
     },
-    dep_ratio: (c) => { c.dep_ratio = (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * (c.Y_GE65 + c.Y_LT15) / c.Y_1564 },
-    oa_dep_ratio: (c) => { c.oa_dep_ratio = (c.Y_1564 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_1564 },
-    y_dep_ratio: (c) => { c.y_dep_ratio = (c.Y_LT15 == undefined || c.Y_1564 == undefined) ? -1 : 100 * c.Y_LT15 / c.Y_1564 },
+    dep_ratio: (c) => {
+        if (c.Y_LT15 == -1 || c.Y_1564 == -1 || c.Y_GE65 == -1) c.dep_ratio = -1
+        else if (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined) c.dep_ratio = undefined
+        else c.ageing = 100 * (c.Y_GE65 + c.Y_LT15) / c.Y_1564
+    },
+    oa_dep_ratio: (c) => {
+        if (c.Y_1564 == -1 || c.Y_GE65 == -1) c.oa_dep_ratio = -1
+        else if (c.Y_1564 == undefined || c.Y_GE65 == undefined) c.oa_dep_ratio = undefined
+        else c.oa_dep_ratio = 100 * c.Y_GE65 / c.Y_1564
+    },
+    y_dep_ratio: (c) => {
+        if (c.Y_LT15 == -1 || c.Y_1564 == -1) c.y_dep_ratio = -1
+        else if (c.Y_LT15 == undefined || c.Y_1564 == undefined) c.y_dep_ratio = undefined
+        else c.y_dep_ratio = 100 * c.Y_LT15 / c.Y_1564
+    },
     median_age: (c) => {
-        //median age estimation - grouped median estimation - see Shryock & Siegel – Methods and Materials of Demography
-        const y = c.Y_LT15 || 0, m = c.Y_1564 || 0, o = c.Y_GE65 || 0
-        //half population
-        const half = (y + m + o) / 2
-        //yes, this case does happen !
-        if (m == 0 && y == o) c.median_age = 40
-        else if (half <= y) c.median_age = Math.round(14 * half / y)
-        else if (half <= y + m) c.median_age = Math.round(14 + 49 * (half - y) / m)
-        else c.median_age = Math.round(64 + 30 * (half - y - m) / o)
+        if (c.Y_LT15 == -1 || c.Y_1564 == -1 || c.Y_GE65 == -1) c.median_age = -1
+        else if (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined) c.median_age = undefined
+        else {
+            //median age estimation - grouped median estimation - see Shryock & Siegel – Methods and Materials of Demography
+            const y = c.Y_LT15, m = c.Y_1564, o = c.Y_GE65
+            //half population
+            const half = (y + m + o) / 2
+            //yes, this case does happen !
+            if (m == 0 && y == o) c.median_age = 40
+            else if (half <= y) c.median_age = Math.round(14 * half / y)
+            else if (half <= y + m) c.median_age = Math.round(14 + 49 * (half - y) / m)
+            else c.median_age = Math.round(64 + 30 * (half - y - m) / o)
+        }
     },
 }
 
