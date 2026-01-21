@@ -92,5 +92,5 @@ const colorTernaryClassifierFun = (mapCode) => gridviz.ternaryColorClassifier(
     })
 
 const colorTernaryClassifiers = {}
-for(let mapCode of ["ter_age", "ter_mob", "ter_pob"])
+for (let mapCode of ["ter_age", "ter_mob", "ter_pob"])
     colorTernaryClassifiers[mapCode] = colorTernaryClassifierFun(mapCode)
