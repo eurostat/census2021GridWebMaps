@@ -21,10 +21,10 @@ const computePercentage = (c, col, totalFunction) => {
 // preprocesses and indicator computation functions
 const compute = {
     sex: (c) => {
-        if (c.CONFIDENTIALSTATUS && c.F == 0 && c.M == 0) {
+        /*if (c.CONFIDENTIALSTATUS && c.F == 0 && c.M == 0) {
             c.F = undefined;
             c.M = undefined;
-        }
+        }*/
 
         if (c.F == undefined || c.M == undefined) {
             c.indMF = undefined;
@@ -44,11 +44,11 @@ const compute = {
         c.p_sex = true;
     },
     age: (c) => {
-        if (c.CONFIDENTIALSTATUS && c.Y_LT15 == 0 && c.Y_1564 == 0 && c.Y_GE65 == 0) {
+        /*if (c.CONFIDENTIALSTATUS && c.Y_LT15 == 0 && c.Y_1564 == 0 && c.Y_GE65 == 0) {
             c.Y_LT15 = undefined;
             c.Y_1564 = undefined;
             c.Y_GE65 = undefined;
-        }
+        }*/
 
         //compute percentages
         computePercentage(c, "Y_LT15", (c) => c.Y_LT15 + c.Y_1564 + c.Y_GE65);
@@ -58,9 +58,9 @@ const compute = {
         c.p_age = true;
     },
     emp: (c) => {
-        if (c.CONFIDENTIALSTATUS && c.EMP == 0) {
+        /*if (c.CONFIDENTIALSTATUS && c.EMP == 0) {
             c.EMP = undefined;
-        }
+        }*/
 
         //compute percentages
         computePercentage(c, "EMP", (c) => c.T); //TODO sure?
@@ -68,11 +68,11 @@ const compute = {
         c.p_emp = true;
     },
     pob: (c) => {
-        if (c.CONFIDENTIALSTATUS && c.NAT == 0 && c.EU_OTH == 0 && c.OTH == 0) {
+        /*if (c.CONFIDENTIALSTATUS && c.NAT == 0 && c.EU_OTH == 0 && c.OTH == 0) {
             c.NAT = undefined;
             c.EU_OTH = undefined;
             c.OTH = undefined;
-        }
+        }*/
 
         //compute percentages
         computePercentage(c, "NAT", (c) => c.NAT + c.EU_OTH + c.OTH);
@@ -82,11 +82,11 @@ const compute = {
         c.p_pob = true;
     },
     mob: (c) => {
-        if (c.CONFIDENTIALSTATUS && c.SAME == 0 && c.CHG_IN == 0 && c.CHG_OUT == 0) {
+        /*if (c.CONFIDENTIALSTATUS && c.SAME == 0 && c.CHG_IN == 0 && c.CHG_OUT == 0) {
             c.SAME = undefined;
             c.CHG_IN = undefined;
             c.CHG_OUT = undefined;
-        }
+        }*/
 
         //compute percentages
         computePercentage(c, "SAME", (c) => c.SAME + c.CHG_IN + c.CHG_OUT);

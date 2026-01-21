@@ -6,7 +6,7 @@ const totPopTooltip = (c) => "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 
 const shareTooltip = (shareCode, mapCode) => (c) => {
     const pop_ = "<br>" + formatLarge(c.T) + " person" + (c.T == 1 ? "" : "s");
     if (c[mapCode] == undefined || c[shareCode] == undefined)
-        return "Data not available" + (c.CONFIDENTIALSTATUS ? " (confidential)" : "") + pop_;
+        return "Data not available" + /*(/*c.CONFIDENTIALSTATUS ? " (confidential)" : "") +*/ pop_;
     return "<b>" + formatPercentage(c[shareCode]) + " %</b><br>" + formatLarge(c[mapCode]) + pop_;
 };
 
@@ -19,7 +19,7 @@ const ternaryTooltip = {
         if (isNaN(total)) total = c.T;
         const tot_ = "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>";
         if (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined)
-            return tot_ + "Decomposition data not available" + (c.CONFIDENTIALSTATUS ? "<br>(confidential)" : "");
+            return tot_ + "Decomposition data not available" /*+ (c.CONFIDENTIALSTATUS ? "<br>(confidential)" : "")*/;
         return (
             tot_ +
             formatPercentage(c.sY_LT15) +
@@ -35,7 +35,7 @@ const ternaryTooltip = {
         if (isNaN(total)) total = c.T;
         const tot_ = "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>";
         if (c.CHG_IN == undefined || c.SAME == undefined || c.CHG_OUT == undefined)
-            return tot_ + "Decomposition data not available" + (c.CONFIDENTIALSTATUS ? "<br>(confidential)" : "");
+            return tot_ + "Decomposition data not available" /*+ (c.CONFIDENTIALSTATUS ? "<br>(confidential)" : "")*/;
         return (
             tot_ +
             formatPercentage(c.sSAME) +
@@ -51,7 +51,7 @@ const ternaryTooltip = {
         if (isNaN(total)) total = c.T;
         const tot_ = "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>";
         if (c.NAT == undefined || c.EU_OTH == undefined || c.OTH == undefined)
-            return tot_ + "Decomposition data not available" + (c.CONFIDENTIALSTATUS ? "<br>(confidential)" : "");
+            return tot_ + "Decomposition data not available" /*+ (c.CONFIDENTIALSTATUS ? "<br>(confidential)" : "")*/;
         return (
             tot_ +
             formatPercentage(c.sNAT) +
@@ -113,7 +113,7 @@ const sexBalanceTooltip = (c) => {
     if (isNaN(tot)) tot = c.T;
     const pop_ = "<b>" + formatLarge(tot) + "</b> person" + (tot == 1 ? "" : "s") + "<br>";
     if (c.F == undefined || c.M == undefined)
-        return "Data not available" + (c.CONFIDENTIALSTATUS ? " (confidential)" : "") + "<br>" + pop_;
+        return "Data not available" /*+ (c.CONFIDENTIALSTATUS ? " (confidential)" : "")*/ + "<br>" + pop_;
     return (
         pop_ +
         formatLarge(c.M) +
