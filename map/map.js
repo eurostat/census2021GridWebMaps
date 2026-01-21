@@ -159,7 +159,6 @@ const update = () => {
     // get selected map code
     const mapCode = document.getElementById("map_select").value;
     const sbtp = document.getElementById("sbtp").checked;
-    //console.log(mapCode, sbtp)
 
     //show/hide GUI components
     document.getElementById("sbtp_div").style.display = ["pop", "pob_pc"].includes(mapCode) ? 'none' : 'inline-block'
