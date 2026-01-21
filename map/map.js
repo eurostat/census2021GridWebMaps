@@ -1,11 +1,10 @@
 //TODO
-// check new dataset version ? hungary issue ?
+//use new dataset: tiles/tiles_sex/   total age sex emp mob pob all
+// check hungary issue ?
 //revamp tooltips, legends
-// check NaN, confidential
 //fix tooltip location bug
-//update x,y,z on view change
-//add chernoff faces
 
+//add chernoff faces
 //sea level rise ?
 //generalise interpolation
 
