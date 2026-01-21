@@ -336,7 +336,8 @@ const update = () => {
                 new gridviz.ShapeColorSizeStyle({
                     color: (c) => {
                         if (c[mapCode] == undefined) compute[mapCode](c)
-                        return c[mapCode] < 0 ? naColor : colorClassifier(c[mapCode]);
+                        const v = c[mapCode]
+                        return v == -1 || v == undefined ? naColor : colorClassifier(v);
                     },
                     viewScale: gridviz.viewScaleQuantile({
                         valueFunction: (c) => +c.T,
@@ -357,7 +358,8 @@ const update = () => {
                 new gridviz.SquareColorCategoryWebGLStyle({
                     code: (c) => {
                         if (c[mapCode] == undefined) compute[mapCode](c)
-                        return c[mapCode] < 0 ? "na" : classifier(c[mapCode]);
+                        const v = c[mapCode]
+                        return v == -1 || v == undefined ? "na" : classifier(v);
                     },
                     color: colDict,
                 }),

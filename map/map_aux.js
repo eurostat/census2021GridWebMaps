@@ -27,13 +27,16 @@ const computePercentage = (c, col, totalFunction) => {
 // preprocesses and indicator computation functions
 const compute = {
     sex: (c) => {
-        if (c.F == -1 || c.M == -1) { c.indMF = -1; return; }
-        if (c.F == undefined || c.M == undefined) { c.indMF = undefined; return; }
-
-        //if (c.F + c.M != c.T) console.error("Error found in sex total", c.F + c.M, c.T)
-
         //male/female index
-        c.indMF = (100 * (c.M - c.F)) / (c.M + c.F);
+        if (c.F == -1 || c.M == -1)
+            c.indMF = -1
+        else if (c.F == undefined || c.M == undefined)
+            c.indMF = undefined
+        else if (c.F == 0 && c.M == 0)
+            c.indMF = undefined //could be 0
+        else
+            //if (c.F + c.M != c.T) console.error("Error found in sex total", c.F + c.M, c.T)
+            c.indMF = (100 * (c.M - c.F)) / (c.M + c.F);
 
         //compute percentages
         computePercentage(c, "F", (c) => c.M + c.F);
@@ -43,12 +46,6 @@ const compute = {
         c.p_sex = true;
     },
     age: (c) => {
-        /*if (c.CONFIDENTIALSTATUS && c.Y_LT15 == 0 && c.Y_1564 == 0 && c.Y_GE65 == 0) {
-            c.Y_LT15 = undefined;
-            c.Y_1564 = undefined;
-            c.Y_GE65 = undefined;
-        }*/
-
         //compute percentages
         computePercentage(c, "Y_LT15", (c) => c.Y_LT15 + c.Y_1564 + c.Y_GE65);
         computePercentage(c, "Y_1564", (c) => c.Y_LT15 + c.Y_1564 + c.Y_GE65);
@@ -57,22 +54,12 @@ const compute = {
         c.p_age = true;
     },
     emp: (c) => {
-        /*if (c.CONFIDENTIALSTATUS && c.EMP == 0) {
-            c.EMP = undefined;
-        }*/
-
         //compute percentages
         computePercentage(c, "EMP", (c) => c.T); //TODO sure?
         //tag as precomputed
         c.p_emp = true;
     },
     pob: (c) => {
-        /*if (c.CONFIDENTIALSTATUS && c.NAT == 0 && c.EU_OTH == 0 && c.OTH == 0) {
-            c.NAT = undefined;
-            c.EU_OTH = undefined;
-            c.OTH = undefined;
-        }*/
-
         //compute percentages
         computePercentage(c, "NAT", (c) => c.NAT + c.EU_OTH + c.OTH);
         computePercentage(c, "EU_OTH", (c) => c.NAT + c.EU_OTH + c.OTH);
@@ -81,12 +68,6 @@ const compute = {
         c.p_pob = true;
     },
     mob: (c) => {
-        /*if (c.CONFIDENTIALSTATUS && c.SAME == 0 && c.CHG_IN == 0 && c.CHG_OUT == 0) {
-            c.SAME = undefined;
-            c.CHG_IN = undefined;
-            c.CHG_OUT = undefined;
-        }*/
-
         //compute percentages
         computePercentage(c, "SAME", (c) => c.SAME + c.CHG_IN + c.CHG_OUT);
         computePercentage(c, "CHG_IN", (c) => c.SAME + c.CHG_IN + c.CHG_OUT);
@@ -94,7 +75,14 @@ const compute = {
         //tag as precomputed
         c.p_mob = true;
     },
-    ageing: (c) => { c.ageing = (c.Y_LT15 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_LT15 },
+    ageing: (c) => {
+        if (c.Y_LT15 == -1 || c.Y_GE65 == -1)
+            c.ageing = -1
+        if (c.Y_LT15 == undefined || c.Y_GE65 == undefined)
+            c.ageing = undefined
+        else
+            c.ageing = 100 * c.Y_GE65 / c.Y_LT15
+    },
     dep_ratio: (c) => { c.dep_ratio = (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * (c.Y_GE65 + c.Y_LT15) / c.Y_1564 },
     oa_dep_ratio: (c) => { c.oa_dep_ratio = (c.Y_1564 == undefined || c.Y_GE65 == undefined) ? -1 : 100 * c.Y_GE65 / c.Y_1564 },
     y_dep_ratio: (c) => { c.y_dep_ratio = (c.Y_LT15 == undefined || c.Y_1564 == undefined) ? -1 : 100 * c.Y_LT15 / c.Y_1564 },
