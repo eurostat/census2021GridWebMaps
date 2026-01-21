@@ -103,6 +103,7 @@ updateLayersVisibility()
 
 
 //define multi resolution datasets
+const dataset = {}
 for (let theme of ["total", "age", "sex", "emp", "mob", "pob", "all"]) {
     dataset[theme] = new gridviz.MultiResolutionDataset(
         [1000, 2000, 5000, 10000, 20000, 50000, 100000],
