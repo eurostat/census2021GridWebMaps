@@ -8,28 +8,27 @@ const formatLarge = (v) => _f(v).replace(/,/g, " ");
 
 //function to compute the percentage of a cell value
 const computePercentage = (c, col, totalFunction) => {
+    let v = c[col]
+    //confidential case
+    if (v == -1) { c["s" + col] = -1; return }
+    //undefined case
+    if (v == undefined) { c["s" + col] = undefined; return }
+
     const total = totalFunction(c);
-    if (total == 0 || c[col] == undefined) {
-        c["s" + col] = undefined;
-        return;
-    }
-    c["s" + col] = (c[col] / total) * 100;
-    c["s" + col] = c["s" + col] > 100 ? 100 : c["s" + col] < 0 ? 0 : c["s" + col];
+    if (!total) { c["s" + col] = undefined; return; }
+
+    //compute percentage
+    v = (100 * v) / total;
+    //clamp to [0,100]
+    c["s" + col] = v > 100 ? 100 : v < 0 ? 0 : v;
 };
 
 
 // preprocesses and indicator computation functions
 const compute = {
     sex: (c) => {
-        /*if (c.CONFIDENTIALSTATUS && c.F == 0 && c.M == 0) {
-            c.F = undefined;
-            c.M = undefined;
-        }*/
-
-        if (c.F == undefined || c.M == undefined) {
-            c.indMF = undefined;
-            return;
-        }
+        if (c.F == -1 || c.M == -1) { c.indMF = -1; return; }
+        if (c.F == undefined || c.M == undefined) { c.indMF = undefined; return; }
 
         //if (c.F + c.M != c.T) console.error("Error found in sex total", c.F + c.M, c.T)
 
