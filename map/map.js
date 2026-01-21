@@ -1,5 +1,4 @@
 //TODO
-// dep ratio issue
 // age pyramid issue
 // estonia issue: if CI==-9999 and v>=0, keep value
 // check and debug
@@ -421,8 +420,8 @@ const update = () => {
                             const hG = w[cat] * sizeG / 90
 
                             //get value
-                            const v = cell[cat]
-                            if (!v || v == -1) { cumulHg += hG; continue }
+                            let v = cell[cat]
+                            if (!v || v == -1) v = 0 //{ cumulHg += hG; continue }
 
                             //set category color
                             ctx.fillStyle = agePyramidColors[cat]

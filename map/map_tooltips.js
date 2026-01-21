@@ -114,12 +114,12 @@ const agePyramidTooltip = (c) =>
         "</b> person" +
         (c.Y_LT15 + c.Y_1564 + c.Y_GE65 == 1 ? "" : "s") +
         "<br>" +
-        formatLarge(c.Y_LT15) +
-        " - under 15 years<br>" +
+        formatLarge(c.Y_GE65) +
+        " - 65 years and older<br>" +
         formatLarge(c.Y_1564) +
         " - 15 to 64 years<br>" +
-        formatLarge(c.Y_GE65) +
-        " - 65 years and older"
+        formatLarge(c.Y_LT15) +
+        " - under 15 years"
 
 
 const sexBalanceTooltip = (c) => {
