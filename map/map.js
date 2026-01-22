@@ -83,7 +83,7 @@ if (btParam) {
 // toggle options panel collapse from URL param
 if (urlParams.get("collapsed")) document.getElementById("expand-toggle-button").click();
 
-for (let cb of ["sbtp", "label", "boundary", "background"]) {
+for (let cb of ["sbtp", "label", "grid", "boundary", "background"]) {
     const sel = urlParams.get(cb);
     if (sel == undefined) continue;
     document.getElementById(cb).checked = sel != "" && sel != "false" && +sel != 0
@@ -116,9 +116,10 @@ for (let theme of ["total", "age", "sex", "emp", "mob", "pob", "all"]) {
 }
 
 //make grid layer
-const gridLayer = new gridviz.GridLayer(undefined, []);
-gridLayer.blendOperation = () => "multiply"
-
+const gridLayer = new gridviz.GridLayer(undefined, [], {
+    visible: document.getElementById("grid").checked ? undefined : () => false,
+    blendOperation: () => "multiply",
+})
 
 //set map layers
 map.layers = [backgroundLayerElevation, backgroundLayerRoad, backgroundLayerRoad2, gridLayer, boundariesLayer, labelLayer];

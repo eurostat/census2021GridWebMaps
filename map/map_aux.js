@@ -170,7 +170,7 @@ const updateURL = (map) => {
     p.set("map", document.getElementById("map_select").value);
 
     // handle checkboxes
-    for (let cb of ["sbtp", "label", "boundary", "background"])
+    for (let cb of ["sbtp", "label", "grid", "boundary", "background"])
         p.set(cb, document.getElementById(cb).checked ? "1" : "");
 
     // handle background theme selection

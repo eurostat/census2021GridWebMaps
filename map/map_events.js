@@ -30,6 +30,13 @@ document.getElementById("boundary").addEventListener("change", function () {
     updateURL(map);
 });
 
+// show/hide grid
+document.getElementById("grid").addEventListener("change", function () {
+    gridLayer.visible = this.checked ? undefined : () => false;
+    map.redraw();
+    updateURL(map);
+});
+
 // background
 const bckEvent = () => {
     updateLayersVisibility()
