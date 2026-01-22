@@ -127,19 +127,7 @@ const sexBalanceTooltip = (c) => {
     );
 };
 
-const mobilityPCTooltip = (c) =>
-    c.SAME == undefined || c.CHG_IN == undefined || c.CHG_OUT == undefined || c.SAME == -1 || c.CHG_IN == -1 || c.CHG_OUT == -1 ? undefined :
-        "<b>" +
-        formatLarge(c.SAME + c.CHG_IN + c.CHG_OUT) +
-        "</b> person" +
-        (c.SAME + c.CHG_IN + c.CHG_OUT == 1 ? "" : "s") +
-        "<br>" +
-        formatLarge(c.SAME) +
-        " residence unchanged<br>" +
-        formatLarge(c.CHG_IN) +
-        " moved within the country<br>" +
-        formatLarge(c.CHG_OUT) +
-        " moved from outside the country";
+const mobilityPCTooltip = ternaryTooltip.ter_mob
 
 
 const pobPCTooltip = (c) =>
