@@ -1,14 +1,11 @@
 //TODO
-// age pyramid issue: if value is -9999, set as -1
-// estonia issue: if CI==-9999 and v>=0, keep value
+//birthplace: show by size. activate cb and chack effect
+//ternary: check confidential data case
 // check and debug
 // improve legend text + tooltip
 // revamp precompute functions - do on loading? !
-// check hungary issue ?
 //fix tooltip location bug
 //age pyramid size: size by bar length only ?
-//ternary: check confidential data case
-//birthplace: show by size. activate cb and chack effect
 
 //add chernoff faces
 //sea level rise ?
