@@ -27,6 +27,10 @@ const naLegend = new gridviz.ColorCategoryLegend({
     colorLabel: [[naColor, "Data not available"]],
     shape: "square",
 });
+const naLegendC = new gridviz.ColorCategoryLegend({
+    colorLabel: [[naColor, "Data not available"]],
+    shape: "circle",
+});
 
 //population size legend
 const popSizeLegend = (classNumberSize, shape = "circle") => gridviz.sizeDiscreteViewScaleLegend(classNumberSize, {

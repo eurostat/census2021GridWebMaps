@@ -130,7 +130,7 @@ const sexBalanceTooltip = (c) => {
 const mobilityPCTooltip = ternaryTooltip.ter_mob
 
 
-const pobPCTooltip = (c) =>
+const pobPCTooltip = ternaryTooltip.ter_pob /*(c) =>
     c.NAT == undefined || c.EU_OTH == undefined || c.OTH == undefined || c.NAT == -1 || c.EU_OTH == -1 || c.OTH == -1 ? undefined :
         "<b>" +
         formatLarge(c.NAT + c.EU_OTH + c.OTH) +
@@ -142,7 +142,7 @@ const pobPCTooltip = (c) =>
         formatLarge(c.EU_OTH) +
         " born in another EU member state<br>" +
         formatLarge(c.OTH) +
-        " born outside the EU";
+        " born outside the EU";*/
 
 
 const chernoffTooltip = (ageClassifier, sexClassifier, empClassifier) => (c) => {

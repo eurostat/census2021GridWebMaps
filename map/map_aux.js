@@ -103,6 +103,18 @@ const preprocess = {
         computePercentage(c, "NAT", ct)
         computePercentage(c, "EU_OTH", ct)
         computePercentage(c, "OTH", ct)
+
+        // data for pie chart
+        for (let p of ["NAT", "EU_OTH", "OTH"])
+            c["pc" + p] = (c[p] == -1 || c[p] == undefined) ? 0 : c[p]
+        //unknown category
+        if (c.NAT != -1 && c.EU_OTH != -1 && c.OTH != -1 && c.NAT != undefined && c.EU_OTH != undefined && c.OTH != undefined)
+            c.unknown = 0
+        else {
+            c.unknown = c.T
+            for (let p of ["pcNAT", "pcEU_OTH", "pcOTH"]) c.unknown -= c[p]
+            if (c.unknown < 0) c.unknown = 0
+        }
     },
     ageing: (c) => {
         if (c.Y_LT15 == -1 || c.Y_GE65 == -1) c.ageing = -1

@@ -510,7 +510,7 @@ const update = () => {
         ];
 
         gridLayer.minPixelsPerCell = 12;
-        gridLayer.styles[0].legends = [mobLegend];
+        gridLayer.styles[0].legends = [mobLegend, naLegendC];
         if (sbtp) gridLayer.styles[0].addLegends(popSizeLegend(classNumberSize))
         gridLayer.cellInfoHTML = mobilityPCTooltip
 
@@ -521,9 +521,10 @@ const update = () => {
         gridLayer.styles = [
             new gridviz.CompositionStyle({
                 color: {
-                    NAT: "#fed9a6", //light mostard
-                    EU_OTH: "#7570b3", //blueish
-                    OTH: "#d95f02", //orange
+                    pcNAT: "#fed9a6", //light mostard
+                    pcEU_OTH: "#7570b3", //blueish
+                    unknown: naColor,
+                    pcOTH: "#d95f02", //orange
                 },
                 type: () => "halftone", //flag, piechart, ring, segment, radar, agepyramid, halftone
                 size: sbtp ? (c, r, z, scale) => scale(c.T) : undefined,
@@ -536,7 +537,7 @@ const update = () => {
         ];
 
         gridLayer.minPixelsPerCell = 12;
-        gridLayer.styles[0].legends = [pobLegend,];
+        gridLayer.styles[0].legends = [pobLegend, naLegendC];
         if (sbtp) gridLayer.styles[0].legends.push(popSizeLegend(classNumberSize))
         gridLayer.cellInfoHTML = pobPCTooltip
 
