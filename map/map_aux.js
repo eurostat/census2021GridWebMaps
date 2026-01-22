@@ -1,16 +1,16 @@
 
 //format function for percentages
 const fp___ = d3.format(".1f")
-const formatPercentage = v => {
-    let out = (v==-1 || v==undefined)? "NA" : fp___(v)
-    return out + " %" + (v==-1?" (confidential)":"")
+const formatPercentage = (v, conf = true) => {
+    let out = (v == -1 || v == undefined) ? "NA" : fp___(v)
+    return out + " %" + (v == -1 && conf ? " (confidential)" : "")
 }
 
 //format function for large numbers
 const _f = d3.format(",.0f");
 const formatLarge = (v) => _f(v).replace(/,/g, " ");
-const formatLargeNA = (v) => {
-    if (v == -1 || v == undefined) return "NA"
+const formatLargeNA = (v, conf = true) => {
+    if (v == -1 || v == undefined) return "NA" + (v == -1 && conf ? " (confidential)" : "")
     return formatLarge(v)
 }
 

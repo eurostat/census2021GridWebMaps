@@ -42,9 +42,9 @@ const shareTooltip = (shareCode, mapCode) => (c) => {
 const ternaryTooltip = {
     "ter_age": (c) => {
         const total = (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined || c.Y_LT15 == -1 || c.Y_1564 == -1 || c.Y_GE65 == -1) ? c.T : c.Y_LT15 + c.Y_1564 + c.Y_GE65;
-        const percpart = formatPercentage(c.sY_LT15) + " under 15 years<br>" +
-            formatPercentage(c.sY_1564) + " 15 to 64 years<br>" +
-            formatPercentage(c.sY_GE65) + " 65 years and older"
+        const percpart = formatPercentage(c.sY_LT15, false) + " (" +formatLargeNA(c.Y_LT15)+ ") under 15 years<br>" +
+            formatPercentage(c.sY_1564, false) + " (" +formatLargeNA(c.Y_1564)+ ") 15 to 64 years<br>" +
+            formatPercentage(c.sY_GE65, false) + " (" +formatLargeNA(c.Y_GE65)+ ") 65 years and older"
         return "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>" + percpart
     },
     "ter_mob": (c) => {
