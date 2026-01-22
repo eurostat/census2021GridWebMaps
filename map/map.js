@@ -1,8 +1,10 @@
 //TODO
 // revamp precompute functions - do on loading? !
 // improve legend text + tooltip
-//age pyramid size: size by bar length only ?
-// check and debug
+// age pyramid size: size by bar length only ?
+// check and debug:
+// EMP FR DE >1km: set to undefined, not 0
+// check ternary on PL !
 //fix tooltip location bug
 
 //add chernoff faces
@@ -107,7 +109,12 @@ for (let theme of ["total", "age", "sex", "emp", "mob", "pob", "all"]) {
     dataset[theme] = new gridviz.MultiResolutionDataset(
         [1000, 2000, 5000, 10000, 20000, 50000, 100000],
         (resolution) => new gviz_par.TiledParquetGrid(map, tilesURL + "tiles_" + theme + "/" + resolution + "/"),
-        { preprocess: (c) => c.T && (+c.T > 0 || +c.T == -1) })
+        { preprocess: c => {
+            if(!c.T) return false
+            //console.log("fbkjb", c.T, theme)
+            preprocess[theme](c)
+            //return true
+        } })
 }
 
 //make grid layer
@@ -164,7 +171,7 @@ const update = () => {
     //set gridlayer style
     if (mapCode === "pop") {
         //total population
-        gridLayer.dataset = dataset.all
+        gridLayer.dataset = dataset.total //all
 
         // update legend width
         totPopLegend.width = Math.min(window.innerWidth - 40, 400)
@@ -328,7 +335,7 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.ShapeColorSizeStyle({
                     color: (c) => {
-                        //if (c[mapCode] == undefined) compute[mapCode](c)
+                        if (c[mapCode] == undefined) preprocess[mapCode](c)
                         const v = c[mapCode]
                         return v == -1 || v == undefined ? naColor : colorClassifier(v);
                     },

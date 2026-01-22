@@ -28,7 +28,9 @@ const computePercentage = (c, col, totalFunction) => {
 
 
 // preprocesses and indicator computation functions
-const compute = {
+const preprocess = {
+    total: () => {},
+    all: (c) => { console.log("TODO: preprocess all") },
     sex: (c) => {
         //male/female index
         if (c.F == -1 || c.M == -1)
@@ -46,7 +48,7 @@ const compute = {
         computePercentage(c, "M", (c) => c.M + c.F);
 
         //tag as precomputed
-        c.p_sex = true;
+        //c.p_sex = true;
     },
     age: (c) => {
         //compute percentages
@@ -68,7 +70,7 @@ const compute = {
         computePercentage(c, "EU_OTH", (c) => c.NAT + c.EU_OTH + c.OTH);
         computePercentage(c, "OTH", (c) => c.NAT + c.EU_OTH + c.OTH);
         //tag as precomputed
-        c.p_pob = true;
+        //c.p_pob = true;
     },
     mob: (c) => {
         //compute percentages
@@ -76,7 +78,7 @@ const compute = {
         computePercentage(c, "CHG_IN", (c) => c.SAME + c.CHG_IN + c.CHG_OUT);
         computePercentage(c, "CHG_OUT", (c) => c.SAME + c.CHG_IN + c.CHG_OUT);
         //tag as precomputed
-        c.p_mob = true;
+        //c.p_mob = true;
     },
     ageing: (c) => {
         if (c.Y_LT15 == -1 || c.Y_GE65 == -1) c.ageing = -1
