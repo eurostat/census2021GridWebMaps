@@ -71,24 +71,19 @@ const ternaryTooltip = {
         return "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>" + percpart
     },
     "ter_pob": (c) => {
+        const percpart = formatPercentage(c.sNAT) + " born in the country<br>" +
+            formatPercentage(c.sEU_OTH) + " born in another EU member state<br>" +
+            formatPercentage(c.sOTH) + " born outside the EU"
 
-
-        if (c.NAT == undefined || c.EU_OTH == undefined || c.OTH == undefined)
-            return "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 1 ? "" : "s") + "<br>Decomposition data not available";
-        if (c.NAT == -1 || c.EU_OTH == -1 || c.OTH == -1)
-            return "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 1 ? "" : "s") + "<br>Decomposition data not available (confidential)";
+        if (c.NAT == undefined || c.EU_OTH == undefined || c.OTH == undefined || c.NAT == -1 || c.EU_OTH == -1 || c.OTH == -1) {
+            let out = "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 1 ? "" : "s") + "<br>Decomposition data not available";
+            if (c.NAT == -1 || c.CHG_IN == -1 || c.OTH == -1) out += " (confidential)"
+            out += "<br>"
+            return out + percpart
+        }
 
         let total = c.NAT + c.EU_OTH + c.OTH;
-        const tot_ = "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>";
-        return (
-            tot_ +
-            formatPercentage(c.sNAT) +
-            " born in the country<br>" +
-            formatPercentage(c.sEU_OTH) +
-            " born in another EU member state<br>" +
-            formatPercentage(c.sOTH) +
-            " born outside the EU"
-        );
+        return "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>" + percpart
     }
 }
 
