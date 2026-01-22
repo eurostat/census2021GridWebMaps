@@ -1,7 +1,4 @@
 //TODO
-// EMP FR DE >1km: set to undefined, not 0
-// ternary on PL for 2km data ?
-
 //mob pie chart: add gray section for NA + legend
 //pob: bug
 // check and debug:
