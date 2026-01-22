@@ -1,12 +1,16 @@
 
 //format function for percentages
-const formatPercentage = d3.format(".1f");
+const fp___ = d3.format(".1f")
+const formatPercentage = v => {
+    let out = (v==-1 || v==undefined)? "NA" : fp___(v)
+    return out + " %" + (v==-1?" (confidential)":"")
+}
 
 //format function for large numbers
 const _f = d3.format(",.0f");
 const formatLarge = (v) => _f(v).replace(/,/g, " ");
 const formatLargeNA = (v) => {
-    if(v==-1 || v==undefined) return "NA"
+    if (v == -1 || v == undefined) return "NA"
     return formatLarge(v)
 }
 
@@ -19,7 +23,7 @@ const computePercentage = (c, col, totalFunction) => {
     if (v == undefined) { c["s" + col] = undefined; return }
 
     //zero case
-    if(v==0) { c["s" + col] = 0; return }
+    if (v == 0) { c["s" + col] = 0; return }
 
     const total = totalFunction(c);
     if (!total || isNaN(total)) { c["s" + col] = undefined; return; }
@@ -33,7 +37,7 @@ const computePercentage = (c, col, totalFunction) => {
 
 // preprocesses and indicator computation functions
 const preprocess = {
-    total: () => {},
+    total: () => { },
     all: (c) => { console.log("TODO: preprocess all") },
     sex: (c) => {
         //male/female index

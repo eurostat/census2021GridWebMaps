@@ -19,7 +19,7 @@ const shareTooltip = (shareCode, mapCode) => (c) => {
     else if (c[mapCode] == -1 || c[shareCode] == -1)
         buf.push("Data not available (confidential)")
     else
-        buf.push("<b>" + formatPercentage(c[shareCode]) + " %</b>")
+        buf.push("<b>" + formatPercentage(c[shareCode]) + "</b>")
 
     //totals
     const p1 = formatLargeNA(c[mapCode])
@@ -33,7 +33,7 @@ const shareTooltip = (shareCode, mapCode) => (c) => {
         return "Data not available" + pop_;
     if (c[mapCode] == -1 || c[shareCode] == -1)
         return "Data not available (confidential)" + pop_;
-    return "<b>" + formatPercentage(c[shareCode]) + " %</b><br>" + formatLarge(c[mapCode]) + pop_;*/
+    return "<b>" + formatPercentage(c[shareCode]) + "</b><br>" + formatLarge(c[mapCode]) + pop_;*/
 };
 
 
@@ -41,42 +41,38 @@ const shareTooltip = (shareCode, mapCode) => (c) => {
 
 const ternaryTooltip = {
     "ter_age": (c) => {
-        if (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined)
-            return "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 1 ? "" : "s") + "<br>Decomposition data not available";
-        if (c.Y_LT15 == -1 || c.Y_1564 == -1 || c.Y_GE65 == -1)
-            return "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 1 ? "" : "s") + "<br>Decomposition data not available (confidential)";
+        const percpart = formatPercentage(c.sY_LT15) + " under 15 years<br>" +
+            formatPercentage(c.sY_1564) + " 15 to 64 years<br>" +
+            formatPercentage(c.sY_GE65) + " 65 years and older"
+
+        if (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined || c.Y_LT15 == -1 || c.Y_1564 == -1 || c.Y_GE65 == -1) {
+            let out = "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 1 ? "" : "s") + "<br>Decomposition data not available";
+            if (c.Y_LT15 == -1 || c.Y_1564 == -1 || c.Y_GE65 == -1) out += " (confidential)"
+            out += "<br>"
+            return out + percpart
+        }
 
         let total = c.Y_LT15 + c.Y_1564 + c.Y_GE65;
-        const tot_ = "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>";
-        return (
-            tot_ +
-            formatPercentage(c.sY_LT15) +
-            "% under 15 years<br>" +
-            formatPercentage(c["sY_1564"]) +
-            "% 15 to 64 years<br>" +
-            formatPercentage(c.sY_GE65) +
-            "% 65 years and older"
-        );
+        return "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>" + percpart
     },
     "ter_mob": (c) => {
-        if (c.CHG_IN == undefined || c.SAME == undefined || c.CHG_OUT == undefined)
-            return "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 1 ? "" : "s") + "<br>Decomposition data not available";
-        if (c.CHG_IN == -1 || c.SAME == -1 || c.CHG_OUT == -1)
-            return "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 1 ? "" : "s") + "<br>Decomposition data not available (confidential)";
+        const percpart = formatPercentage(c.sSAME) + " residence unchanged<br>" +
+            formatPercentage(c.sCHG_IN) + " moved within the country<br>" +
+            formatPercentage(c.sCHG_OUT) + " moved from outside the country"
 
-        let total = c.CHG_IN + c.SAME + c.CHG_OUT;
-        const tot_ = "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>";
-        return (
-            tot_ +
-            formatPercentage(c.sSAME) +
-            "% residence unchanged<br>" +
-            formatPercentage(c.sCHG_IN) +
-            "% moved within the country<br>" +
-            formatPercentage(c.sCHG_OUT) +
-            "% moved from outside the country"
-        )
+        if (c.SAME == undefined || c.CHG_IN == undefined || c.CHG_OUT == undefined || c.SAME == -1 || c.CHG_IN == -1 || c.CHG_OUT == -1) {
+            let out = "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 1 ? "" : "s") + "<br>Decomposition data not available";
+            if (c.SAME == -1 || c.CHG_IN == -1 || c.CHG_OUT == -1) out += " (confidential)"
+            out += "<br>"
+            return out + percpart
+        }
+
+        let total = c.SAME + c.CHG_IN + c.CHG_OUT;
+        return "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>" + percpart
     },
     "ter_pob": (c) => {
+
+
         if (c.NAT == undefined || c.EU_OTH == undefined || c.OTH == undefined)
             return "<b>" + formatLarge(c.T) + "</b> person" + (c.T == 1 ? "" : "s") + "<br>Decomposition data not available";
         if (c.NAT == -1 || c.EU_OTH == -1 || c.OTH == -1)
@@ -87,11 +83,11 @@ const ternaryTooltip = {
         return (
             tot_ +
             formatPercentage(c.sNAT) +
-            "% born in the country<br>" +
+            " born in the country<br>" +
             formatPercentage(c.sEU_OTH) +
-            "% born in another EU member state<br>" +
+            " born in another EU member state<br>" +
             formatPercentage(c.sOTH) +
-            "% born outside the EU"
+            " born outside the EU"
         );
     }
 }
@@ -162,7 +158,7 @@ const sexBalanceTooltip = (c) => {
         "Difference: <b>" +
         (c.indMF > 0 ? "+" : "") +
         formatPercentage(c.indMF) +
-        " % men</b>"
+        " men</b>"
     );
 };
 
