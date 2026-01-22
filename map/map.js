@@ -357,7 +357,7 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.SquareColorCategoryWebGLStyle({
                     code: (c) => {
-                        //if (c[mapCode] == undefined) compute[mapCode](c)
+                        if (c[mapCode] == undefined) compute[mapCode](c)
                         const v = c[mapCode]
                         return v == -1 || v == undefined ? "na" : classifier(v);
                     },
