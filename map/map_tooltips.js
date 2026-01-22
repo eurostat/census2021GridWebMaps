@@ -101,22 +101,7 @@ const getTooltipDemography = (mapCode) => {
 }
 
 
-
 const agePyramidTooltip = ternaryTooltip.ter_age
-/*(c) =>
-    c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined || c.Y_LT15 == -1 || c.Y_1564 == -1 || c.Y_GE65 == -1 ? undefined :
-        "<b>" +
-        formatLarge(c.Y_LT15 + c.Y_1564 + c.Y_GE65) +
-        "</b> person" +
-        (c.Y_LT15 + c.Y_1564 + c.Y_GE65 == 1 ? "" : "s") +
-        "<br>" +
-        formatLarge(c.Y_GE65) +
-        " - 65 years and older<br>" +
-        formatLarge(c.Y_1564) +
-        " - 15 to 64 years<br>" +
-        formatLarge(c.Y_LT15) +
-        " - under 15 years"*/
-
 
 const sexBalanceTooltip = (c) => {
     if (c.F == undefined || c.F == undefined) return "Data not available"
