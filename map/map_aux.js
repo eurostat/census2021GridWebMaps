@@ -63,41 +63,34 @@ const preprocess = {
             c.indMF = (100 * (c.M - c.F)) / (c.M + c.F);
 
         //compute percentages
-        computePercentage(c, "F", computeTotal(["M", "F"]))
-        computePercentage(c, "M", computeTotal(["M", "F"]))
-
-        //tag as precomputed
-        //c.p_sex = true;
+        const ct = computeTotal(["M", "F"])
+        computePercentage(c, "F", ct)
+        computePercentage(c, "M", ct)
     },
     age: (c) => {
         //compute percentages
-        computePercentage(c, "Y_LT15", computeTotal(["Y_LT15", "Y_1564", "Y_GE65"]))
-        computePercentage(c, "Y_1564", computeTotal(["Y_LT15", "Y_1564", "Y_GE65"]))
-        computePercentage(c, "Y_GE65", computeTotal(["Y_LT15", "Y_1564", "Y_GE65"]))
-        //tag as precomputed
-        c.p_age = true;
+        const ct = computeTotal(["Y_LT15", "Y_1564", "Y_GE65"])
+        computePercentage(c, "Y_LT15", ct)
+        computePercentage(c, "Y_1564", ct)
+        computePercentage(c, "Y_GE65", ct)
     },
     emp: (c) => {
         //compute percentages
         computePercentage(c, "EMP", (c) => c.T); //TODO sure?
-        //tag as precomputed
-        c.p_emp = true;
     },
     pob: (c) => {
         //compute percentages
-        computePercentage(c, "NAT", (c) => computeTotal(["NAT", "EU_OTH", "OTH"]))
-        computePercentage(c, "EU_OTH", (c) => computeTotal(["NAT", "EU_OTH", "OTH"]))
-        computePercentage(c, "OTH", (c) => computeTotal(["NAT", "EU_OTH", "OTH"]))
-        //tag as precomputed
-        //c.p_pob = true;
+        const ct = computeTotal(["NAT", "EU_OTH", "OTH"])
+        computePercentage(c, "NAT", ct)
+        computePercentage(c, "EU_OTH", ct)
+        computePercentage(c, "OTH", ct)
     },
     mob: (c) => {
         //compute percentages
-        computePercentage(c, "SAME", (c) => computeTotal(["SAME", "CHG_IN", "CHG_OUT"]))
-        computePercentage(c, "CHG_IN", (c) => computeTotal(["SAME", "CHG_IN", "CHG_OUT"]))
-        computePercentage(c, "CHG_OUT", (c) => computeTotal(["SAME", "CHG_IN", "CHG_OUT"]))
-        //tag as precomputed
-        //c.p_mob = true;
+        const ct = computeTotal(["SAME", "CHG_IN", "CHG_OUT"])
+        computePercentage(c, "SAME", ct)
+        computePercentage(c, "CHG_IN", ct)
+        computePercentage(c, "CHG_OUT", ct)
     },
     ageing: (c) => {
         if (c.Y_LT15 == -1 || c.Y_GE65 == -1) c.ageing = -1
