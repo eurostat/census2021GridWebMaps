@@ -48,7 +48,7 @@ const computeTotal = cats => c => {
 
 // preprocesses and indicator computation functions
 const preprocess = {
-    total: () => { },
+    total: (c) => { if (c.T < 0 || c.T == undefined) console.log(c.T) },
     all: (c) => { console.log("TODO: preprocess all") },
     sex: (c) => {
         //male/female index
