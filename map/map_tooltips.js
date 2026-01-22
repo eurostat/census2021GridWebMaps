@@ -38,27 +38,36 @@ const shareTooltip = (shareCode, mapCode) => (c) => {
 
 
 
+const terToo___ = (c, p) => {
+    const v = c[p]
+    if (v == undefined) return 'NA'
+    if (v == -1) return "NA (confidential)"
+    return formatLargeNA(v, false) + " - " + formatPercentage(c["s" + p], false)
+}
 
 const ternaryTooltip = {
     "ter_age": (c) => {
         const total = (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined || c.Y_LT15 == -1 || c.Y_1564 == -1 || c.Y_GE65 == -1) ? c.T : c.Y_LT15 + c.Y_1564 + c.Y_GE65;
-        const percpart = formatPercentage(c.sY_LT15, false) + " (" + formatLargeNA(c.Y_LT15) + ") under 15 years<br>" +
-            formatPercentage(c.sY_1564, false) + " (" + formatLargeNA(c.Y_1564) + ") 15 to 64 years<br>" +
-            formatPercentage(c.sY_GE65, false) + " (" + formatLargeNA(c.Y_GE65) + ") 65 years and older"
+        const percpart =
+            "Age under 15 years: " + terToo___(c, "Y_LT15") + "<br>" +
+            "Age 15 to 64 years: " + terToo___(c, "Y_1564") + "<br>" +
+            "Age 65 years and older: " + terToo___(c, "Y_GE65")
         return "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>" + percpart
     },
     "ter_mob": (c) => {
         const total = (c.SAME == undefined || c.CHG_IN == undefined || c.CHG_OUT == undefined || c.SAME == -1 || c.CHG_IN == -1 || c.CHG_OUT == -1) ? c.T : c.SAME + c.CHG_IN + c.CHG_OUT;
-        const percpart = formatPercentage(c.sSAME, false) + " (" + formatLargeNA(c.SAME) + ") residence unchanged<br>" +
-            formatPercentage(c.sCHG_IN, false) + " (" + formatLargeNA(c.CHG_IN) + ") moved within the country<br>" +
-            formatPercentage(c.sCHG_OUT, false) + " (" + formatLargeNA(c.CHG_OUT) + ") moved from outside the country"
+        const percpart =
+            "Residence unchanged: " + terToo___(c, "SAME") + "<br>" +
+            "Moved within the country: " + terToo___(c, "CHG_IN") + "<br>" +
+            "Moved from outside the country: " + terToo___(c, "CHG_OUT")
         return "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>" + percpart
     },
     "ter_pob": (c) => {
         const total = (c.NAT == undefined || c.EU_OTH == undefined || c.OTH == undefined || c.NAT == -1 || c.EU_OTH == -1 || c.OTH == -1) ? c.T : c.NAT + c.EU_OTH + c.OTH;
-        const percpart = formatPercentage(c.sNAT, false) + " (" + formatLargeNA(c.NAT) + ") born in the country<br>" +
-            formatPercentage(c.sEU_OTH, false) + " (" + formatLargeNA(c.EU_OTH) + ") born in another EU member state<br>" +
-            formatPercentage(c.sOTH, false) + " (" + formatLargeNA(c.OTH) + ") born outside the EU"
+        const percpart =
+            "Born in the country: " + terToo___(c, "NAT") + "<br>" +
+            "Born in another EU member state: " + terToo___(c, "EU_OTH") + "<br>" +
+            "Born outside the EU: " + terToo___(c, "OTH")
         return "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>" + percpart
     }
 }
