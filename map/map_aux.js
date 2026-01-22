@@ -35,6 +35,17 @@ const computePercentage = (c, col, totalFunction) => {
 };
 
 
+// a function to compute total function from category figures
+const computeTotal = cats => c => {
+    let s = 0
+    for (let cat of cats) {
+        if (c[cat] == undefined || c[cat] == -1) return c.T
+        s += c[cat]
+    }
+    return s
+}
+
+
 // preprocesses and indicator computation functions
 const preprocess = {
     total: () => { },
@@ -52,17 +63,17 @@ const preprocess = {
             c.indMF = (100 * (c.M - c.F)) / (c.M + c.F);
 
         //compute percentages
-        computePercentage(c, "F", (c) => c.M + c.F);
-        computePercentage(c, "M", (c) => c.M + c.F);
+        computePercentage(c, "F", computeTotal(["M", "F"]))
+        computePercentage(c, "M", computeTotal(["M", "F"]))
 
         //tag as precomputed
         //c.p_sex = true;
     },
     age: (c) => {
         //compute percentages
-        computePercentage(c, "Y_LT15", (c) => c.Y_LT15 + c.Y_1564 + c.Y_GE65);
-        computePercentage(c, "Y_1564", (c) => c.Y_LT15 + c.Y_1564 + c.Y_GE65);
-        computePercentage(c, "Y_GE65", (c) => c.Y_LT15 + c.Y_1564 + c.Y_GE65);
+        computePercentage(c, "Y_LT15", computeTotal(["Y_LT15", "Y_1564", "Y_GE65"]))
+        computePercentage(c, "Y_1564", computeTotal(["Y_LT15", "Y_1564", "Y_GE65"]))
+        computePercentage(c, "Y_GE65", computeTotal(["Y_LT15", "Y_1564", "Y_GE65"]))
         //tag as precomputed
         c.p_age = true;
     },
@@ -74,17 +85,17 @@ const preprocess = {
     },
     pob: (c) => {
         //compute percentages
-        computePercentage(c, "NAT", (c) => c.NAT + c.EU_OTH + c.OTH);
-        computePercentage(c, "EU_OTH", (c) => c.NAT + c.EU_OTH + c.OTH);
-        computePercentage(c, "OTH", (c) => c.NAT + c.EU_OTH + c.OTH);
+        computePercentage(c, "NAT", (c) => computeTotal(["NAT", "EU_OTH", "OTH"]))
+        computePercentage(c, "EU_OTH", (c) => computeTotal(["NAT", "EU_OTH", "OTH"]))
+        computePercentage(c, "OTH", (c) => computeTotal(["NAT", "EU_OTH", "OTH"]))
         //tag as precomputed
         //c.p_pob = true;
     },
     mob: (c) => {
         //compute percentages
-        computePercentage(c, "SAME", (c) => c.SAME + c.CHG_IN + c.CHG_OUT);
-        computePercentage(c, "CHG_IN", (c) => c.SAME + c.CHG_IN + c.CHG_OUT);
-        computePercentage(c, "CHG_OUT", (c) => c.SAME + c.CHG_IN + c.CHG_OUT);
+        computePercentage(c, "SAME", (c) => computeTotal(["SAME", "CHG_IN", "CHG_OUT"]))
+        computePercentage(c, "CHG_IN", (c) => computeTotal(["SAME", "CHG_IN", "CHG_OUT"]))
+        computePercentage(c, "CHG_OUT", (c) => computeTotal(["SAME", "CHG_IN", "CHG_OUT"]))
         //tag as precomputed
         //c.p_mob = true;
     },
