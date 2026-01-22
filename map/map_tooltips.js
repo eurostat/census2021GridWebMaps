@@ -22,8 +22,8 @@ const shareTooltip = (shareCode, mapCode) => (c) => {
         buf.push("<b>" + formatPercentage(c[shareCode]) + "</b>")
 
     //totals
-    const p1 = formatLargeNA(c[mapCode])
-    const p2 = formatLargeNA(c.T) + " person" + (c.T == 1 ? "" : "s") + " in total";
+    const p1 = formatLargeNA(c[mapCode], false)
+    const p2 = formatLargeNA(c.T, false) + " person" + (c.T == 1 ? "" : "s") + " in total";
     buf.push((p1 == "NA" ? "" : p1 + " out of ") + p2)
 
     return buf.join("<br>")

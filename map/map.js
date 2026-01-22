@@ -269,6 +269,7 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.ShapeColorSizeStyle({
                     color: (c) => {
+                        //TODO -1 undefinde case
                         return colorTernaryClassifiers[mapCode](c) || naColor;
                     },
                     viewScale: gridviz.viewScaleQuantile({
@@ -296,6 +297,7 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.SquareColorCategoryWebGLStyle({
                     code: (c) => {
+                        //TODO -1 undefinde case
                         return ternaryFun(c)
                     },
                     color: ternaryColorsDict,
