@@ -1,6 +1,7 @@
 //TODO
 //mob pie chart: add gray section for NA + legend
 //pob: bug
+// check c.T==-1 ? in process
 // check and debug:
 //fix tooltip location bug
 // age pyramid size: size by bar length only ?
@@ -493,9 +494,9 @@ const update = () => {
         gridLayer.styles = [
             new gridviz.CompositionStyle({
                 color: {
-                    SAME: "#fed9a6", //light mostard
-                    CHG_IN: "#7570b3", //blueish
-                    CHG_OUT: "#d95f02", //orange
+                    pcSAME: "#fed9a6", //light mostard
+                    pcCHG_IN: "#7570b3", //blueish
+                    pcCHG_OUT: "#d95f02", //orange
                     unknown: naColor,
                 },
                 type: () => "piechart", //flag, piechart, ring, segment, radar, agepyramid, halftone
@@ -506,7 +507,6 @@ const update = () => {
                     minSizePix: 6,
                     maxSizeFactor: 1.2,
                 }) : undefined,
-                //filter: c => c.SAME != undefined && c.CHG_IN != undefined && c.CHG_OUT != undefined && c.SAME != -1 && c.CHG_IN != -1 && c.CHG_OUT != -1
             }),
         ];
 

@@ -92,14 +92,15 @@ const preprocess = {
         computePercentage(c, "CHG_IN", ct)
         computePercentage(c, "CHG_OUT", ct)
 
-        //unknown category, for pie chart
+        // data for pie chart
+        for (let p of ["SAME", "CHG_IN", "CHG_OUT"])
+            c["pc" + p] = (c[p] == -1 || c[p] == undefined) ? 0 : c[p]
+        //unknown category
         if (c.SAME != -1 && c.CHG_IN != -1 && c.CHG_OUT != -1 && c.SAME != undefined && c.CHG_IN != undefined && c.CHG_OUT != undefined)
             c.unknown = 0
         else {
             c.unknown = c.T
-            for (let p of ["SAME", "CHG_IN", "CHG_OUT"])
-                if (c[p] != -1 && c[p] != undefined)
-                    c.unknown -= c[p]
+            for (let p of ["pcSAME", "pcCHG_IN", "pcCHG_OUT"]) c.unknown -= c[p]
             if (c.unknown < 0) c.unknown = 0
         }
     },
