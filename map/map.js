@@ -1,5 +1,4 @@
 //TODO
-//ternary: check confidential data case
 // check and debug
 // improve legend text + tooltip
 // revamp precompute functions - do on loading? !
