@@ -1,5 +1,5 @@
 //TODO
-// age pyramid issue
+// age pyramid issue: if value is -9999, set as -1
 // estonia issue: if CI==-9999 and v>=0, keep value
 // check and debug
 // improve legend text + tooltip
@@ -8,6 +8,7 @@
 //fix tooltip location bug
 //age pyramid size: size by bar length only ?
 //ternary: check confidential data case
+//birthplace: show by size. activate cb and chack effect
 
 //add chernoff faces
 //sea level rise ?
@@ -168,7 +169,7 @@ const update = () => {
     //set gridlayer style
     if (mapCode === "pop") {
         //total population
-        gridLayer.dataset = dataset.total
+        gridLayer.dataset = dataset.all
 
         // update legend width
         totPopLegend.width = Math.min(window.innerWidth - 40, 400)
@@ -180,8 +181,8 @@ const update = () => {
 
         //set layer parameters
         gridLayer.minPixelsPerCell = interpolate ? 1.7 : 0.7;
-        //gridLayer.cellInfoHTML = gridviz.GridLayer.defaultCellInfoHTML;
-        gridLayer.cellInfoHTML = totPopTooltip;
+        gridLayer.cellInfoHTML = gridviz.GridLayer.defaultCellInfoHTML;
+        //gridLayer.cellInfoHTML = totPopTooltip;
 
     } else if (["Y_LT15", "Y_1564", "Y_GE65", "F", "M", "EMP", "SAME", "CHG_IN", "CHG_OUT", "NAT", "EU_OTH", "OTH"].includes(mapCode)) {
 
@@ -421,7 +422,7 @@ const update = () => {
 
                             //get value
                             let v = cell[cat]
-                            if (!v || v == -1) v = 0 //{ cumulHg += hG; continue }
+                            if (!v || v == -1) { cumulHg += hG; continue }
 
                             //set category color
                             ctx.fillStyle = agePyramidColors[cat]

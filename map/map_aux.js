@@ -14,8 +14,11 @@ const computePercentage = (c, col, totalFunction) => {
     //undefined case
     if (v == undefined) { c["s" + col] = undefined; return }
 
+    //zero case
+    if(v==0) { c["s" + col] = 0; return }
+
     const total = totalFunction(c);
-    if (!total) { c["s" + col] = undefined; return; }
+    if (!total || isNaN(total)) { c["s" + col] = undefined; return; }
 
     //compute percentage
     v = (100 * v) / total;
