@@ -1,5 +1,4 @@
 //TODO
-//birthplace: show by size. activate cb and chack effect
 //ternary: check confidential data case
 // check and debug
 // improve legend text + tooltip
