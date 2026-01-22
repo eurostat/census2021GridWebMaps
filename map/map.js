@@ -1,10 +1,10 @@
 //TODO
-// check ternary on PL !
 // improve legend text + tooltip
-// age pyramid size: size by bar length only ?
 // check and debug:
 // EMP FR DE >1km: set to undefined, not 0
+// ternary on PL for 2km data ?
 //fix tooltip location bug
+// age pyramid size: size by bar length only ?
 
 //add chernoff faces
 //sea level rise ?
