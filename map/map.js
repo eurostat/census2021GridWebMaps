@@ -1,5 +1,4 @@
 //TODO
-// revamp precompute functions - do on loading? !
 // improve legend text + tooltip
 // age pyramid size: size by bar length only ?
 // check and debug:
@@ -109,12 +108,14 @@ for (let theme of ["total", "age", "sex", "emp", "mob", "pob", "all"]) {
     dataset[theme] = new gridviz.MultiResolutionDataset(
         [1000, 2000, 5000, 10000, 20000, 50000, 100000],
         (resolution) => new gviz_par.TiledParquetGrid(map, tilesURL + "tiles_" + theme + "/" + resolution + "/"),
-        { preprocess: c => {
-            if(!c.T) return false
-            //console.log("fbkjb", c.T, theme)
-            preprocess[theme](c)
-            //return true
-        } })
+        {
+            preprocess: c => {
+                if (!c.T) return false
+                //console.log("fbkjb", c.T, theme)
+                preprocess[theme](c)
+                //return true
+            }
+        })
 }
 
 //make grid layer
@@ -213,7 +214,6 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.ShapeColorSizeStyle({
                     color: (c) => {
-                        //if (!c["p_" + theme]) compute[theme](c)
                         const v = c[shareCode]
                         return v == undefined || v == -1 ? naColor : colorClassifier(v);
                     },
@@ -234,7 +234,6 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.SquareColorCategoryWebGLStyle({
                     code: (c) => {
-                        //if (!c["p_" + theme]) compute[theme](c)
                         const v = c[shareCode]
                         return v == undefined || v == -1 ? "na" : classifier(v)
                     },
@@ -270,7 +269,6 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.ShapeColorSizeStyle({
                     color: (c) => {
-                        //if (!c["p_" + mapCode2]) compute[mapCode2](c);
                         return colorTernaryClassifiers[mapCode](c) || naColor;
                     },
                     viewScale: gridviz.viewScaleQuantile({
@@ -298,7 +296,6 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.SquareColorCategoryWebGLStyle({
                     code: (c) => {
-                        //if (!c["p_" + mapCode2]) compute[mapCode2](c);
                         return ternaryFun(c)
                     },
                     color: ternaryColorsDict,
@@ -468,10 +465,7 @@ const update = () => {
             },
             size: sbtp ? (c, r, z, viewScale) => viewScale(c.T) : undefined,
             viewScale: sbtp ? gridviz.viewScaleQuantile({
-                valueFunction: (c) => {
-                    //if (!c.p_sex) compute.sex(c);
-                    return +c.T;
-                },
+                valueFunction: (c) => +c.T,
                 classNumber: classNumberSize,
                 minSizePix: 2.5,
                 maxSizeFactor: 1.2,
