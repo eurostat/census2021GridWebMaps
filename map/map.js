@@ -496,16 +496,17 @@ const update = () => {
                     SAME: "#fed9a6", //light mostard
                     CHG_IN: "#7570b3", //blueish
                     CHG_OUT: "#d95f02", //orange
+                    unknown: naColor,
                 },
                 type: () => "piechart", //flag, piechart, ring, segment, radar, agepyramid, halftone
                 size: sbtp ? (c, r, z, scale) => scale(c.T) : undefined,
                 viewScale: sbtp ? gridviz.viewScaleQuantile({
-                    valueFunction: (c) => +c.T,
+                    valueFunction: (c) => c.T,
                     classNumber: classNumberSize,
                     minSizePix: 6,
                     maxSizeFactor: 1.2,
                 }) : undefined,
-                filter: c => c.SAME != undefined && c.CHG_IN != undefined && c.CHG_OUT != undefined && c.SAME != -1 && c.CHG_IN != -1 && c.CHG_OUT != -1
+                //filter: c => c.SAME != undefined && c.CHG_IN != undefined && c.CHG_OUT != undefined && c.SAME != -1 && c.CHG_IN != -1 && c.CHG_OUT != -1
             }),
         ];
 
