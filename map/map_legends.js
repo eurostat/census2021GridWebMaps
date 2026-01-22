@@ -2,18 +2,18 @@
 //place of birth (in the reporting country, in another EU country, outside the EU)
 
 const legendTitles = {
-    F: "Share of women",
-    M: "Share of men",
-    Y_LT15: "Share - aged under 15",
-    Y_1564: "Share - aged 15 to 64 years",
-    Y_GE65: "Share - aged 65 years and older",
-    EMP: "Share of employed persons",
-    SAME: "Share - residence unchanged",
-    CHG_IN: "Share - residence change within country",
-    CHG_OUT: "Share - residence change from other country",
-    NAT: "Share - born in the country",
-    EU_OTH: "Share - born in another EU member state",
-    OTH: "Share - born outside the EU",
+    Y_LT15: "Age under 15",
+    Y_1564: "Age 15 to 64 years",
+    Y_GE65: "Age 65 years and older",
+    F: "Women",
+    M: "Men",
+    EMP: "Employed persons",
+    SAME: "Residence unchanged 2020-2021",
+    CHG_IN: "Residence change 2020-2021 within the country",
+    CHG_OUT: "Residence change 2020-2021 from other country",
+    NAT: "Born in the country",
+    EU_OTH: "Born in another EU member state",
+    OTH: "Born outside the EU",
     ageing: "Ageing Index", //, in seniors (65+) per 100 young (0-14)",
     dep_ratio: "Dependency ratio", //, in seniors (65+) and young (0-14) per 100 active (15-64)",
     oa_dep_ratio: "Old-age dependency ratio", //, in seniors (65+) per 100 active (15-64)",
@@ -21,8 +21,6 @@ const legendTitles = {
     median_age: "Median age estimate",
     sex_balance: "Women / men balance, in %",
 }
-
-
 
 //define not available legend
 const naLegend = new gridviz.ColorCategoryLegend({
