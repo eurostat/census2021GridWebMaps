@@ -78,13 +78,6 @@ const preprocess = {
         //compute percentages
         computePercentage(c, "EMP", (c) => c.T); //TODO sure?
     },
-    pob: (c) => {
-        //compute percentages
-        const ct = computeTotal(["NAT", "EU_OTH", "OTH"])
-        computePercentage(c, "NAT", ct)
-        computePercentage(c, "EU_OTH", ct)
-        computePercentage(c, "OTH", ct)
-    },
     mob: (c) => {
         //compute percentages
         const ct = computeTotal(["SAME", "CHG_IN", "CHG_OUT"])
@@ -103,6 +96,13 @@ const preprocess = {
             for (let p of ["pcSAME", "pcCHG_IN", "pcCHG_OUT"]) c.unknown -= c[p]
             if (c.unknown < 0) c.unknown = 0
         }
+    },
+    pob: (c) => {
+        //compute percentages
+        const ct = computeTotal(["NAT", "EU_OTH", "OTH"])
+        computePercentage(c, "NAT", ct)
+        computePercentage(c, "EU_OTH", ct)
+        computePercentage(c, "OTH", ct)
     },
     ageing: (c) => {
         if (c.Y_LT15 == -1 || c.Y_GE65 == -1) c.ageing = -1

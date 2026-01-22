@@ -1,5 +1,4 @@
 //TODO
-//mob pie chart: add gray section for NA + legend
 //pob: bug
 // check c.T==-1 ? in process
 // check and debug:
