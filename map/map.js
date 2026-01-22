@@ -1,5 +1,4 @@
 //TODO
-// check c.T==-1 ? in process
 // check and debug
 // fix tooltip location bug
 // age pyramid size: size by bar length only ?
