@@ -8,12 +8,32 @@ const totPopTooltip = (c) => {
 
 
 const shareTooltip = (shareCode, mapCode) => (c) => {
-    const pop_ = "<br>" + formatLarge(c.T) + " person" + (c.T == 1 ? "" : "s");
+    const buf = []
+
+    //title
+    buf.push(legendTitles[mapCode])
+
+    //percentage
+    if (c[mapCode] == undefined || c[shareCode] == undefined)
+        buf.push("Data not available")
+    else if (c[mapCode] == -1 || c[shareCode] == -1)
+        buf.push("Data not available (confidential)")
+    else
+        buf.push("<b>" + formatPercentage(c[shareCode]) + " %</b>")
+
+    //totals
+    const p1 = formatLargeNA(c[mapCode])
+    const p2 = formatLargeNA(c.T) + " person" + (c.T == 1 ? "" : "s") + " in total";
+    buf.push((p1 == "NA" ? "" : p1 + " out of ") + p2)
+
+    return buf.join("<br>")
+
+    /*const pop_ = "<br>" + formatLarge(c.T) + " person" + (c.T == 1 ? "" : "s");
     if (c[mapCode] == undefined || c[shareCode] == undefined)
         return "Data not available" + pop_;
     if (c[mapCode] == -1 || c[shareCode] == -1)
         return "Data not available (confidential)" + pop_;
-    return "<b>" + formatPercentage(c[shareCode]) + " %</b><br>" + formatLarge(c[mapCode]) + pop_;
+    return "<b>" + formatPercentage(c[shareCode]) + " %</b><br>" + formatLarge(c[mapCode]) + pop_;*/
 };
 
 

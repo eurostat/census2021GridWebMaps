@@ -1,9 +1,9 @@
 //TODO
+// check ternary on PL !
 // improve legend text + tooltip
 // age pyramid size: size by bar length only ?
 // check and debug:
 // EMP FR DE >1km: set to undefined, not 0
-// check ternary on PL !
 //fix tooltip location bug
 
 //add chernoff faces

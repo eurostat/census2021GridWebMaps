@@ -5,6 +5,10 @@ const formatPercentage = d3.format(".1f");
 //format function for large numbers
 const _f = d3.format(",.0f");
 const formatLarge = (v) => _f(v).replace(/,/g, " ");
+const formatLargeNA = (v) => {
+    if(v==-1 || v==undefined) return "NA"
+    return formatLarge(v)
+}
 
 //function to compute the percentage of a cell value
 const computePercentage = (c, col, totalFunction) => {
