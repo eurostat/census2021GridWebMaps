@@ -259,6 +259,7 @@ const update = () => {
     } else if (["ter_age", "ter_mob", "ter_pob"].includes(mapCode)) {
 
         const mapCode2 = mapCode.replace("ter_", "")
+        const codes = ternaryData[mapCode].codes.map(c => c.replace("s", ""))
         gridLayer.dataset = dataset[mapCode2]
 
         const classNumberSize = 4;
@@ -269,7 +270,7 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.ShapeColorSizeStyle({
                     color: (c) => {
-                        //TODO -1 undefinde case
+                        for (p of codes) if (c[p] == -1 || c[p] == undefined) return naColor
                         return colorTernaryClassifiers[mapCode](c) || naColor;
                     },
                     viewScale: gridviz.viewScaleQuantile({
@@ -297,7 +298,7 @@ const update = () => {
             gridLayer.styles = [
                 new gridviz.SquareColorCategoryWebGLStyle({
                     code: (c) => {
-                        //TODO -1 undefinde case
+                        for (p of codes) if (c[p] == -1 || c[p] == undefined) return "unknown"
                         return ternaryFun(c)
                     },
                     color: ternaryColorsDict,
