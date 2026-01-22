@@ -161,7 +161,7 @@ const update = () => {
     const sbtp = document.getElementById("sbtp").checked;
 
     //show/hide GUI components
-    document.getElementById("sbtp_div").style.display = ["pop", "pob_pc"].includes(mapCode) ? 'none' : 'inline-block'
+    document.getElementById("sbtp_div").style.display = ["pop", /*"pob_pc"*/].includes(mapCode) ? 'none' : 'inline-block'
 
     //set gridlayer style
     if (mapCode === "pop") {
@@ -178,8 +178,8 @@ const update = () => {
 
         //set layer parameters
         gridLayer.minPixelsPerCell = interpolate ? 1.7 : 0.7;
-        gridLayer.cellInfoHTML = gridviz.GridLayer.defaultCellInfoHTML;
-        //gridLayer.cellInfoHTML = totPopTooltip;
+        //gridLayer.cellInfoHTML = gridviz.GridLayer.defaultCellInfoHTML;
+        gridLayer.cellInfoHTML = totPopTooltip;
 
     } else if (["Y_LT15", "Y_1564", "Y_GE65", "F", "M", "EMP", "SAME", "CHG_IN", "CHG_OUT", "NAT", "EU_OTH", "OTH"].includes(mapCode)) {
 
@@ -516,7 +516,7 @@ const update = () => {
     } else if (mapCode === "pob_pc") {
         gridLayer.dataset = dataset.pob
 
-        const classNumberSize = 5;
+        const classNumberSize = 4;
         gridLayer.styles = [
             new gridviz.CompositionStyle({
                 color: {
@@ -536,7 +536,7 @@ const update = () => {
 
         gridLayer.minPixelsPerCell = 12;
         gridLayer.styles[0].legends = [pobLegend,];
-        //if (sbtp) gridLayer.styles[0].legends.push(popSizeLegend(classNumberSize))
+        if (sbtp) gridLayer.styles[0].legends.push(popSizeLegend(classNumberSize))
         gridLayer.cellInfoHTML = pobPCTooltip
 
     } else if (mapCode === "chernoff") {
