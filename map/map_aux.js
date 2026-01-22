@@ -73,17 +73,6 @@ const preprocess = {
         computePercentage(c, "Y_LT15", ct)
         computePercentage(c, "Y_1564", ct)
         computePercentage(c, "Y_GE65", ct)
-
-        //unknown category, for pie chart
-        if (c.Y_LT15 != -1 && c.Y_1564 != -1 && c.Y_GE65 != -1 && c.Y_LT15 != undefined && c.Y_1564 != undefined && c.Y_GE65 != undefined)
-            c.unknown = 0
-        else {
-            c.unknown = c.T
-            for (let p of ["Y_LT15", "Y_1564", "Y_GE65"])
-                if (c[p] != -1 && c[p] != undefined)
-                    c.unknown -= c[p]
-            if (c.unknown < 0) c.unknown = 0
-        }
     },
     emp: (c) => {
         //compute percentages
@@ -102,6 +91,17 @@ const preprocess = {
         computePercentage(c, "SAME", ct)
         computePercentage(c, "CHG_IN", ct)
         computePercentage(c, "CHG_OUT", ct)
+
+        //unknown category, for pie chart
+        if (c.SAME != -1 && c.CHG_IN != -1 && c.CHG_OUT != -1 && c.SAME != undefined && c.CHG_IN != undefined && c.CHG_OUT != undefined)
+            c.unknown = 0
+        else {
+            c.unknown = c.T
+            for (let p of ["SAME", "CHG_IN", "CHG_OUT"])
+                if (c[p] != -1 && c[p] != undefined)
+                    c.unknown -= c[p]
+            if (c.unknown < 0) c.unknown = 0
+        }
     },
     ageing: (c) => {
         if (c.Y_LT15 == -1 || c.Y_GE65 == -1) c.ageing = -1
