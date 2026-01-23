@@ -129,7 +129,7 @@ map.layers = [backgroundLayerElevation, backgroundLayerRoad, backgroundLayerRoad
 //get colors
 const colors = []
 const classNumber = 8;
-for (let i = 0; i <= (classNumber - 1); i++) colors.push(d3.interpolateYlOrRd(i / (classNumber - 1)))
+for (let i = 0; i <= (classNumber - 1); i++) colors.push(d3.interpolateYlOrRd(0.85 * i / (classNumber - 1)))
 const scaleTPop = gridviz.exponentialScale(7) //exponentialScale logarithmicScale
 const popCols = { ...colors }; popCols.na = naColor
 
