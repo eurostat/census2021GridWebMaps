@@ -85,7 +85,10 @@ for (let cb of ["sbtp", "label", "grid", "boundary", "background"]) {
 }
 
 const hb = urlParams.get("hb");
-if (!hb) map.addZoomButtons(); else document.getElementById("home-button").style.display = "none"
+if (!hb) map.addZoomButtons(); else {
+    document.getElementById("expand-toggle-button").style.display = "none"
+    document.getElementById("home-button").style.display = "none"
+}
 
 
 // interpolate
