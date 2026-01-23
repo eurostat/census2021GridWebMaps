@@ -162,6 +162,9 @@ const update = () => {
     //show/hide GUI components
     document.getElementById("sbtp_div").style.display = ["pop", /*"pob_pc"*/].includes(mapCode) ? 'none' : 'inline-block'
 
+    //change gridlayer blend mode
+    gridLayer.blendOperation = sbtp? (z) => z<75?"multiply":"source-over" : () => "multiply"
+
     //set gridlayer style
     if (mapCode === "pop") {
         //total population
@@ -229,7 +232,7 @@ const update = () => {
                     filter: c => c[shareCode] != 0
                 })
             ];
-            gridLayer.minPixelsPerCell = 3;
+            gridLayer.minPixelsPerCell = 4;
         } else {
             const classifier = gridviz.classifier(breaks)
             const colDict = { ...colors }; colDict["na"] = naColor
@@ -286,7 +289,7 @@ const update = () => {
                     shape: () => "circle",
                 })
             ];
-            gridLayer.minPixelsPerCell = 3;
+            gridLayer.minPixelsPerCell = 4;
 
         } else {
 
@@ -352,7 +355,7 @@ const update = () => {
                     shape: () => "circle",
                 })
             ];
-            gridLayer.minPixelsPerCell = 3;
+            gridLayer.minPixelsPerCell = 4;
         } else {
             const classifier = gridviz.classifier(breaks)
             const colDict = { ...colors }; colDict["na"] = naColor
