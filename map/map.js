@@ -1,8 +1,9 @@
 //TODO
-// check and debug
-// fix tooltip location bug
-// age pyramid size: size by bar length only ?
 
+// test ramp without dark red - and none for 0 ?
+// fix tooltip location bug
+
+// age pyramid size: size by bar length only ?
 //add chernoff faces
 //sea level rise ?
 //generalise interpolation
@@ -223,6 +224,7 @@ const update = () => {
                     }),
                     size: (c, r, z, viewScale) => viewScale(c.T),
                     shape: () => "circle",
+                    filter: c => c[shareCode] != 0
                 })
             ];
             gridLayer.minPixelsPerCell = 3;
@@ -236,6 +238,7 @@ const update = () => {
                         return v == undefined || v == -1 ? "na" : classifier(v)
                     },
                     color: colDict,
+                    filter: c => c[shareCode] != 0
                 })
             ];
             //if (interpolate) gridLayer.styles = interpolateStyles(gridLayer.styles, shareCode);
