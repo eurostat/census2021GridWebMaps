@@ -1,5 +1,4 @@
 //TODO
-//faster prop circles
 
 // age pyramid size: size by bar length only ?
 //add chernoff faces
