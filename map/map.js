@@ -103,15 +103,12 @@ const dataset = {}
 for (let theme of ["total", "age", "sex", "emp", "mob", "pob", "all"]) {
     dataset[theme] = new gridviz.MultiResolutionDataset(
         [1000, 2000, 5000, 10000, 20000, 50000, 100000],
-        (resolution) => new gviz_par.TiledParquetGrid(map, tilesURL + "tiles_" + theme + "/" + resolution + "/"),
-        {
-            preprocess: c => {
-                if (!c.T) return false
-                //console.log("fbkjb", c.T, theme)
-                preprocess[theme](c)
-                //return true
-            }
-        })
+        (resolution) => new gviz_par.TiledParquetGrid(map, tilesURL + "tiles_" + theme + "/" + resolution + "/"), {
+        preprocess: c => {
+            if (!c.T) return false
+            preprocess[theme](c)
+        }
+    })
 }
 
 //make grid layer
@@ -204,13 +201,14 @@ const update = () => {
         let colors = undefined
         const classNumberColor = breaks.length + 1;
         if (theme == "sex")
+            // use spectral diverging
             colors = d3.schemeSpectral[classNumberColor];
         else {
+            // use ylorrd but remove too dark reds
             colors = []
             for (let i = 0; i <= (classNumberColor - 1); i++)
                 colors.push(d3.interpolateYlOrRd(0.8 * i / (classNumberColor - 1)))
         }
-        console.log(colors)
         const classNumberSize = 4;
 
         if (sbtp) {
