@@ -203,9 +203,16 @@ const update = () => {
 
         //define style breaks
         let breaks = breaksDict[mapCode];
+        let colors = undefined
         const classNumberColor = breaks.length + 1;
-        const palette = theme == "sex" ? d3.schemeSpectral : d3.schemeYlOrRd;
-        const colors = palette[classNumberColor];
+        if (theme == "sex")
+            colors = d3.schemeSpectral[classNumberColor];
+        else {
+            colors = []
+            for (let i = 0; i <= (classNumberColor - 1); i++)
+                colors.push(d3.interpolateYlOrRd(0.8 * i / (classNumberColor - 1)))
+        }
+        console.log(colors)
         const classNumberSize = 4;
 
         if (sbtp) {
