@@ -1,6 +1,4 @@
 //TODO
-
-// test ramp without dark red - and none for 0 ?
 // fix tooltip location bug
 
 // age pyramid size: size by bar length only ?
