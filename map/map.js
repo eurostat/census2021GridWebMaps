@@ -85,7 +85,7 @@ for (let cb of ["sbtp", "label", "grid", "boundary", "background"]) {
 }
 
 const hb = urlParams.get("hb");
-if (!hb) map.addZoomButtons()
+if (!hb) map.addZoomButtons(); else document.getElementById("home-button").style.display = "none"
 
 
 // interpolate
