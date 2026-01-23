@@ -54,9 +54,7 @@ const map = new gridviz.Map(document.getElementById("map"), {
     z: DEFAULTMAPSETTINGS.z,
     zoomExtent: [5, 10000],
     onZoomFun: (e) => { updateURL(map) },
-})
-    .addZoomButtons()
-    .setViewFromURL()
+}).setViewFromURL()
 //.addFullscreenButton()
 
 
@@ -85,6 +83,10 @@ for (let cb of ["sbtp", "label", "grid", "boundary", "background"]) {
     if (sel == undefined) continue;
     document.getElementById(cb).checked = sel != "" && sel != "false" && +sel != 0
 }
+
+const hb = urlParams.get("hb");
+if (!hb) map.addZoomButtons()
+
 
 // interpolate
 let interpolate = urlParams.get("interpolate")
@@ -162,7 +164,7 @@ const update = () => {
     document.getElementById("sbtp_div").style.display = ["pop", /*"pob_pc"*/].includes(mapCode) ? 'none' : 'inline-block'
 
     //change gridlayer blend mode
-    gridLayer.blendOperation = sbtp? (z) => z<75?"multiply":"source-over" : () => "multiply"
+    gridLayer.blendOperation = sbtp ? (z) => z < 75 ? "multiply" : "source-over" : () => "multiply"
 
     //set gridlayer style
     if (mapCode === "pop") {
