@@ -453,7 +453,7 @@ const update = () => {
             })
         ]
 
-        gridLayer.minPixelsPerCell = 12
+        gridLayer.minPixelsPerCell = 14
         gridLayer.styles[0].legends = [agePyramidLegend(agePyramidColors)]
         if (sbtp) gridLayer.styles[0].legends.push(popSizeLegend(classNumberSize, "square"))
         gridLayer.cellInfoHTML = agePyramidTooltip
@@ -481,7 +481,7 @@ const update = () => {
             shape: sbtp ? () => "circle" : undefined,
         })];
 
-        gridLayer.minPixelsPerCell = sbtp ? 3 : 1.7;
+        gridLayer.minPixelsPerCell = sbtp ? 4 : 1.7;
 
         //legends
         gridLayer.styles[0].legends = [
@@ -515,7 +515,7 @@ const update = () => {
             }),
         ];
 
-        gridLayer.minPixelsPerCell = 12;
+        gridLayer.minPixelsPerCell = 14;
         gridLayer.styles[0].legends = [mobLegend, naLegendC];
         if (sbtp) gridLayer.styles[0].addLegends(popSizeLegend(classNumberSize))
         gridLayer.cellInfoHTML = mobilityPCTooltip
