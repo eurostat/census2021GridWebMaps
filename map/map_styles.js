@@ -25,7 +25,7 @@ const breaksDict = {
 const naColor = "#ccc";
 
 // default stroke style
-const strokeStyle = new gridviz.StrokeStyle({ strokeColor: () => "#fff8", visible: (z) => z < 70, blendOperation: () => "source-over" });
+const strokeStyle = new gridviz.StrokeStyle({ strokeColor: () => "#fff8", visible: (z) => z < 15, blendOperation: () => "source-over" });
 
 /*/use that style to show when a cell has some confidentiality
 const confidentialStyle =

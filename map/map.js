@@ -1,5 +1,5 @@
 //TODO
-// fix tooltip location bug
+//faster prop circles
 
 // age pyramid size: size by bar length only ?
 //add chernoff faces
