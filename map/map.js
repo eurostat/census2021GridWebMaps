@@ -47,7 +47,6 @@ CHG_OUT - Place of usual residence one year prior to the census: move from outsi
   */
 
 
-
 //define map with initial view
 const DEFAULTMAPSETTINGS = { x: 4096489, y: 2829097, z: 2000, backgroundColor: "white" };
 const map = new gridviz.Map(document.getElementById("map"), {
