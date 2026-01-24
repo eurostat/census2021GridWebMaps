@@ -86,6 +86,7 @@ for (let cb of ["sbtp", "label", "grid", "boundary", "background"]) {
     document.getElementById(cb).checked = sel != "" && sel != "false" && +sel != 0
 }
 
+// secret url parameter to hide GUI elements - better to make screenshots
 const hb = urlParams.get("hb");
 if (!hb) map.addZoomButtons(); else {
     document.getElementById("expand-toggle-button").click()
