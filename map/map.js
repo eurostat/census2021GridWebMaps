@@ -90,6 +90,7 @@ const hb = urlParams.get("hb");
 if (!hb) map.addZoomButtons(); else {
     document.getElementById("expand-toggle-button").style.display = "none"
     document.getElementById("home-button").style.display = "none"
+    document.getElementById("footer-links").style.display = "none"
 }
 
 
