@@ -88,6 +88,7 @@ for (let cb of ["sbtp", "label", "grid", "boundary", "background"]) {
 
 const hb = urlParams.get("hb");
 if (!hb) map.addZoomButtons(); else {
+    document.getElementById("expand-toggle-button").click()
     document.getElementById("expand-toggle-button").style.display = "none"
     document.getElementById("home-button").style.display = "none"
     document.getElementById("footer-3452").style.display = "none"
