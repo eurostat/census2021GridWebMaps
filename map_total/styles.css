@@ -1,0 +1,214 @@
+    body {
+	margin: 0; 
+	height: 100%; 
+	font-family: Arial, Helvetica, sans-serif !important; 
+	overflow: hidden
+    }
+    main {
+      max-height: 100vh;
+      height: calc(100% - 30px); 
+      flex: 1;
+    }
+ @media (max-width: 800px) {
+      .footer-links,
+      #globan,
+      .globan {
+        display: none !important;
+      }
+      .wrapper {
+        height: 100vh !important;
+      }
+    .home-button {
+     	 top: 140px !important;
+    	}
+    }
+    main {
+      max-height: 100vh;
+      height: calc(100vh - 30px); /* Fallback for older browsers */ 
+      flex: 1;
+    }
+    .footer-links {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      background-color: white;
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      font-size: 13px;
+	opacity:0.9
+    }
+    .footer-links a {
+      color: #3860ed;
+      text-decoration: underline;
+    }
+    .footer-links a:hover {
+      text-decoration: underline;
+	color: #0f2fa2;
+    }
+    .footer-links a:visited {
+      color: purple; /* Change this to your desired color */
+    }
+    .wrapper {
+      height: calc(100vh - 25px);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+      #gridviz-attribution {
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        width: auto;
+        height: auto;
+        padding: 1px;
+        border: 0px;
+        background: #ffffffcc;
+        font-size: 0.8em;
+        font-family: sans-serif;
+      }
+      #gridviz-attribution > span > a {
+        text-decoration: underline !important;
+      }
+      #expand-toggle {
+        position: absolute;
+        left: 5px;
+        top: 5px;
+      }
+#expand-toggle-button {
+    background: white;
+    border-color: var(--c-p);
+    border-width: 1px;
+}
+      #expandable-content {
+        margin-top: 4px;
+      }
+      #layer-control {
+        position: absolute;
+        left: 0px;
+        min-width: 260px;
+        height: auto;
+        padding: 10px;
+        background: #ffffff;
+        box-shadow: 5px 5px 5px grey;
+      }
+      #map {
+        height: 100%;
+        width: 100%;
+      }
+      .proportional-checkbox-label {
+        margin-top: 6px !important;
+      }
+      .subcontrols {
+        margin-left: 20px;
+        margin-top: 5px;
+      }
+      #tooltip_eurostat {
+        top: 0px;
+        z-index: 9999;
+      }
+      #share-of-container,
+      #ternary-container {
+        display: block;
+      }
+      #full-version-button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+      }
+      /* ECL overrides */
+      .ecl-radio {
+        margin-bottom: 2px !important;
+      }
+      .ecl-radio__label {
+        padding: unset !important;
+        line-height: unset !important;
+        font-size: 14px !important;
+        align-items: center !important;
+      }
+      .ecl-checkbox__label {
+        padding: 1px !important;
+        line-height: unset !important;
+        font-size: 14px !important;
+        align-items: center !important;
+      }
+      .ecl-select {
+        padding: 2px !important;
+        height: 35px !important;
+        font-size: 14px !important;
+      }
+      .ecl-select__container {
+        height: 35px !important;
+      }
+      span.ecl-checkbox__box,
+      span.ecl-radio__box {
+        height: 1.2rem !important;
+        width: 1.2rem !important;
+      }
+
+/* Zoom buttons */
+#gridviz-zoom-buttons-map {
+    right: 13px !important;
+    top: 60px !important;
+	background-color: unset !important;
+}
+
+/* When NOT embedded = full version */
+body.not-embedded #gridviz-zoom-buttons-map {
+  top: 10px !important;
+}
+
+body.not-embedded #home-button {
+  top: 90px !important;
+}
+
+#zoom-in {
+    border-top-left-radius: 4px !important;
+    border-top-right-radius: 4px !important;
+}
+
+#zoom-out {
+    border-bottom-left-radius: 4px !important;
+    border-bottom-right-radius: 4px !important;
+}
+
+#zoom-in,
+#zoom-out,
+#home-button {
+    background-color: #fff !important;
+    border: 1px solid var(--c-p) !important;
+    color: var(--c-p) !important;
+    height: 27px;
+    width: 27px;
+}
+
+#home-button {
+    border-radius: 4px;
+    position: absolute;
+    top: 145px;
+    right: 11px;
+    background-color: white;
+    cursor: pointer;
+    padding: 4px;
+	width: 27.5px;
+}
+
+#home-button:hover .svg-home-icon {
+    fill: white;
+}
+
+#zoom-in:hover,
+#zoom-out:hover,
+#home-button:hover {
+    background-color: var(--c-p-80) !important;
+    border-color: var(--c-p-80) !important;
+    color: #fff !important;
+    padding: 5px;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+#zoom-in {
+    border-bottom: 0 !important;
+}
