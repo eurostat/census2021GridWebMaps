@@ -101,6 +101,9 @@ if (!hb) map.addZoomButtons(); else {
 let interpolate = urlParams.get("interpolate")
 interpolate = interpolate != "" && interpolate != "false" && +interpolate != 0
 
+// show JRC 100m
+let jrc100 = urlParams.get("jrc100")
+
 
 //
 updateLayersVisibility()
@@ -111,7 +114,7 @@ updateLayersVisibility()
 const dataset = {}
 for (let theme of ["total", "age", "sex", "emp", "mob", "pob", "all"]) {
     dataset[theme] = new gridviz.MultiResolutionDataset(
-        [1000, 2000, 5000, 10000, 20000, 50000, 100000],
+        theme == "total" && jrc100? [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000] : [1000, 2000, 5000, 10000, 20000, 50000, 100000],
         (resolution) => new gviz_par.TiledParquetGrid(map, tilesURL + "tiles_" + theme + "/" + resolution + "/"), {
         preprocess: c => {
             if (!c.T) return false
