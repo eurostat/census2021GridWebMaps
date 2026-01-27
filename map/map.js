@@ -1,5 +1,6 @@
 //TODO
 
+//100m total pop
 // add expalanation message ?
 
 // age pyramid size: size by bar length only ?
