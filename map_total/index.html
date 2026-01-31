@@ -111,47 +111,17 @@
 
           <div id="layer-control">
 
-            <!-- map select-->
+            <label class="ecl-form-label">Total population</label>
+
+            <!-- year select-->
             <div class="ecl-form-group">
               <div class="ecl-select__container ecl-select__container--m">
-                <select class="ecl-select" id="map_select" name="map_select" aria-label="map_select" required
+                <select class="ecl-select" id="year_select" name="year_select" aria-label="year_select" required
                   aria-describedby="share_-helper" data-ecl-auto-init="Select">
-                  <optgroup label="Total population" data-id="tot">
-                    <option value="pop" selected>Total population</option>
-                  </optgroup>
-                  <optgroup label="Share of" data-id="share">
-                    <option value="Y_LT15">Age under 15 years</option>
-                    <option value="Y_1564">Age 15 to 64 years</option>
-                    <option value="Y_GE65">Age 65 years and older</option>
-                    <option value="F">Women</option>
-                    <option value="M">Men</option>
-                    <option value="EMP">Employed</option>
-                    <option value="SAME">Residence unchanged 2020-2021</option>
-                    <option value="CHG_IN">Residence change 2020-2021 within the country</option>
-                    <option value="CHG_OUT">Residence change 2020-2021 from other country</option>
-                    <option value="NAT">Born in the country</option>
-                    <option value="EU_OTH">Born in another EU member state</option>
-                    <option value="OTH">Born outside the EU</option>
-                  </optgroup>
-                  <optgroup label="Ternary color by" data-id="ternary">
-                    <option value="ter_age">Age</option>
-                    <option value="ter_mob">Mobility</option>
-                    <option value="ter_pob">Birth place</option>
-                  </optgroup>
-                  <optgroup label="Demography" data-id="demography">
-                    <option value="ageing">Ageing Index</option>
-                    <option value="dep_ratio">Total Dependency ratio</option>
-                    <option value="oa_dep_ratio">Old-age dependency ratio</option>
-                    <option value="y_dep_ratio">Youth dependency ratio</option>
-                    <option value="median_age">Median age estimate</option>
-                  </optgroup>
-                  <optgroup label="Other" data-id="other">
-                    <option value="age_pyramid">Age pyramid</option>
-                    <option value="sex_balance">Sex balance</option>
-                    <option value="mobility_pc">Mobility</option>
-                    <option value="pob_pc">Place of birth</option>
-                   <option value="chernoff" style="display: none;">Chernoff faces</option>
-                  </optgroup>
+                  <option value="2021" selected>2021</option>
+                  <option value="2018">2018</option>
+                  <option value="2011">2011</option>
+                  <option value="2006">2006</option>
                 </select>
                 <div class="ecl-select__icon">
                   <button class="ecl-button ecl-button--ghost ecl-button--icon-only" type="button" tabindex="-1">
@@ -167,20 +137,108 @@
               </div>
             </div>
 
-            <!-- proportional dot checkbox-->
-            <div class="ecl-checkbox ecl-checkbox--single" id="sbtp_div" style="display: inline-block;">
-              <input name="checkbox-default" class="ecl-checkbox__input" type="checkbox" id="sbtp" value="sbtp" />
-              <label for="sbtp" class="ecl-checkbox__label proportional-checkbox-label">
-                <span class="ecl-checkbox__box">
-                  <svg class="ecl-icon ecl-icon--m ecl-checkbox__icon" focusable="false" aria-hidden="true">
-                    <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#check"></use>
-                  </svg>
-                </span>
-                <span class="ecl-checkbox__text">Dot proportional to total population</span>
-              </label>
+
+            <!-- gridviz style radios -->
+            <div class="ecl-radio toc-element">
+              <input id="color" name="style" class="ecl-radio__input" type="radio" value="color" checked
+                aria-describedby="helper-1" /><label class="ecl-radio__label" for="color"><span
+                  class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span
+                  class="ecl-radio__text">Colour</span></label>
             </div>
 
-            <hr>
+
+            <!-- smoothed with slider -->
+            <div class="ecl-form-group" style="margin-top: 0rem" data-ecl-range="true" data-ecl-auto-init="Range">
+              <div style="display: flex; align-items: center">
+                <div class="ecl-radio toc-element">
+                  <input id="smoothed" name="style" class="ecl-radio__input" type="radio" value="smoothed" /><label
+                    class="ecl-radio__label" for="smoothed"><span class="ecl-radio__box"><span
+                        class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Smoothed</span></label>
+                </div>
+                <input id="sigmaTK" data-ecl-range-input type="range" class="ecl-range ecl-range--m gridviz-slider"
+                  min="3" max="20" value="8" />
+              </div>
+            </div>
+
+
+            <div class="ecl-radio toc-element">
+              <input id="colorDark" name="style" class="ecl-radio__input" type="radio" value="colorDark"
+                aria-describedby="helper-2" /><label class="ecl-radio__label" for="colorDark"><span
+                  class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span
+                  class="ecl-radio__text">Colour (dark)</span></label>
+            </div>
+            <div class="ecl-radio toc-element">
+              <input id="size" name="style" class="ecl-radio__input" type="radio" value="size" /><label
+                class="ecl-radio__label" for="size"><span class="ecl-radio__box"><span
+                    class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Circle size</span></label>
+            </div>
+
+            <div class="ecl-radio toc-element">
+              <input id="dots" name="style" class="ecl-radio__input" type="radio" value="dots" /><label
+                class="ecl-radio__label" for="dots"><span class="ecl-radio__box"><span
+                    class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Dots</span></label>
+            </div>
+
+            <!-- 3d bars -->
+            <div class="ecl-radio toc-element">
+              <input id="pillar" name="style" class="ecl-radio__input" type="radio" value="pillar" /><label
+                class="ecl-radio__label" for="pillar"><span class="ecl-radio__box"><span
+                    class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">3D bars</span></label>
+            </div>
+
+            <!-- joyplot -->
+            <div class="ecl-radio toc-element">
+              <input id="joyplot" name="style" class="ecl-radio__input" type="radio" value="joyplot" /><label
+                class="ecl-radio__label" for="joyplot"><span class="ecl-radio__box"><span
+                    class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Joyplot</span></label>
+            </div>
+
+            <div class="ecl-radio toc-element">
+              <input id="lego" name="style" class="ecl-radio__input" type="radio" value="lego" /><label
+                class="ecl-radio__label" for="lego"><span class="ecl-radio__box"><span
+                    class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Lego</span></label>
+            </div>
+
+            <!-- 2011/2021 change -->
+            <label class="ecl-form-label">2011-2021 change</label>
+
+            <!-- colorCh -->
+            <div class="ecl-radio toc-element">
+              <input id="colorCh" name="style" class="ecl-radio__input" type="radio" value="colorCh" /><label
+                class="ecl-radio__label" for="colorCh"><span class="ecl-radio__box"><span
+                    class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Colour</span></label>
+            </div>
+
+            <!-- colorChSmTK -->
+            <!-- smoothed with slider -->
+            <div class="ecl-form-group" style="margin-top: 0rem" data-ecl-range="true" data-ecl-auto-init="Range">
+              <div style="display: flex; align-items: center">
+                <div class="ecl-radio toc-element">
+                  <input id="colorChSmTK" name="style" class="ecl-radio__input" type="radio"
+                    value="colorChSmTK" /><label class="ecl-radio__label" for="colorChSmTK"><span
+                      class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span
+                      class="ecl-radio__text">Smoothed</span></label>
+                </div>
+                <input id="sigmaCCH" data-ecl-range-input type="range" class="ecl-range ecl-range--m gridviz-slider"
+                  min="3" max="20" value="8" />
+              </div>
+            </div>
+
+            <!-- sizeCh -->
+            <div class="ecl-radio toc-element">
+              <input id="sizeCh" name="style" class="ecl-radio__input" type="radio" value="sizeCh" /><label
+                class="ecl-radio__label" for="sizeCh"><span class="ecl-radio__box"><span
+                    class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Circle size</span></label>
+            </div>
+
+            <!-- segmentCh -->
+            <div class="ecl-radio toc-element">
+              <input id="segmentCh" name="style" class="ecl-radio__input" type="radio" value="segmentCh" /><label
+                class="ecl-radio__label" for="segmentCh"><span class="ecl-radio__box"><span
+                    class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Segment</span></label>
+            </div>
+
+            <hr />
 
             <!-- basemaps -->
             <div>

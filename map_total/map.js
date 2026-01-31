@@ -1,51 +1,10 @@
 //TODO
 
-// add expalanation message ?
+// https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
 
-// age pyramid size: size by bar length only ?
-//add chernoff faces
 //sea level rise ?
 //generalise interpolation
 
-
-/*
-  Notes on data
-
-  "T" >= Total population
-
-  "F" >= Women
-  "M" >= Men
-
-  "EMP" >= Employed (working population)
-
-  "Y_LT15" >= Age under 15 years
-  "Y_1564" >= Age 15 to 64 years
-  "Y_GE65" >= Age 65 years and older
-
-  "SAME" >= Residence unchanged (as of January 1, 2021, compared to January 1, 2020)
-  "CHG_IN" >= Moved within the country (as of January 1, 2021, compared to January 1, 2020)
-  "CHG_OUT" >= Moved from outside the country (as of January 1, 2021, compared to January 1, 2020)
-
-  "NAT" >= Born in the country
-  "EU_OTH" >= Born in another EU member state
-  "OTH" >= Born outside the EU
-
-
-T - Total population
-M - Male Population
-F - Female Population 
-Y_LT15 - Age Under 15 years
-Y_1564 - Age 15 to 64 years
-Y_GE65 - Age 65 years and over
-EMP - Employed persons
-NAT -  Place of birth in reporting country
-EU_OTH Place of birth in other EU Member State
-OTH - Place of birth elsewhere
-SAME - Place of usual residence one year prior to the census unchanged
-CHG_IN - Place of usual residence one year prior to the census: move within reporting country
-CHG_OUT - Place of usual residence one year prior to the census: move from outside of the reporting country
-
-  */
 
 
 //define map with initial view
