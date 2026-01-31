@@ -25,13 +25,21 @@ const map = new gridviz.Map(document.getElementById("map"), {
 
 
 //define multi resolution datasets
-//TODO
+const tilesUrl = "https://raw.githubusercontent.com/jgaffuri/tiled-popgrid/main/pub/v1/"
+const dataset = {}
+for (let year of ["2006", "2011", "2018", "2021"]) {
+    dataset[theme] = new gridviz.MultiResolutionDataset(
+        [1000, 2000, 5000, 10000, 20000, 50000, 100000],
+        (resolution) => new gviz_par.TiledParquetGrid(map, tilesUrl + year + "/" + resolution + "/"), {
+        /*preprocess: c => {}*/
+    })
+}
 
-//https://raw.githubusercontent.com/jgaffuri/tiled-popgrid/main/pub/v1/2018/1000/info.json
-//p
+dataset.change = new gridviz.MultiResolutionDataset(
+        [1000, 2000, 5000, 10000, 20000, 50000, 100000],
+        (resolution) => new gviz_par.TiledParquetGrid(map, tilesUrl + "change/" + resolution + "/"), {
+        /*preprocess: c => {}*/
+    })
 
-
-//https://raw.githubusercontent.com/jgaffuri/tiled-popgrid/main/pub/v1/change/1000/info.json
-//p2006
 
 
