@@ -24,7 +24,14 @@ const map = new gridviz.Map(document.getElementById("map"), {
 //TODO
 
 
-
 //define multi resolution datasets
 //TODO
+
+//https://raw.githubusercontent.com/jgaffuri/tiled-popgrid/main/pub/v1/2018/1000/info.json
+//p
+
+
+//https://raw.githubusercontent.com/jgaffuri/tiled-popgrid/main/pub/v1/change/1000/info.json
+//p2006
+
 
