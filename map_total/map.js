@@ -18,6 +18,8 @@ const map = new gridviz.Map(document.getElementById("map"), {
 }).setViewFromURL()
 //.addFullscreenButton()
 
+//TODO
+const updateURL = (map) => {}
 
 
 // initialise map using URL parameters
@@ -42,12 +44,14 @@ dataset.change = new gridviz.MultiResolutionDataset(
     })
 
 
+
+
 const update = () => {
 
 
     //redraw
     map.redraw();
-    //updateURL(map);
+    updateURL(map);
 }
 
 //initialise
