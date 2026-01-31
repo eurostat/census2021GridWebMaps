@@ -42,4 +42,14 @@ dataset.change = new gridviz.MultiResolutionDataset(
     })
 
 
+const update = () => {
+
+
+    //redraw
+    map.redraw();
+    //updateURL(map);
+}
+
+//initialise
+update();
 
