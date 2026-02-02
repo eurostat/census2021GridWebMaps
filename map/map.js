@@ -1,8 +1,6 @@
 //TODO
-
 // density in tooltip and legend: per km2 ?
 // clarify ternary color legend
-// 'demography' 'demographic indicators'
 // tooltip text should explain better the indicator
 
 
