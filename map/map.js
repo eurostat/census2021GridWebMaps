@@ -1,8 +1,6 @@
 //TODO
 
-// borders instead of boundaries
 // density in tooltip and legend: per km2 ?
-// '1 out of 3 persons in total' -> '1 in 3 persons'
 // clarify ternary color legend
 // EU countries instead of member states
 // 'demography' 'demographic indicators'
