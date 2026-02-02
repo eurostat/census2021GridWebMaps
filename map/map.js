@@ -146,20 +146,21 @@ const popCols = { ...colors }; popCols.na = naColor
 
 //style
 let totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
-    viewScale: cells => {
+    viewScale: (cells, r) => {
         const max = d3.max(cells, c => c.T)
+        const rr = r*r/1000000
         const breaks = []
         for (let i = 1; i < classNumber; i++) {
             let t = i / classNumber
             t = scaleTPop(t)
-            breaks.push(max * t)
+            breaks.push(max * t / rr)
         }
         return gridviz.classifier(breaks)
     },
     code: (c, r, z, classifier) => {
         const v = c.T
         if (v == -1 || v == undefined) return "na"
-        return classifier(v)
+        return classifier(1000000 * v/r/r)
     },
     color: popCols,
 })
