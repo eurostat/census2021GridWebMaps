@@ -1,6 +1,8 @@
 //TODO
-// clarify ternary color legend + tootip 'relative predominance of ...'
+// ternary color tootip: 'relative predominance of ...'
 // tooltip text should explain better the indicator
+// fix background order/blend mode
+
 
 // add expalanation message ?
 
