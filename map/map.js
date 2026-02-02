@@ -3,7 +3,6 @@
 // clarify ternary color legend
 // tooltip text should explain better the indicator
 
-
 // add expalanation message ?
 
 // age pyramid size: size by bar length only ?
