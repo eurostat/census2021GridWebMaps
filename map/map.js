@@ -1,5 +1,5 @@
 //TODO
-// clarify ternary color legend
+// clarify ternary color legend + tootip 'relative predominance of ...'
 // tooltip text should explain better the indicator
 
 // add expalanation message ?
@@ -332,6 +332,7 @@ const update = () => {
         const style = gridLayer.styles[0];
 
         //legends
+        ternaryLegends[mapCode].tooltip = map.tooltip
         style.legends = [ternaryLegends[mapCode], naLegend];
 
         //population legend
