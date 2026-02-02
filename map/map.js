@@ -57,7 +57,7 @@ const map = new gridviz.Map(document.getElementById("map"), {
     x: DEFAULTMAPSETTINGS.x,
     y: DEFAULTMAPSETTINGS.y,
     z: DEFAULTMAPSETTINGS.z,
-    zoomExtent: [5, 10000],
+    zoomExtent: [4, 10000],
     onZoomFun: (e) => { updateURL(map) },
 }).setViewFromURL()
 //.addFullscreenButton()

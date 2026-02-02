@@ -42,7 +42,7 @@ const popSizeLegend = (classNumberSize, shape = "circle") => gridviz.sizeDiscret
 
 //total population legend
 const totPopLegend = new gridviz.ColorDiscreteLegend({
-    title: "Population density (persons/km2)",
+    title: "Population density, in persons/km2",
     width: Math.min(window.innerWidth - 40, 450),
     colors: () => colors,
     breaks: (viewScale) => viewScale?.breaks.map((b) => gridviz.nice(b)),

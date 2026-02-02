@@ -18,7 +18,7 @@ const backgroundLayerRoad = new gridviz.BackgroundLayer({
 
 const backgroundLayerRoad2 = new gridviz.BackgroundLayer(
     gridviz_eurostat.giscoBackgroundLayer('OSMPositronCompositeEN', 19, 'EPSG3035', {
-        pixelationCoefficient: 0.55,
+        pixelationCoefficient: 1,
     })
 );
 
