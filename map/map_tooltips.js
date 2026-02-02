@@ -1,9 +1,9 @@
 
 
-const totPopTooltip = (c) => {
+const totPopTooltip = (c, r) => {
     const v = c.T
     if (v == -1) return "Data not available (confidential)"
-    else return "<b>" + formatLarge(v) + "</b> person" + (v == 1 ? "" : "s")
+    else return "<b>" + formatLarge(v/(r*r/1000000)) + "</b> person" + (v == 1 ? "" : "s") + "/km2"
 }
 
 
