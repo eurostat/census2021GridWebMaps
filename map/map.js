@@ -1,5 +1,4 @@
 //TODO
-// density in tooltip and legend: per km2 ?
 // clarify ternary color legend
 // tooltip text should explain better the indicator
 
