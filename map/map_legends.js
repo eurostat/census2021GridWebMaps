@@ -12,7 +12,7 @@ const legendTitles = {
     CHG_IN: "Residence change 2020-2021 within the country",
     CHG_OUT: "Residence change 2020-2021 from other country",
     NAT: "Born in the country",
-    EU_OTH: "Born in another EU member state",
+    EU_OTH: "Born in another EU country",
     OTH: "Born outside the EU",
     ageing: "Ageing Index", //, in seniors (65+) per 100 young (0-14)",
     dep_ratio: "Dependency ratio", //, in seniors (65+) and young (0-14) per 100 active (15-64)",
@@ -110,10 +110,10 @@ const ternaryLegends = {
         texts: {
             0: "Over-representation of persons<br>born outside the EU",
             1: "Over-representation of persons<br>born in the country",
-            2: "Over-representation of persons<br>born in another EU member state",
+            2: "Over-representation of persons<br>born in another EU country",
             12: "Under-representation of persons<br>born outside the EU",
             "02": "Under-representation of persons<br>born in the country",
-            "01": "Under-representation of persons<br>born in another EU member state",
+            "01": "Under-representation of persons<br>born in another EU country",
             center: "Balanced representation",
         },
         leftText: "Rest of the world",
@@ -147,7 +147,7 @@ const pobLegend = new gridviz.ColorCategoryLegend({
     title: "Place of birth",
     colorLabel: [
         ["#fed9a6", "Born in the country"],
-        ["#7570b3", "Born in another EU member state"],
+        ["#7570b3", "Born in another EU country"],
         ["#d95f02", "Born outside the EU"],
     ],
 })

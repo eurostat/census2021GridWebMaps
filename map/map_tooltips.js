@@ -66,7 +66,7 @@ const ternaryTooltip = {
         const total = (c.NAT == undefined || c.EU_OTH == undefined || c.OTH == undefined || c.NAT == -1 || c.EU_OTH == -1 || c.OTH == -1) ? c.T : c.NAT + c.EU_OTH + c.OTH;
         const percpart =
             "Born in the country: " + terToo___(c, "NAT") + "<br>" +
-            "Born in another EU member state: " + terToo___(c, "EU_OTH") + "<br>" +
+            "Born in another EU country: " + terToo___(c, "EU_OTH") + "<br>" +
             "Born outside the EU: " + terToo___(c, "OTH")
         return "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>" + percpart
     }

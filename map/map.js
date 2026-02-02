@@ -2,7 +2,6 @@
 
 // density in tooltip and legend: per km2 ?
 // clarify ternary color legend
-// EU countries instead of member states
 // 'demography' 'demographic indicators'
 // tooltip text should explain better the indicator
 
@@ -34,7 +33,7 @@
   "CHG_OUT" >= Moved from outside the country (as of January 1, 2021, compared to January 1, 2020)
 
   "NAT" >= Born in the country
-  "EU_OTH" >= Born in another EU member state
+  "EU_OTH" >= Born in another EU country
   "OTH" >= Born outside the EU
 
 
@@ -46,7 +45,7 @@ Y_1564 - Age 15 to 64 years
 Y_GE65 - Age 65 years and over
 EMP - Employed persons
 NAT -  Place of birth in reporting country
-EU_OTH Place of birth in other EU Member State
+EU_OTH Place of birth in other EU country
 OTH - Place of birth elsewhere
 SAME - Place of usual residence one year prior to the census unchanged
 CHG_IN - Place of usual residence one year prior to the census: move within reporting country
