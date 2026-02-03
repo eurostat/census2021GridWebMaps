@@ -61,6 +61,7 @@ map.layers = [backgroundLayerElevation, backgroundLayerRoad2, /*gridLayer,*/ bac
 
 const update = () => {
 
+    //const mapCode = document.getElementById("style").value;
 
     //redraw
     map.redraw();
