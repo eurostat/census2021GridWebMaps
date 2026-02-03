@@ -80,20 +80,29 @@ const ternaryColorsDict = {
 
 
 
-const colorTernaryClassifierFun = (mapCode) => {
-    const tcl = gridviz.ternaryColorClassifier(
-        ternaryData[mapCode].codes,
-        () => 100,
-        [ternaryColorsDict["0"], ternaryColorsDict["1"], ternaryColorsDict["2"]],
-        {
-            center: ternaryData[mapCode].center,
-            centerColor: ternaryColorsDict.center,
-            centerCoefficient: 0.25,
-            defaultColor: naColor,
-        })
-    return tcl //((c) => tcl(c))
-}
 
+// get ternary classifier
+const ternaryClassifierFun = (mapCode) => gridviz.ternaryClassifier(
+    ternaryData[mapCode].codes,
+    () => 100,
+    { center: ternaryData[mapCode].center, centerCoefficient: 0.25 }
+);
+
+// get ternary color classifier
+const colorTernaryClassifierFun = (mapCode) => gridviz.ternaryColorClassifier(
+    ternaryData[mapCode].codes,
+    () => 100,
+    [ternaryColorsDict["0"], ternaryColorsDict["1"], ternaryColorsDict["2"]],
+    {
+        center: ternaryData[mapCode].center,
+        centerColor: ternaryColorsDict.center,
+        centerCoefficient: 0.25,
+        defaultColor: naColor,
+    })
+
+const ternaryClassifiers = {}
 const colorTernaryClassifiers = {}
-for (let mapCode of ["ter_age", "ter_mob", "ter_pob"])
+for (let mapCode of ["ter_age", "ter_mob", "ter_pob"]) {
+    ternaryClassifiers[mapCode] = ternaryClassifierFun(mapCode)
     colorTernaryClassifiers[mapCode] = colorTernaryClassifierFun(mapCode)
+}

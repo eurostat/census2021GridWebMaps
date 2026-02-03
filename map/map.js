@@ -311,18 +311,14 @@ const update = () => {
         } else {
 
             // get ternary classifier
-            const ternaryFun = gridviz.ternaryClassifier(
-                ternaryData[mapCode].codes,
-                () => 100,
-                { center: ternaryData[mapCode].center, centerCoefficient: 0.25 }
-            );
+            const classifier = ternaryClassifiers[mapCode]
 
             //pixel style
             gridLayer.styles = [
                 new gridviz.SquareColorCategoryWebGLStyle({
                     code: (c) => {
                         for (p of codes) if (c[p] == -1 || c[p] == undefined) return "unknown"
-                        return ternaryFun(c)
+                        return classifier(c)
                     },
                     color: ternaryColorsDict,
                 }),
