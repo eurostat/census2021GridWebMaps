@@ -1,7 +1,5 @@
 //TODO
-// tooltip text should explain better the indicator
-// fix background order/blend mode
-
+//deploy !
 
 // add expalanation message ?
 
@@ -132,7 +130,7 @@ const gridLayer = new gridviz.GridLayer(undefined, [], {
 })
 
 //set map layers
-map.layers = [backgroundLayerElevation, backgroundLayerRoad, backgroundLayerRoad2, gridLayer, boundariesLayer, labelLayer];
+map.layers = [backgroundLayerElevation, backgroundLayerRoad2, gridLayer, backgroundLayerRoad, boundariesLayer, labelLayer];
 
 
 // total population style

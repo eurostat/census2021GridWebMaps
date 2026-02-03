@@ -7,22 +7,6 @@ const bgLayerURLRoad = 'https://ec.europa.eu/eurostat/cache/GISCO/mbkg/road/'
 
 //define background layers
 
-const backgroundLayerRoad = new gridviz.BackgroundLayer({
-    url: bgLayerURLRoad,
-    resolutions: Array.from({ length: 15 }, (_, i) => 114688 / Math.pow(2, i)),
-    origin: [0, 6000000],
-    nbPix: 512,
-    pixelationCoefficient: 0.55,
-    filterColor: (z) => z > 200 ? "#fff8" : "#fff4",
-})
-
-const backgroundLayerRoad2 = new gridviz.BackgroundLayer(
-    gridviz_eurostat.giscoBackgroundLayer('OSMPositronCompositeEN', 19, 'EPSG3035', {
-        pixelationCoefficient: 1,
-    })
-);
-
-
 const backgroundLayerElevation = new gridviz.BackgroundLayer({
     url: bgLayerURLElevation,
     resolutions: Array.from({ length: 13 }, (_, i) => 114688 / Math.pow(2, i)),
@@ -31,6 +15,22 @@ const backgroundLayerElevation = new gridviz.BackgroundLayer({
     pixelationCoefficient: 1,
     filterColor: () => "#fff8",
 })
+
+const backgroundLayerRoad = new gridviz.BackgroundLayer({
+    url: bgLayerURLRoad,
+    resolutions: Array.from({ length: 15 }, (_, i) => 114688 / Math.pow(2, i)),
+    origin: [0, 6000000],
+    nbPix: 512,
+    pixelationCoefficient: 0.55,
+    filterColor: (z) => z > 200 ? "#fff8" : "#fff4",
+    blendOperation: () => "multiply",
+})
+
+const backgroundLayerRoad2 = new gridviz.BackgroundLayer(
+    gridviz_eurostat.giscoBackgroundLayer('OSMPositronCompositeEN', 19, 'EPSG3035', {
+        pixelationCoefficient: 1,
+    })
+);
 
 // function to define or refresh background layers visibility based on GUI
 const updateLayersVisibility = () => {
