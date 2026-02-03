@@ -54,7 +54,7 @@ const gridLayer = new gridviz.GridLayer(undefined, [], {
 })
 
 //set map layers
-map.layers = [backgroundLayerElevation, backgroundLayerRoad2, gridLayer, backgroundLayerRoad, boundariesLayer, labelLayer];
+map.layers = [backgroundLayerElevation, backgroundLayerRoad2, /*gridLayer,*/ backgroundLayerRoad, boundariesLayer, labelLayer];
 
 
 
