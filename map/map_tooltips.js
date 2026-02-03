@@ -45,15 +45,20 @@ const terToo___ = (c, p) => {
     return formatLargeNA(v, false) + " - " + formatPercentage(c["s" + p], false)
 }
 
+const getCellTernaryText = c => {
+    const mapCode = document.getElementById("map_select").value
+    const cla = ternaryClassifiers[mapCode]
+    return ternaryLegends[mapCode].texts[cla(c)]
+}
+
 const ternaryTooltip = {
     "ter_age": (c) => {
-        const cla = ternaryClassifiers[document.getElementById("map_select").value]
         const total = (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined || c.Y_LT15 == -1 || c.Y_1564 == -1 || c.Y_GE65 == -1) ? c.T : c.Y_LT15 + c.Y_1564 + c.Y_GE65;
         const percpart =
             "Age under 15 years: " + terToo___(c, "Y_LT15") + "<br>" +
             "Age 15 to 64 years: " + terToo___(c, "Y_1564") + "<br>" +
             "Age 65 years and older: " + terToo___(c, "Y_GE65")
-        return cla(c) + "<br>" + "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>" + percpart
+        return "<b>" + getCellTernaryText(c) + "</b><br>" + formatLarge(total) + " person" + (total == 1 ? "" : "s") + "<br>" + percpart
     },
     "ter_mob": (c) => {
         const total = (c.SAME == undefined || c.CHG_IN == undefined || c.CHG_OUT == undefined || c.SAME == -1 || c.CHG_IN == -1 || c.CHG_OUT == -1) ? c.T : c.SAME + c.CHG_IN + c.CHG_OUT;
@@ -61,7 +66,7 @@ const ternaryTooltip = {
             "Residence unchanged: " + terToo___(c, "SAME") + "<br>" +
             "Moved within the country: " + terToo___(c, "CHG_IN") + "<br>" +
             "Moved from outside the country: " + terToo___(c, "CHG_OUT")
-        return "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>" + percpart
+        return "<b>" + getCellTernaryText(c) + "</b><br>" + formatLarge(total) + " person" + (total == 1 ? "" : "s") + "<br>" + percpart
     },
     "ter_pob": (c) => {
         const total = (c.NAT == undefined || c.EU_OTH == undefined || c.OTH == undefined || c.NAT == -1 || c.EU_OTH == -1 || c.OTH == -1) ? c.T : c.NAT + c.EU_OTH + c.OTH;
@@ -69,7 +74,7 @@ const ternaryTooltip = {
             "Born in the country: " + terToo___(c, "NAT") + "<br>" +
             "Born in another EU country: " + terToo___(c, "EU_OTH") + "<br>" +
             "Born outside the EU: " + terToo___(c, "OTH")
-        return "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>" + percpart
+        return "<b>" + getCellTernaryText(c) + "</b><br>" + formatLarge(total) + " person" + (total == 1 ? "" : "s") + "<br>" + percpart
     }
 }
 
