@@ -87,12 +87,12 @@ const getTooltipDemography = (mapCode) => {
         if (v == undefined) return "Data not available"
         if (v == -1) return "Data not available (confidential)"
         const buf = []
-        let line = "<b>" + v.toFixed(0) + "</b>"
-        if (mapCode == "ageing") line += " age (65+) per 100 age (0-14)"
-        if (mapCode == "dep_ratio") line += " age (65+) or (0-14) per 100 age (15-64)"
-        if (mapCode == "oa_dep_ratio") line += " age (65+) per 100 age (15-64)"
-        if (mapCode == "y_dep_ratio") line += " age (0-14) per 100 age (15-64)"
-        if (mapCode == "median_age") line += " years (median age estimate)"
+        let line = "<b>" + v.toFixed(0)
+        if (mapCode == "ageing") line += " age (65+) per 100 age (0-14)</b>"
+        if (mapCode == "dep_ratio") line += " age (65+) or (0-14) per 100 age (15-64)</b>"
+        if (mapCode == "oa_dep_ratio") line += " age (65+) per 100 age (15-64)</b>"
+        if (mapCode == "y_dep_ratio") line += " age (0-14) per 100 age (15-64)</b>"
+        if (mapCode == "median_age") line += " years</b> (median age estimate)"
         buf.push(line)
 
         let total = c.Y_LT15 + c.Y_1564 + c.Y_GE65;
