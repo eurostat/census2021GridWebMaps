@@ -26,8 +26,11 @@ const updateURL = (map) => {}
 //TODO
 
 
+//
+updateLayersVisibility()
+
+
 //define multi resolution datasets
-const tilesUrl = "https://raw.githubusercontent.com/jgaffuri/tiled-popgrid/main/pub/v1/"
 const dataset = {}
 for (let year of ["2006", "2011", "2018", "2021"]) {
     dataset[year] = new gridviz.MultiResolutionDataset(
