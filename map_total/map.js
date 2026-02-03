@@ -19,7 +19,7 @@ const map = new gridviz.Map(document.getElementById("map"), {
 //.addFullscreenButton()
 
 //TODO
-const updateURL = (map) => {}
+const updateURL = (map) => { }
 
 
 // initialise map using URL parameters
@@ -41,10 +41,20 @@ for (let year of ["2006", "2011", "2018", "2021"]) {
 }
 
 dataset.change = new gridviz.MultiResolutionDataset(
-        [1000, 2000, 5000, 10000, 20000, 50000, 100000],
-        (resolution) => new gviz_par.TiledParquetGrid(map, tilesUrl + "change/" + resolution + "/"), {
-        /*preprocess: c => {}*/
-    })
+    [1000, 2000, 5000, 10000, 20000, 50000, 100000],
+    (resolution) => new gviz_par.TiledParquetGrid(map, tilesUrl + "change/" + resolution + "/"), {
+    /*preprocess: c => {}*/
+})
+
+
+//make grid layer
+const gridLayer = new gridviz.GridLayer(undefined, [], {
+    visible: document.getElementById("grid").checked ? undefined : () => false,
+    blendOperation: () => "multiply",
+})
+
+//set map layers
+map.layers = [backgroundLayerElevation, backgroundLayerRoad2, gridLayer, backgroundLayerRoad, boundariesLayer, labelLayer];
 
 
 
