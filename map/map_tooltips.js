@@ -3,7 +3,7 @@
 const totPopTooltip = (c, r) => {
     const v = c.T
     if (v == -1) return "Data not available (confidential)"
-    else return "<b>" + formatLarge(v/(r*r/1000000)) + "</b> person" + (v == 1 ? "" : "s") + "/km2"
+    else return "<b>" + formatLarge(v / (r * r / 1000000)) + "</b> person" + (v == 1 ? "" : "s") + "/km2"
 }
 
 
@@ -47,12 +47,13 @@ const terToo___ = (c, p) => {
 
 const ternaryTooltip = {
     "ter_age": (c) => {
+        const cla = ternaryClassifiers[document.getElementById("map_select").value]
         const total = (c.Y_LT15 == undefined || c.Y_1564 == undefined || c.Y_GE65 == undefined || c.Y_LT15 == -1 || c.Y_1564 == -1 || c.Y_GE65 == -1) ? c.T : c.Y_LT15 + c.Y_1564 + c.Y_GE65;
         const percpart =
             "Age under 15 years: " + terToo___(c, "Y_LT15") + "<br>" +
             "Age 15 to 64 years: " + terToo___(c, "Y_1564") + "<br>" +
             "Age 65 years and older: " + terToo___(c, "Y_GE65")
-        return "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>" + percpart
+        return cla(c) + "<br>" + "<b>" + formatLarge(total) + "</b> person" + (total == 1 ? "" : "s") + "<br>" + percpart
     },
     "ter_mob": (c) => {
         const total = (c.SAME == undefined || c.CHG_IN == undefined || c.CHG_OUT == undefined || c.SAME == -1 || c.CHG_IN == -1 || c.CHG_OUT == -1) ? c.T : c.SAME + c.CHG_IN + c.CHG_OUT;
