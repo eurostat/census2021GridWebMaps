@@ -4,6 +4,9 @@ const naColor = "#ccc";
 // default stroke style
 const strokeStyle = new gridviz.StrokeStyle({ strokeColor: () => "#fff8", visible: (z) => z < 15, blendOperation: () => "source-over" });
 
+//default color
+const col = "#e54f37";
+
 
 const styles = {}
 
@@ -66,3 +69,42 @@ styles.colorDark = [(() => {
         color: popCols,
     })
 })(), strokeStyle]
+
+
+
+// size
+
+const bertinPointsStyle = new gridviz.Style({
+    drawFun: (cells, cg, r) => {
+        //keep only cells with population
+        cells = cells.filter((c) => c.p);
+        if (cells.length == 0) return;
+
+        const max = d3.max(cells, (c) => +c.p);
+        if (!max) return;
+
+        //sort cells by decreasing x and increasing y
+        cells.sort((c1, c2) => (c2.y == c1.y ? c1.x - c2.x : c2.y - c1.y));
+
+        //set canvas color and line width
+        const ctx = cg.offscreenCtx
+        ctx.fillStyle = col //+ "bb";
+        ctx.strokeStyle = "white"//"#666"
+        ctx.lineWidth = 4 * cg.view.z;
+
+        //const scalePopulation = gridviz.logarithmicScale(-3)
+        const scalePopulation = gridviz.powerScale(0.3)
+        //gviz.sPow(v / s.max, 0.3),
+
+        for (let c of cells) {
+            const sG = 1.4 * r * scalePopulation(c.p / max);
+            ctx.beginPath();
+            ctx.arc(c.x + r / 2, c.y + r / 2, sG * 0.5, 0, 2 * Math.PI, false);
+            ctx.fill();
+            ctx.stroke();
+        }
+    }
+})
+styles.size = [bertinPointsStyle]
+
+
