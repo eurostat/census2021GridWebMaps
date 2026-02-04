@@ -70,9 +70,14 @@ const update = () => {
     // set dataset
     gridLayer.dataset = dataset[year]
     // set style
-    gridLayer.styles = [totPopStyle, strokeStyle]
+    gridLayer.styles = styles[mapCode]
     gridLayer.minPixelsPerCell = 0.7;
 
+    // set backgorund to dark if necessary
+    map.setBackgroundColor(mapCode == "colorDark" ? "black" : "white")
+    gridLayer.blendOperation = mapCode == "colorDark" ? () => "source-over" : () => "multiply"
+    for (let bck of [/*backgroundLayerRoad, backgroundLayerRoad2,*/ backgroundLayerElevation])
+        bck.filterColor = mapCode == "colorDark" ? () => "#000000c0" : undefined
 
     //redraw
     map.redraw();
