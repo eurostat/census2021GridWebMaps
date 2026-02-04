@@ -63,7 +63,10 @@ const update = () => {
 
     // get selection
     const mapCode = document.querySelector('input[name="style"]:checked').value;
-    console.log(mapCode)
+    const year = document.getElementById("year").value;
+
+    console.log(mapCode, year)
+
 
 
     //redraw
