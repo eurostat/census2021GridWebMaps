@@ -80,31 +80,33 @@ const bertinPointsStyle = new gridviz.Style({
         cells = cells.filter((c) => c.p);
         if (cells.length == 0) return;
 
+        //get max population
         const max = d3.max(cells, (c) => +c.p);
         if (!max) return;
 
         //sort cells by decreasing x and increasing y
         cells.sort((c1, c2) => (c2.y == c1.y ? c1.x - c2.x : c2.y - c1.y));
 
-        //set canvas color and line width
+        //set colors and line width
         const ctx = cg.offscreenCtx
         ctx.fillStyle = col //+ "bb";
         ctx.strokeStyle = "white"//"#666"
-        ctx.lineWidth = 4 * cg.view.z;
+        ctx.lineWidth = 2 * cg.view.z;
 
         //const scalePopulation = gridviz.logarithmicScale(-3)
         const scalePopulation = gridviz.powerScale(0.3)
         //gviz.sPow(v / s.max, 0.3),
 
         for (let c of cells) {
-            const sG = 1.4 * r * scalePopulation(c.p / max);
+            const sG = 1.6 * r * scalePopulation(c.p / max);
             ctx.beginPath();
             ctx.arc(c.x + r / 2, c.y + r / 2, sG * 0.5, 0, 2 * Math.PI, false);
-            ctx.fill();
             ctx.stroke();
+            ctx.fill();
         }
     }
 })
+bertinPointsStyle.blendOperation = () => "source-over"
 styles.size = [bertinPointsStyle]
 
 
