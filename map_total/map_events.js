@@ -9,7 +9,8 @@ document.getElementById("home-button").addEventListener("click", (event) => {
 });
 
 //map update
-//document.getElementById("map_select").addEventListener("change", update);
+const radioButtons = document.querySelectorAll('input[name="style"]');
+radioButtons.forEach(radio => { radio.addEventListener('change', update); });
 //document.getElementById("sbtp").addEventListener("change", update);
 
 // show/hide labels

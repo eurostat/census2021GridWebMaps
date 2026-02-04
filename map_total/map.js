@@ -61,7 +61,10 @@ map.layers = [backgroundLayerElevation, backgroundLayerRoad2, /*gridLayer,*/ bac
 
 const update = () => {
 
-    //const mapCode = document.getElementById("style").value;
+    // get selection
+    const mapCode = document.querySelector('input[name="style"]:checked').value;
+    console.log(mapCode)
+
 
     //redraw
     map.redraw();
