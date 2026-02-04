@@ -54,7 +54,7 @@ const gridLayer = new gridviz.GridLayer(undefined, [], {
 })
 
 //set map layers
-map.layers = [backgroundLayerElevation, backgroundLayerRoad2, /*gridLayer,*/ backgroundLayerRoad, boundariesLayer, labelLayer];
+map.layers = [backgroundLayerElevation, backgroundLayerRoad2, gridLayer, backgroundLayerRoad, boundariesLayer, labelLayer];
 
 
 
@@ -67,6 +67,39 @@ const update = () => {
 
     console.log(mapCode, year)
 
+    // set dataset
+    gridLayer.dataset = dataset[year]
+
+    //get colors
+    const colors = []
+    const classNumber = 8;
+    for (let i = 0; i <= (classNumber - 1); i++) colors.push(d3.interpolateYlOrRd(0.85 * i / (classNumber - 1)))
+    const scaleTPop = gridviz.exponentialScale(7)
+    const popCols = { ...colors }; popCols.na = naColor
+
+    //style
+    let totPopStyle = new gridviz.SquareColorCategoryWebGLStyle({
+        viewScale: (cells, r) => {
+            const max = d3.max(cells, c => c.p)
+            const rr = r * r / 1000000
+            const breaks = []
+            for (let i = 1; i < classNumber; i++) {
+                let t = i / classNumber
+                t = scaleTPop(t)
+                breaks.push(max * t / rr)
+            }
+            return gridviz.classifier(breaks)
+        },
+        code: (c, r, z, classifier) => {
+            const v = c.p
+            if (v == -1 || v == undefined) return "na"
+            return classifier(1000000 * v / r / r)
+        },
+        color: popCols,
+    })
+
+    // set style
+    gridLayer.styles = [totPopStyle, strokeStyle]
 
 
     //redraw
