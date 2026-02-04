@@ -110,3 +110,14 @@ bertinPointsStyle.blendOperation = () => "source-over"
 styles.size = [bertinPointsStyle]
 
 
+// dots
+
+styles.dots = [new gridviz.DotDensityStyle({
+    viewScale: (cells) => d3.max(cells, c => c.p),
+    dotNumber: (c, r, z, max) => 10 * r * r / (z * z) * c.p / max,
+    dotSize: (r, z) => 1.2 * z,
+    color: () => col,
+})]
+/*
+                                  nb: (v, r, s, zf) => 10 * r * r / (zf * zf) * v / s.max,
+                                  */
