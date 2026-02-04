@@ -146,21 +146,6 @@
                   class="ecl-radio__text">Colour</span></label>
             </div>
 
-
-            <!-- smoothed with slider -->
-            <div class="ecl-form-group" style="margin-top: 0rem" data-ecl-range="true" data-ecl-auto-init="Range">
-              <div style="display: flex; align-items: center">
-                <div class="ecl-radio toc-element">
-                  <input id="smoothed" name="style" class="ecl-radio__input" type="radio" value="smoothed" /><label
-                    class="ecl-radio__label" for="smoothed"><span class="ecl-radio__box"><span
-                        class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Smoothed</span></label>
-                </div>
-                <input id="sigmaTK" data-ecl-range-input type="range" class="ecl-range ecl-range--m gridviz-slider"
-                  min="3" max="20" value="8" />
-              </div>
-            </div>
-
-
             <div class="ecl-radio toc-element">
               <input id="colorDark" name="style" class="ecl-radio__input" type="radio" value="colorDark"
                 aria-describedby="helper-2" /><label class="ecl-radio__label" for="colorDark"><span
@@ -209,21 +194,6 @@
                     class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Colour</span></label>
             </div>
 
-            <!-- colorChSmTK -->
-            <!-- smoothed with slider -->
-            <div class="ecl-form-group" style="margin-top: 0rem" data-ecl-range="true" data-ecl-auto-init="Range">
-              <div style="display: flex; align-items: center">
-                <div class="ecl-radio toc-element">
-                  <input id="colorChSmTK" name="style" class="ecl-radio__input" type="radio"
-                    value="colorChSmTK" /><label class="ecl-radio__label" for="colorChSmTK"><span
-                      class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span
-                      class="ecl-radio__text">Smoothed</span></label>
-                </div>
-                <input id="sigmaCCH" data-ecl-range-input type="range" class="ecl-range ecl-range--m gridviz-slider"
-                  min="3" max="20" value="8" />
-              </div>
-            </div>
-
             <!-- sizeCh -->
             <div class="ecl-radio toc-element">
               <input id="sizeCh" name="style" class="ecl-radio__input" type="radio" value="sizeCh" /><label
@@ -236,6 +206,15 @@
               <input id="segmentCh" name="style" class="ecl-radio__input" type="radio" value="segmentCh" /><label
                 class="ecl-radio__label" for="segmentCh"><span class="ecl-radio__box"><span
                     class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Segment</span></label>
+            </div>
+
+            <hr />
+
+            <div class="ecl-form-group" style="margin-top: 0rem" data-ecl-range="true" data-ecl-auto-init="Range">
+              <div style="display: flex; align-items: center">
+                Smoothing <input id="sigmaCCH" data-ecl-range-input type="range"
+                  class="ecl-range ecl-range--m gridviz-slider" min="0" max="20" value="0" />
+              </div>
             </div>
 
             <hr />
