@@ -72,8 +72,8 @@ const update = () => {
     // set style
     gridLayer.styles = styles[mapCode]
 
-    gridLayer.minPixelsPerCell = ["size"].includes(mapCode) ? 7 : mapCode == "dots" ? 5 : 0.7;
-    gridLayer.blendOperation = ["size"].includes(mapCode) ? "source-over" : () => "multiply"
+    gridLayer.minPixelsPerCell = ["size"].includes(mapCode) ? 7 : mapCode == "pillar" ? 6 : mapCode == "dots" ? 5 : 0.7;
+    //gridLayer.blendOperation = ["size"].includes(mapCode) ? "source-over" : () => "multiply"
 
     // set backgorund to dark if necessary
     map.setBackgroundColor(mapCode == "colorDark" ? "black" : "white")

@@ -118,6 +118,36 @@ styles.dots = [new gridviz.DotDensityStyle({
     dotSize: (r, z) => 1.2 * z,
     color: () => col,
 })]
+
+
+// pillar
+
+styles.pillar = new gridviz.PillarStyle({
+    viewScale: (cells) => d3.max(cells, (cell) => +cell.p),
+    height: (cell, resolution, z, max) => (300 * z * cell.p) / max,
+    simple: () => true,
+    color: () => col,
+    viewHeightFactor: 5,
+    width: (cell, resolution) => 0.3 * resolution,
+    viewSX: -0.7,
+    viewSY: -3,
+    shadowDirection: (21 * Math.PI) / 180.0,
+    shadowFactor: 0.5,
+})
+
 /*
-                                  nb: (v, r, s, zf) => 10 * r * r / (zf * zf) * v / s.max,
-                                  */
+            filter: c=> c[year]>0,
+                heightCol: year,
+                //height: (v, r, s, z) => 15 * r * gviz.sPow(v / s.max, 0.7),
+                height: (v, r, s, z) => 10 * r * gviz.sExpRev(v / s.max, -5),
+                   simple: true,
+                   color: (v, r, s) => "#FF3D12aa",
+                   viewHeightFactor: 5,
+                   width: (v, r, s, zf) => 0.3 * r,
+                   viewSX: -0.7,
+                   viewSY: -3,
+                   shadowDirection: 21 * Math.PI / 180.0,
+                   shadowFactor: 0.5,
+                }),
+*/
+
