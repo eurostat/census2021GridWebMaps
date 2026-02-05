@@ -146,4 +146,18 @@ styles.pillar = [new gridviz.PillarStyle({
     shadowFactor: 0.5,*/
 })]
 
-
+styles.joyplot = [new gridviz.JoyPlotStyle({
+                height: (c, r, z, scale) => scale(c.p),
+                viewScale: gridviz.viewScale({
+                    valueFunction: (c) => +c.p,
+                    maxSizeFactor: 5,
+                    stretching: gridviz.powerScale(0.4),
+                }),
+                lineColor: (y, ys, r, z) => {
+                    const t = 255 - (255 * (y - ys.min)) / (ys.max - ys.min)
+                    return 'rgb(' + t + ',' + t + ',' + t + ')'
+                },
+                lineWidth: (y, ys, r, z) => 0.1 * r,
+                fillColor: (y, ys, r, z) =>
+                    'rgba(0,0,0,' + (0.0 + (1 - (y - ys.min) / (ys.max - ys.min)) * 0.9) + ')',
+            })]
