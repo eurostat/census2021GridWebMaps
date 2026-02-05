@@ -1,10 +1,15 @@
-//TODO
+/*/TODO
 
-// https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
+https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
+change styles
+URL
+fix styles
+smoothing
+legends
 
 //sea level rise ?
 //generalise interpolation
-
+*/
 
 
 //define map with initial view
@@ -91,7 +96,7 @@ const update = () => {
         bck.filterColor = mapCode == "colorDark" ? () => "#000000c0" : undefined
 
     // set tooltip
-    gridLayer.cellInfoHTML = change ? tooltipFunCh : tooltipFun(year)
+    gridLayer.cellInfoHTML = change ? tooltipFunCh : tooltipFun
 
     //redraw
     map.redraw();

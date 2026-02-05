@@ -1,13 +1,11 @@
 
 
 
-const tooltipFun = year => (c, r) => {
-    const v = c["p" + year]
-    if (!v) return
-    return "<b>" + c[year] + "</b> inhabitant" + (+c[year] == 1 ? "" : "s") +
-        " per " + (r * r) / 1000000 + "km²"
-    //+ "<br>" + c.CNTR_ID
-}
+const tooltipFun = (c, r) =>
+    c.p ? "<b>" + c.p + "</b> inhabitant" + (+c[year] == 1 ? "" : "s") +
+        " per " + (r * r) / 1000000 + "km²" : undefined
+//+ "<br>" + c.CNTR_ID
+
 
 
 const tooltipFunCh = (c) =>
