@@ -221,3 +221,11 @@ new gviz.ShapeColorSizeStyle({
               }),
               new gviz.StrokeStyle({ maxZoom: 80 }),
 */
+
+
+//TODO
+styles.sizeCh = []
+
+//TODO
+styles.segmentCh = []
+
