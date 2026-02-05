@@ -122,7 +122,7 @@ styles.dots = [new gridviz.DotDensityStyle({
 
 // pillar
 
-const scalePillar =  gridviz.logarithmicScale(-5)
+const scalePillar = gridviz.logarithmicScale(-5)
 styles.pillar = [new gridviz.PillarStyle({
     viewScale: (cells) => d3.max(cells, (cell) => +cell.p),
     height: (cell, resolution, z, max) => (300 * z * cell.p) / max,
@@ -147,26 +147,25 @@ styles.pillar = [new gridviz.PillarStyle({
 })]
 
 styles.joyplot = [new gridviz.JoyPlotStyle({
-                height: (c, r, z, scale) => scale(c.p),
-                viewScale: gridviz.viewScale({
-                    valueFunction: (c) => +c.p,
-                    maxSizeFactor: 5,
-                    stretching: gridviz.powerScale(0.4),
-                }),
-                lineColor: (y, ys, r, z) => {
-                    const t = 255 - (255 * (y - ys.min)) / (ys.max - ys.min)
-                    return "rgb(180," + t + "," + t + ")"
-                },
-                lineWidth: (y, ys, r, z) => 0.1 * r,
-                fillColor: (y, ys, r, z) =>
-                    'rgba(180,0,0,' + (0.0 + (1 - (y - ys.min) / (ys.max - ys.min)) * 0.9) + ')',
-            })]
+    height: (c, r, z, scale) => scale(c.p),
+    viewScale: gridviz.viewScale({
+        valueFunction: (c) => +c.p,
+        maxSizeFactor: 5,
+        stretching: gridviz.powerScale(0.4),
+    }),
+    lineColor: (y, ys, r, z) => {
+        const t = 255 - (255 * (y - ys.min)) / (ys.max - ys.min)
+        return "rgb(180," + t + "," + t + ")"
+    },
+    lineWidth: (y, ys, r, z) => 0.1 * r,
+    fillColor: (y, ys, r, z) =>
+        'rgba(180,0,0,' + (0.0 + (1 - (y - ys.min) / (ys.max - ys.min)) * 0.9) + ')',
+})]
 
-            /*
-                        lineColor: (y, ys, r, zf) => {
-                            const t = 255 - 255 * (y - ys.min) / (ys.max - ys.min);
-                            return "rgb(180," + t + "," + t + ")"
-                        },
-                        lineWidth: (y, ys, r, zf) => 0.1 * r,
-                        fillColor: (y, ys, r, zf) => "rgba(180,0,0," + (0.0 + (1 - (y - ys.min) / (ys.max - ys.min)) * 0.9) + ")",
-                        */
+
+
+styles.lego = gridviz.LegoStyle.get(
+    (cell) => cell.p,
+    [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000],
+    ["#237841", "#4B9F4A", "#3CB371", "#C7D23C", "#F2CD37", "#F8BB3D", "#FFA70B", "#D09168", "#B67B50", "#7C503A", "#582A12"]
+)
