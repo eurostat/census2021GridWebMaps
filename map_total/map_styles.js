@@ -155,9 +155,18 @@ styles.joyplot = [new gridviz.JoyPlotStyle({
                 }),
                 lineColor: (y, ys, r, z) => {
                     const t = 255 - (255 * (y - ys.min)) / (ys.max - ys.min)
-                    return 'rgb(' + t + ',' + t + ',' + t + ')'
+                    return "rgb(180," + t + "," + t + ")"
                 },
                 lineWidth: (y, ys, r, z) => 0.1 * r,
                 fillColor: (y, ys, r, z) =>
-                    'rgba(0,0,0,' + (0.0 + (1 - (y - ys.min) / (ys.max - ys.min)) * 0.9) + ')',
+                    'rgba(180,0,0,' + (0.0 + (1 - (y - ys.min) / (ys.max - ys.min)) * 0.9) + ')',
             })]
+
+            /*
+                        lineColor: (y, ys, r, zf) => {
+                            const t = 255 - 255 * (y - ys.min) / (ys.max - ys.min);
+                            return "rgb(180," + t + "," + t + ")"
+                        },
+                        lineWidth: (y, ys, r, zf) => 0.1 * r,
+                        fillColor: (y, ys, r, zf) => "rgba(180,0,0," + (0.0 + (1 - (y - ys.min) / (ys.max - ys.min)) * 0.9) + ")",
+                        */
