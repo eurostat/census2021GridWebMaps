@@ -145,3 +145,5 @@ styles.pillar = [new gridviz.PillarStyle({
     shadowDirection: (21 * Math.PI) / 180.0,
     shadowFactor: 0.5,*/
 })]
+
+
