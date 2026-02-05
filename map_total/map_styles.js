@@ -182,7 +182,7 @@ styles.colorCh = [(() => {
 
     return new gridviz.SquareColorCategoryWebGLStyle({
         viewScale: (cells, r) => {
-            const max = d3.max(cells, c => c.p)
+            const [min, max] = d3.extent(cells, c => c.d2011_2021)
             const rr = r * r / 1000000
             const breaks = []
             for (let i = 1; i < classNumber; i++) {
@@ -193,7 +193,7 @@ styles.colorCh = [(() => {
             return gridviz.classifier(breaks)
         },
         code: (c, r, z, classifier) => {
-            const v = c.p
+            const v = c.d2011_2021
             if (v == -1 || v == undefined) return "na"
             return classifier(1000000 * v / r / r)
         },
