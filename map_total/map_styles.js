@@ -169,3 +169,55 @@ styles.lego = gridviz.LegoStyle.get(
     [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000],
     ["#237841", "#4B9F4A", "#3CB371", "#C7D23C", "#F2CD37", "#F8BB3D", "#FFA70B", "#D09168", "#B67B50", "#7C503A", "#582A12"]
 )
+
+
+
+
+styles.colorCh = [(() => {
+    const colors = []
+    const classNumber = 10;
+    for (let i = 0; i <= (classNumber - 1); i++) colors.push(d3.interpolateSpectral(i / (classNumber - 1)))
+    const scaleTPop = gridviz.powerScale(0.22)
+    const popCols = { ...colors }; popCols.na = naColor
+
+    return new gridviz.SquareColorCategoryWebGLStyle({
+        viewScale: (cells, r) => {
+            const max = d3.max(cells, c => c.p)
+            const rr = r * r / 1000000
+            const breaks = []
+            for (let i = 1; i < classNumber; i++) {
+                let t = i / classNumber
+                t = scaleTPop(t)
+                breaks.push(max * t / rr)
+            }
+            return gridviz.classifier(breaks)
+        },
+        code: (c, r, z, classifier) => {
+            const v = c.p
+            if (v == -1 || v == undefined) return "na"
+            return classifier(1000000 * v / r / r)
+        },
+        color: popCols,
+    })
+})(), strokeStyle]
+
+
+/*
+const streC = 0.22;
+
+new gviz.ShapeColorSizeStyle({
+                colorCol: "d2011_2021",
+                color: (v, r, s) => {
+                  const stre = gviz.sPow;
+                  let t = 0.5;
+                  if (s.min < 0 && v < 0) {
+                    t -= stre(v / s.min, streC) / 2;
+                  } else {
+                    t += stre(v / s.max, streC) / 2;
+                  }
+                  t = 1 - t;
+                  return d3.interpolateSpectral(t);
+                },
+              }),
+              new gviz.StrokeStyle({ maxZoom: 80 }),
+*/

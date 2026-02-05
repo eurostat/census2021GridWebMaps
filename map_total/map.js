@@ -43,7 +43,15 @@ for (let year of ["2006", "2011", "2018", "2021"]) {
 dataset.change = new gridviz.MultiResolutionDataset(
     [1000, 2000, 5000, 10000, 20000, 50000, 100000],
     (resolution) => new gviz_par.TiledParquetGrid(map, tilesUrl + "change/" + resolution + "/"), {
-    /*preprocess: c => {}*/
+    preprocess: c => {
+        //prepare 2011 -> 2021 change data
+        if (!c.p2011 && !c.p2021) c.d2011_2021 = 0;
+        else if (!c.p2011 && c.p2021) c.d2011_2021 = +c.p2021;
+        else if (c.p2011 && !c.p2021) c.d2011_2021 = -c.p2011;
+        else c.d2011_2021 = c.p2021 - c.p2011;
+        //ratio
+        c.p2011_2021 = c.p2011 == 0 ? 999 : c.d2011_2021 / c.p2011;
+    }
 })
 
 
@@ -68,7 +76,7 @@ const update = () => {
     console.log(mapCode, year)
 
     // set dataset
-    gridLayer.dataset = dataset[year]
+    gridLayer.dataset = mapCode.includes("Ch") ? dataset.change : dataset[year]
     // set style
     gridLayer.styles = styles[mapCode]
 
