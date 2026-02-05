@@ -72,11 +72,12 @@ const update = () => {
     // get selection
     const mapCode = document.querySelector('input[name="style"]:checked').value;
     const year = document.getElementById("year").value;
+    const change = mapCode.includes("Ch")
 
     console.log(mapCode, year)
 
     // set dataset
-    gridLayer.dataset = mapCode.includes("Ch") ? dataset.change : dataset[year]
+    gridLayer.dataset = change ? dataset.change : dataset[year]
     // set style
     gridLayer.styles = styles[mapCode]
 
@@ -88,6 +89,9 @@ const update = () => {
     gridLayer.blendOperation = mapCode == "colorDark" ? () => "source-over" : () => "multiply"
     for (let bck of [/*backgroundLayerRoad, backgroundLayerRoad2,*/ backgroundLayerElevation])
         bck.filterColor = mapCode == "colorDark" ? () => "#000000c0" : undefined
+
+    // set tooltip
+    gridLayer.tooltip = change ? tooltipFunCh : tooltipFun(year)
 
     //redraw
     map.redraw();
