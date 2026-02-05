@@ -1,5 +1,6 @@
 
-//tooltip functions
+
+
 const tooltipFun = (c, r) =>
     +c[year]
         ? "<b>" +
@@ -11,6 +12,8 @@ const tooltipFun = (c, r) =>
         "km²"
         : //+ "<br>" + c.CNTR_ID
         undefined;
+
+
 const tooltipFunCh = (c) =>
     "2011: " +
     c.TOT_P_2011 +
