@@ -91,7 +91,7 @@ const update = () => {
         bck.filterColor = mapCode == "colorDark" ? () => "#000000c0" : undefined
 
     // set tooltip
-    gridLayer.tooltip = change ? tooltipFunCh : tooltipFun(year)
+    gridLayer.cellInfoHTML = change ? tooltipFunCh : tooltipFun(year)
 
     //redraw
     map.redraw();
