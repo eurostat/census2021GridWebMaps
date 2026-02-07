@@ -8,8 +8,9 @@ smoothing
 legends
 map year of maximum population
 
-//sea level rise ?
-//generalise interpolation
+100m ?
+sea level rise ?
+interpolation
 */
 
 
