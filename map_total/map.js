@@ -1,14 +1,14 @@
 /*/TODO
 
 https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
-URL
 change styles
 fix styles
 smoothing
 legends
 map year of maximum population
+URL: smooting + interpolate ?
 
-100m ?
+100m reoslution ?
 sea level rise ?
 interpolation
 */
