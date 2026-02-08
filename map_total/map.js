@@ -6,7 +6,7 @@ fix styles
 smoothing
 legends
 map year of maximum population
-URL: smooting + interpolate ? collapse
+URL: collapse
 GUI: fix layout
 
 100m reoslution ?
@@ -53,6 +53,11 @@ if (dkfh) document.getElementById("sigmaSM").value = dkfh
 
 // toggle options panel collapse from URL param
 if (urlParams.get("collapsed")) document.getElementById("expand-toggle-button").click();
+
+// interpolate
+let interpolate = urlParams.get("itrp")
+interpolate = interpolate != "" && interpolate != "false" && +interpolate != 0
+
 
 //
 updateLayersVisibility()
