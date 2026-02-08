@@ -15,7 +15,7 @@ const backgroundLayerElevation = new gridviz.BackgroundLayer({
     origin: [0, 6000000],
     nbPix: 256,
     pixelationCoefficient: 1,
-    filterColor: () => "#fff8",
+    //filterColor: () => "#fff2",
 })
 
 const backgroundLayerRoad = new gridviz.BackgroundLayer({
@@ -24,7 +24,7 @@ const backgroundLayerRoad = new gridviz.BackgroundLayer({
     origin: [0, 6000000],
     nbPix: 512,
     pixelationCoefficient: 0.55,
-    filterColor: (z) => z > 200 ? "#fff8" : "#fff4",
+    //filterColor: (z) => z > 200 ? "#fff8" : "#fff4",
     blendOperation: () => "multiply",
 })
 

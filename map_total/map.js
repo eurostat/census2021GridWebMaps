@@ -1,8 +1,8 @@
 /*/TODO
 
 https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
-change styles
 URL
+change styles
 fix styles
 smoothing
 legends
@@ -25,16 +25,58 @@ const map = new gridviz.Map(document.getElementById("map"), {
 }).setViewFromURL()
 //.addFullscreenButton()
 
-//TODO
-const updateURL = (map) => { }
-
-
 // initialise map using URL parameters
-//TODO
 
+//set selected layer from URL param
+const urlParams = new URLSearchParams(window.location.search);
+
+// read style selection from URL
+const sty_ = urlParams.get("sty");
+if(sty_) document.getElementById(sty_).checked = true
+
+// read year from URL
+const sel = urlParams.get("year");
+if (sel) document.getElementById("year").value = sel
+
+// background theme bt
+const btParam = urlParams.get("bt");
+if (btParam) {
+    const a = document.getElementById(btParam)
+    if (a) a.checked = true; else console.warn("bt param invalid:", btParam)
+}
+
+// toggle options panel collapse from URL param
+if (urlParams.get("collapsed")) document.getElementById("expand-toggle-button").click();
 
 //
 updateLayersVisibility()
+
+
+
+//TODO
+const updateURL = (map) => {
+    //get parameters
+    const p = new URLSearchParams(window.location.search);
+
+    // map viewport
+    const v = map.getView();
+    p.set("x", v.x.toFixed(0)); p.set("y", v.y.toFixed(0)); p.set("z", v.z.toFixed(0));
+
+    // handle dropdowns selection
+    p.set("year", document.getElementById("year").value);
+
+    // style parameter
+    const mapCode = document.querySelector('input[name="style"]:checked').value;
+    p.set("sty", mapCode);
+
+    // handle checkboxes
+    for (let cb of ["label", "grid", "boundary", "background"])
+        p.set(cb, document.getElementById(cb).checked ? "1" : "");
+
+    // handle background theme selection
+    p.set("bt", document.querySelector('input[name="background_theme"]:checked').value);
+}
+
 
 
 //define multi resolution datasets
@@ -95,7 +137,7 @@ const update = () => {
     map.setBackgroundColor(mapCode == "colorDark" ? "black" : "white")
     gridLayer.blendOperation = mapCode == "colorDark" ? () => "source-over" : () => "multiply"
     for (let bck of [/*backgroundLayerRoad, backgroundLayerRoad2,*/ backgroundLayerElevation])
-        bck.filterColor = mapCode == "colorDark" ? () => "#000000c0" : undefined
+        bck.filterColor = mapCode == "colorDark" ? () => "#000000c0" : () => "#ffffffa0"
 
     // set tooltip
     gridLayer.cellInfoHTML = change ? tooltipFunCh : tooltipFun
