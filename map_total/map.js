@@ -1,15 +1,15 @@
 /*/TODO
 
 https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
-add styles
+add styles: lego, colorch, sizech, segmentch
 fix styles
+backgrounds adaptation
 smoothing
 legends
-map year of maximum population
-URL: collapse
+map year of max population
 GUI: fix layout
 
-100m reoslution ?
+100m resolution ?
 sea level rise ?
 interpolation
 */
