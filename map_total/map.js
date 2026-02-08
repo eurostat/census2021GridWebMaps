@@ -1,12 +1,13 @@
 /*/TODO
 
 https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
-change styles
+add styles
 fix styles
 smoothing
 legends
 map year of maximum population
-URL: smooting + interpolate ?
+URL: smooting + interpolate ? collapse
+GUI: fix layout
 
 100m reoslution ?
 sea level rise ?
@@ -44,6 +45,11 @@ if (btParam) {
     const a = document.getElementById(btParam)
     if (a) a.checked = true; else console.warn("bt param invalid:", btParam)
 }
+
+//smoothing
+const dkfh = urlParams.get("sm");
+if (dkfh) document.getElementById("sigmaSM").value = dkfh
+
 
 // toggle options panel collapse from URL param
 if (urlParams.get("collapsed")) document.getElementById("expand-toggle-button").click();

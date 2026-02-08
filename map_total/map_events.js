@@ -12,6 +12,7 @@ document.getElementById("home-button").addEventListener("click", (event) => {
 const radioButtons = document.querySelectorAll('input[name="style"]');
 radioButtons.forEach(radio => { radio.addEventListener('change', update); });
 document.getElementById("year").addEventListener("change", update);
+document.getElementById("sigmaSM").addEventListener("change", update);
 
 // show/hide labels
 document.getElementById("label").addEventListener("change", function () {

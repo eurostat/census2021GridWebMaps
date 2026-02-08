@@ -22,6 +22,9 @@ const updateURL = (map) => {
     // handle background theme selection
     p.set("bt", document.querySelector('input[name="background_theme"]:checked').value);
 
+    // handle smoothing
+    p.set("sm", document.getElementById("sigmaSM").value);
+
     //set URL with map parameters
     const newURL = `${window.location.pathname}?${p.toString()}`;
     window.history.replaceState({}, '', newURL);
