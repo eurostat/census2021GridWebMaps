@@ -77,30 +77,19 @@ styles.colorDark = [
 // size
 const scaleSize = gridviz.powerScale(0.3)
 styles.size = [
-    new gridviz.ShapeColorSizeStyle({
-        size: (c, r, z, viewScale) => viewScale(c.p),
-        viewScale: gridviz.viewScale({
-            valueFunction: (c) => c.p,
-            maxSizeFactor: 1.3,
-            stretching: gridviz.logarithmicScale(-8),
-        }),
-        shape: () => 'circle',
-        color: () => col,
-        blendOperation: (z) => z <= 11 ? "multiply" : "source-over"
-    })
-
-    /*new gridviz.Style({
-
-        viewScale: gridviz.viewScale({
-            valueFunction: (c) => c.p,
-            maxSizeFactor: 1.6,
-            stretching: scaleSize,
-        }),
-
+    new gridviz.Style({
         drawFun: (cells, cg, r) => {
             //keep only cells with population
             cells = cells.filter((c) => c.p);
             if (cells.length == 0) return;
+
+            //get view scale
+            const z = cg.view.z
+            const viewScale = gridviz.viewScale({
+                valueFunction: (c) => c.p,
+                maxSizeFactor: 1.65,
+                stretching: scaleSize,
+            })(cells, r, z)
 
             //get max population
             const max = d3.max(cells, (c) => +c.p);
@@ -113,18 +102,21 @@ styles.size = [
             const ctx = cg.offscreenCtx
             ctx.fillStyle = col //+ "bb";
             ctx.strokeStyle = "white"//"#666"
-            ctx.lineWidth = 2 * cg.view.z;
+            ctx.lineWidth = 2 * z;
 
             for (let c of cells) {
-                const sG = 1.6 * r * scaleSize(c.p / max);
+                const sG = viewScale(c.p)
                 ctx.beginPath();
                 ctx.arc(c.x + r / 2, c.y + r / 2, sG * 0.5, 0, 2 * Math.PI, false);
                 ctx.stroke();
                 ctx.fill();
             }
+
+            //update legends
+            styles.size[0].updateLegends({ viewScale: viewScale, resolution: r, z: z, cells: cells })
         },
         blendOperation: (z) => z <= 11 ? "multiply" : "source-over"
-    })*/
+    })
 ]
 
 
