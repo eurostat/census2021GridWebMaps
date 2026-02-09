@@ -32,7 +32,7 @@ const urlParams = new URLSearchParams(window.location.search);
 
 // read style selection from URL
 const sty_ = urlParams.get("sty");
-if(sty_) document.getElementById(sty_).checked = true
+if (sty_) document.getElementById(sty_).checked = true
 
 // read year from URL
 const sel = urlParams.get("year");
@@ -98,6 +98,23 @@ const gridLayer = new gridviz.GridLayer(undefined, [], {
 map.layers = [backgroundLayerElevation, backgroundLayerRoad2, gridLayer, backgroundLayerRoad, boundariesLayer, labelLayer];
 
 
+//smoothing
+const smoother =
+    new gridviz_smoothing.KernelSmoothingStyle({
+        value: (c) => +c.p,
+        smoothedProperty: "p",
+        sigma: (r, z) => (r * sig) / 10,
+        resolutionSmoothed: (resolution, z) => z * 2,
+        //filterSmoothed: (value) => value > 0.0005,
+        styles: [],
+    })
+
+const smooth = (styles) => {
+    const sig = +document.getElementById('sigmaSM').value
+    if (!sif) return styles
+    smoother.styles = styles
+    return smoother
+}
 
 
 const update = () => {
