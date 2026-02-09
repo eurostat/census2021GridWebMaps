@@ -99,21 +99,17 @@ map.layers = [backgroundLayerElevation, backgroundLayerRoad2, gridLayer, backgro
 
 
 //smoothing
-const smoother =
-    new gridviz_smoothing.KernelSmoothingStyle({
+const smooth = (styles) => {
+    const sig = +document.getElementById('sigmaSM').value
+    if (!sig) return styles
+    return new gridviz_smoothing.KernelSmoothingStyle({
         value: (c) => +c.p,
         smoothedProperty: "p",
         sigma: (r, z) => (r * sig) / 10,
         resolutionSmoothed: (resolution, z) => z * 2,
         //filterSmoothed: (value) => value > 0.0005,
-        styles: [],
+        styles: styles,
     })
-
-const smooth = (styles) => {
-    const sig = +document.getElementById('sigmaSM').value
-    if (!sif) return styles
-    smoother.styles = styles
-    return smoother
 }
 
 
@@ -129,7 +125,7 @@ const update = () => {
     // set dataset
     gridLayer.dataset = change ? dataset.change : dataset[year]
     // set style
-    gridLayer.styles = smooth(styles[mapCode])
+    gridLayer.styles = change ? styles[mapCode] : smooth(styles[mapCode])
 
     gridLayer.minPixelsPerCell = ["size", "lego"].includes(mapCode) ? 7 : mapCode == "pillar" ? 6 : mapCode == "joyplot" ? 5.5 : mapCode == "dots" ? 5 : 0.7;
     //gridLayer.blendOperation = ["size"].includes(mapCode) ? "source-over" : () => "multiply"
