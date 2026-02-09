@@ -129,7 +129,7 @@ const update = () => {
     // set dataset
     gridLayer.dataset = change ? dataset.change : dataset[year]
     // set style
-    gridLayer.styles = styles[mapCode]
+    gridLayer.styles = smooth(styles[mapCode])
 
     gridLayer.minPixelsPerCell = ["size", "lego"].includes(mapCode) ? 7 : mapCode == "pillar" ? 6 : mapCode == "joyplot" ? 5.5 : mapCode == "dots" ? 5 : 0.7;
     //gridLayer.blendOperation = ["size"].includes(mapCode) ? "source-over" : () => "multiply"
