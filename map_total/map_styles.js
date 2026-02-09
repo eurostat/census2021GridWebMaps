@@ -227,6 +227,7 @@ new gviz.ShapeColorSizeStyle({
 
 // size change
 
+const scaleSizeChange = gridviz.powerScale(0.2)
 styles.sizeCh = [
     new gridviz.Style({
         drawFun: (cells, cg, r) => {
@@ -245,14 +246,11 @@ styles.sizeCh = [
             ctx.strokeStyle = "white"//"#666"
             ctx.lineWidth = 2 * cg.view.z;
 
-            //const scalePopulation = gridviz.logarithmicScale(-3)
-            const scalePopulation = gridviz.powerScale(0.2)
-
             for (let c of cells) {
                 // color
                 ctx.fillStyle = c.d2011_2021 > 0 ? "#d13c4b" : "#4288b5" // cc
                 // size
-                const sG = 1.6 * r * scalePopulation(Math.abs(c.d2011_2021) / max);
+                const sG = 1.6 * r * scaleSizeChange(Math.abs(c.d2011_2021) / max);
 
                 ctx.beginPath();
                 ctx.arc(c.x + r / 2, c.y + r / 2, sG * 0.5, 0, 2 * Math.PI, false);
@@ -268,6 +266,8 @@ styles.sizeCh = [
 // segment change
 
 const maxAngle = 60;
+const scaleSegmentChange = gridviz.powerScale(0.25)
+
 styles.segmentCh = [
     new gridviz.SegmentStyle({
         length: (c, r) => r,
@@ -283,7 +283,7 @@ styles.segmentCh = [
             return a;
         },
         viewScale: (cells) => d3.max(cells, c => c.p2021),
-        width: (c, r, z, max) => 0.8 * r * c.p2021 / max,
+        width: (c, r, z, max) => 0.8 * r * scaleSegmentChange(c.p2021 / max),
         //width: (v, r, s, zf) => 0.8 * r * gviz.sPow(v / s.max, 0.25),
     })
 ]

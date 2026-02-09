@@ -1,9 +1,9 @@
 /*/TODO
 
 https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
-add styles: sizech, segmentch, lego, colorch
-fix styles - backgrounds adaptation
 add legends
+add styles: lego, colorch
+fix styles - backgrounds adaptation
 smoothing
 fix GUI layout
 
@@ -126,7 +126,7 @@ const update = () => {
     const year = document.getElementById("year").value;
     const change = mapCode.includes("Ch")
 
-    console.log(mapCode, year)
+    //console.log(mapCode, year)
 
     // test that, for smoothing
     //console.log(styles.color[0])
