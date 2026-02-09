@@ -265,7 +265,9 @@ styles.sizeCh = [
 ]
 
 
-//TODO
+// segment change
+
+const maxAngle = 60;
 styles.segmentCh = [
     new gridviz.SegmentStyle({
         length: (c, r) => r,
@@ -280,8 +282,8 @@ styles.segmentCh = [
             a = a < -maxAngle ? -maxAngle : a > maxAngle ? maxAngle : a;
             return a;
         },
-        //widthCol: "TOT_P_2021",
+        viewScale: (cells) => d3.max(cells, c => c.p2021),
+        width: (c, r, z, max) => 0.8 * r * c.p2021 / max,
         //width: (v, r, s, zf) => 0.8 * r * gviz.sPow(v / s.max, 0.25),
     })
 ]
-
