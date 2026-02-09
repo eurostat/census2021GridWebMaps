@@ -9,11 +9,11 @@ const col = "#e54f37";
 
 
 // styles library
-const legends = {}
+const styles = {}
 
 // color style
 
-legends.color = [(() => {
+styles.color = [(() => {
     const colors = []
     const classNumber = 8;
     for (let i = 0; i <= (classNumber - 1); i++) colors.push(d3.interpolateYlOrRd(0.85 * i / (classNumber - 1)))
@@ -43,7 +43,7 @@ legends.color = [(() => {
 
 // dark color style
 
-legends.colorDark = [(() => {
+styles.colorDark = [(() => {
     const colors = []
     const classNumber = 8;
     for (let i = 0; i <= (classNumber - 1); i++) colors.push(d3.interpolateMagma(0.85 * i / (classNumber - 1)))
@@ -74,7 +74,7 @@ legends.colorDark = [(() => {
 
 
 // size
-legends.size = [
+styles.size = [
     new gridviz.Style({
         drawFun: (cells, cg, r) => {
             //keep only cells with population
@@ -113,7 +113,7 @@ legends.size = [
 
 // dots
 
-legends.dots = [new gridviz.DotDensityStyle({
+styles.dots = [new gridviz.DotDensityStyle({
     viewScale: (cells) => d3.max(cells, c => c.p),
     dotNumber: (c, r, z, max) => 10 * r * r / (z * z) * c.p / max,
     dotSize: (r, z) => 1.2 * z,
@@ -124,7 +124,7 @@ legends.dots = [new gridviz.DotDensityStyle({
 // pillar
 
 const scalePillar = gridviz.logarithmicScale(-5)
-legends.pillar = [new gridviz.PillarStyle({
+styles.pillar = [new gridviz.PillarStyle({
     viewScale: (cells) => d3.max(cells, (cell) => +cell.p),
     height: (cell, resolution, z, max) => (300 * z * cell.p) / max,
     simple: () => true,
@@ -147,7 +147,7 @@ legends.pillar = [new gridviz.PillarStyle({
     shadowFactor: 0.5,*/
 })]
 
-legends.joyplot = [new gridviz.JoyPlotStyle({
+styles.joyplot = [new gridviz.JoyPlotStyle({
     height: (c, r, z, scale) => scale(c.p),
     viewScale: gridviz.viewScale({
         valueFunction: (c) => +c.p,
@@ -165,7 +165,7 @@ legends.joyplot = [new gridviz.JoyPlotStyle({
 
 
 
-legends.lego = gridviz.LegoStyle.get(
+styles.lego = gridviz.LegoStyle.get(
     (cell) => cell.p,
     [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000],
     ["#237841", "#4B9F4A", "#3CB371", "#C7D23C", "#F2CD37", "#F8BB3D", "#FFA70B", "#D09168", "#B67B50", "#7C503A", "#582A12"]
@@ -174,7 +174,7 @@ legends.lego = gridviz.LegoStyle.get(
 
 
 
-legends.colorCh = [(() => {
+styles.colorCh = [(() => {
     const colors = []
     const classNumber = 10;
     for (let i = 0; i <= (classNumber - 1); i++) colors.push(d3.interpolateSpectral(i / (classNumber - 1)))
@@ -228,7 +228,7 @@ new gviz.ShapeColorSizeStyle({
 // size change
 
 const scaleSizeChange = gridviz.powerScale(0.2)
-legends.sizeCh = [
+styles.sizeCh = [
     new gridviz.Style({
         drawFun: (cells, cg, r) => {
             //keep only cells with population change
@@ -268,7 +268,7 @@ legends.sizeCh = [
 const maxAngle = 60;
 const scaleSegmentChange = gridviz.powerScale(0.25)
 
-legends.segmentCh = [
+styles.segmentCh = [
     new gridviz.SegmentStyle({
         length: (c, r) => r,
         color: (c) =>

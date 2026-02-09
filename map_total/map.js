@@ -6,6 +6,7 @@ add styles: lego, colorch
 fix styles - backgrounds adaptation
 smoothing
 fix GUI layout
+check init copyright messages - in both versions
 
 interpolation
 map year of max population
@@ -135,7 +136,7 @@ const update = () => {
     // set dataset
     gridLayer.dataset = change ? dataset.change : dataset[year]
     // set style
-    gridLayer.styles = change ? legends[mapCode] : smooth(legends[mapCode])
+    gridLayer.styles = change ? styles[mapCode] : smooth(styles[mapCode])
 
     gridLayer.minPixelsPerCell = mapCode =="segmentCh"? 10 :["size", "sizeCh", "lego"].includes(mapCode) ? 7 : mapCode == "pillar" ? 6 : mapCode == "joyplot" ? 5.5 : mapCode == "dots" ? 5 : 0.7;
     //gridLayer.blendOperation = ["size"].includes(mapCode) ? "source-over" : () => "multiply"

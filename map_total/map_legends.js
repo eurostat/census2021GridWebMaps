@@ -1,7 +1,15 @@
 
 
 // color style
-styles.color.legends = []
+styles.color.legends = [
+    new gridviz.ColorDiscreteLegend({
+        title: "Population density, in persons/km2",
+        width: Math.min(window.innerWidth - 40, 450),
+        colors: () => colors,
+        breaks: (viewScale) => viewScale?.breaks.map((b) => gridviz.nice(b)),
+        //labelFormat: formatLarge,
+    })
+]
 
 // dark color style
 styles.colorDark.legends = []

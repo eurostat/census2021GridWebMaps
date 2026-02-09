@@ -45,7 +45,8 @@ const bckEvent = () => {
     map.redraw();
 
     //show/hide copyright html components
-    document.getElementById('tomtom-copyright').style.display = document.getElementById("road").checked && document.getElementById("background").checked ? 'inline-block' : 'none';
+    document.getElementById('tomtom-copyright').style.display =
+        document.getElementById("road").checked && document.getElementById("background").checked ? 'inline-block' : 'none';
 
     updateURL(map);
 }
