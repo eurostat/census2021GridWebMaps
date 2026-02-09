@@ -44,20 +44,19 @@ styles.color = [
 
 // dark color style
 
-styles.colorDark = [(() => {
-    const colors = []
-    const classNumber = 8;
-    for (let i = 0; i <= (classNumber - 1); i++) colors.push(d3.interpolateMagma(0.85 * i / (classNumber - 1)))
-    const scaleTPop = gridviz.exponentialScale(7)
-    const popCols = { ...colors }; popCols.na = naColor
+const colorsDark = []
+const classNumberDark = 8;
+for (let i = 0; i <= (classNumberDark - 1); i++) colorsDark.push(d3.interpolateMagma(0.85 * i / (classNumberDark - 1)))
+const popColsDark = { ...colorsDark }; popColsDark.na = naColor
 
-    return new gridviz.SquareColorCategoryWebGLStyle({
+styles.colorDark = [
+    new gridviz.SquareColorCategoryWebGLStyle({
         viewScale: (cells, r) => {
             const max = d3.max(cells, c => c.p)
             const rr = r * r / 1000000
             const breaks = []
-            for (let i = 1; i < classNumber; i++) {
-                let t = i / classNumber
+            for (let i = 1; i < classNumberDark; i++) {
+                let t = i / classNumberDark
                 t = scaleTPop(t)
                 breaks.push(max * t / rr)
             }
@@ -68,9 +67,10 @@ styles.colorDark = [(() => {
             if (v == -1 || v == undefined) return "na"
             return classifier(1000000 * v / r / r)
         },
-        color: popCols,
-    })
-})(), strokeStyle]
+        color: popColsDark,
+    }),
+    strokeStyle
+]
 
 
 
