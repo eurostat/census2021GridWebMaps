@@ -1,6 +1,7 @@
 /* TODO
 
 https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
+3d pillars: adapt lod to zoom level
 add legends: change color, change size, change segment
 add styles: lego, colorch
 fix styles - backgrounds adaptation

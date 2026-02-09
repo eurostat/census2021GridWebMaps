@@ -267,7 +267,7 @@ styles.sizeCh = [
                 ctx.fill();
             }
         },
-        blendOperation: (z) => z <= 11 ? "multiply" : "source-over"
+        //blendOperation: (z) => z <= 11 ? "multiply" : "source-over"
     })
 ]
 
