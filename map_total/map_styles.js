@@ -13,14 +13,14 @@ const styles = {}
 
 // color style
 
-styles.color = [(() => {
-    const colors = []
-    const classNumber = 8;
-    for (let i = 0; i <= (classNumber - 1); i++) colors.push(d3.interpolateYlOrRd(0.85 * i / (classNumber - 1)))
-    const scaleTPop = gridviz.exponentialScale(7)
-    const popCols = { ...colors }; popCols.na = naColor
+const colors = []
+const classNumber = 8;
+for (let i = 0; i <= (classNumber - 1); i++) colors.push(d3.interpolateYlOrRd(0.85 * i / (classNumber - 1)))
+const scaleTPop = gridviz.exponentialScale(7)
+const popCols = { ...colors }; popCols.na = naColor
 
-    return new gridviz.SquareColorCategoryWebGLStyle({
+styles.color = [
+    new gridviz.SquareColorCategoryWebGLStyle({
         viewScale: (cells, r) => {
             const max = d3.max(cells, c => c.p)
             const rr = r * r / 1000000
@@ -38,8 +38,9 @@ styles.color = [(() => {
             return classifier(1000000 * v / r / r)
         },
         color: popCols,
-    })
-})(), strokeStyle]
+    }),
+    strokeStyle
+]
 
 // dark color style
 

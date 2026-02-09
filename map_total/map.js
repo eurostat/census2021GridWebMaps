@@ -7,6 +7,7 @@ fix styles - backgrounds adaptation
 smoothing
 fix GUI layout
 check init copyright messages - in both versions
+remove UK, and maybe others
 
 interpolation
 map year of max population

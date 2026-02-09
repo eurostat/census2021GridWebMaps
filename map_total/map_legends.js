@@ -1,21 +1,32 @@
 
+//define not available legend
+const naLegend = new gridviz.ColorCategoryLegend({
+    colorLabel: [[naColor, "Data not available"]],
+    shape: "square",
+});
+const naLegendC = new gridviz.ColorCategoryLegend({
+    colorLabel: [[naColor, "Data not available"]],
+    shape: "circle",
+});
+
+
 
 // color style
-styles.color.legends = [
+//console.log(colors)
+styles.color[0].legends = [
     new gridviz.ColorDiscreteLegend({
         title: "Population density, in persons/km2",
         width: Math.min(window.innerWidth - 40, 450),
         colors: () => colors,
         breaks: (viewScale) => viewScale?.breaks.map((b) => gridviz.nice(b)),
-        //labelFormat: formatLarge,
     })
 ]
 
 // dark color style
-styles.colorDark.legends = []
+styles.colorDark[0].legends = []
 
 // size
-styles.size.legends = []
+styles.size[0].legends = []
 
 // dots
 //styles.dots.legends = []
@@ -29,10 +40,10 @@ styles.size.legends = []
 
 
 // color change
-styles.colorCh.legends = []
+styles.colorCh[0].legends = []
 
 // size change
-styles.sizeCh.legends = []
+styles.sizeCh[0].legends = []
 
 // segment change
-styles.segmentCh.legends = []
+styles.segmentCh[0].legends = []

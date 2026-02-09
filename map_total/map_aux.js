@@ -1,3 +1,5 @@
+const _f = d3.format(",.0f");
+const formatLarge = (v) => _f(v).replace(/,/g, " ");
 
 
 const updateURL = (map) => {

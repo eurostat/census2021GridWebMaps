@@ -2,10 +2,9 @@
 
 
 const tooltipFun = (c, r) =>
-    c.p ? "<b>" + c.p + "</b> inhabitant" + (+c[year] == 1 ? "" : "s") +
-        " per " + (r * r) / 1000000 + "km²" : undefined
+    c.p ? "<b>" + formatLarge(c.p) + "</b> person" + (+c.p == 1 ? "" : "s") +
+        " per " + Math.round((r * r) / 1000000) + " km²" : undefined
 //+ "<br>" + c.CNTR_ID
-
 
 
 const tooltipFunCh = (c) =>
