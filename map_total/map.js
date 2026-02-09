@@ -1,4 +1,4 @@
-/*/TODO
+/* TODO
 
 https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
 add legends
