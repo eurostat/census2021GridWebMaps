@@ -75,8 +75,28 @@ styles.colorDark = [
 
 
 // size
+const scaleSize = gridviz.powerScale(0.3)
 styles.size = [
-    new gridviz.Style({
+    new gridviz.ShapeColorSizeStyle({
+        size: (c, r, z, viewScale) => viewScale(c.p),
+        viewScale: gridviz.viewScale({
+            valueFunction: (c) => c.p,
+            maxSizeFactor: 1.3,
+            stretching: gridviz.logarithmicScale(-8),
+        }),
+        shape: () => 'circle',
+        color: () => col,
+        blendOperation: (z) => z <= 11 ? "multiply" : "source-over"
+    })
+
+    /*new gridviz.Style({
+
+        viewScale: gridviz.viewScale({
+            valueFunction: (c) => c.p,
+            maxSizeFactor: 1.6,
+            stretching: scaleSize,
+        }),
+
         drawFun: (cells, cg, r) => {
             //keep only cells with population
             cells = cells.filter((c) => c.p);
@@ -95,12 +115,8 @@ styles.size = [
             ctx.strokeStyle = "white"//"#666"
             ctx.lineWidth = 2 * cg.view.z;
 
-            //const scalePopulation = gridviz.logarithmicScale(-3)
-            const scalePopulation = gridviz.powerScale(0.3)
-            //gviz.sPow(v / s.max, 0.3),
-
             for (let c of cells) {
-                const sG = 1.6 * r * scalePopulation(c.p / max);
+                const sG = 1.6 * r * scaleSize(c.p / max);
                 ctx.beginPath();
                 ctx.arc(c.x + r / 2, c.y + r / 2, sG * 0.5, 0, 2 * Math.PI, false);
                 ctx.stroke();
@@ -108,7 +124,7 @@ styles.size = [
             }
         },
         blendOperation: (z) => z <= 11 ? "multiply" : "source-over"
-    })
+    })*/
 ]
 
 

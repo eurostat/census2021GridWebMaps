@@ -33,7 +33,13 @@ styles.colorDark[0].legends = [
 ]
 
 // size
-styles.size[0].legends = []
+styles.size[0].legends = gridviz.sizeLegendViewScale((c) => c.p, {
+    k: [0.8, 0.25, 0.05],
+    title: 'Population',
+    fillColor: col,
+    labelFormat: d3.format(',.2r'),
+})
+
 
 // dots
 //styles.dots.legends = []

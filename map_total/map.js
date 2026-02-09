@@ -8,6 +8,7 @@ smoothing
 fix GUI layout
 check init copyright messages - in both versions
 remove UK, and maybe others
+dark color: invert labels black/white
 
 interpolation
 map year of max population
