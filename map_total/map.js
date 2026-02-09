@@ -38,6 +38,12 @@ if (sty_) document.getElementById(sty_).checked = true
 const sel = urlParams.get("year");
 if (sel) document.getElementById("year").value = sel
 
+for (let cb of ["label", "grid", "boundary", "background"]) {
+    const sel = urlParams.get(cb);
+    if (sel == undefined) continue;
+    document.getElementById(cb).checked = sel != "" && sel != "false" && +sel != 0
+}
+
 // background theme bt
 const btParam = urlParams.get("bt");
 if (btParam) {
