@@ -252,7 +252,7 @@ styles.sizeCh = [
                 // color
                 ctx.fillStyle = c.d2011_2021 > 0 ? "#d13c4b" : "#4288b5" // cc
                 // size
-                const sG = 1.6 * r * scalePopulation(Math.abs(c.d2011_2021)/ max);
+                const sG = 1.6 * r * scalePopulation(Math.abs(c.d2011_2021) / max);
 
                 ctx.beginPath();
                 ctx.arc(c.x + r / 2, c.y + r / 2, sG * 0.5, 0, 2 * Math.PI, false);
@@ -266,27 +266,22 @@ styles.sizeCh = [
 
 
 //TODO
-styles.segmentCh = []
-
-/*
-            new gviz.SegmentStyle({
-                orientation: (c) => {
-                  let a = (c.p2011_2021 * maxAngle) / 0.3;
-                  a = a < -maxAngle ? -maxAngle : a > maxAngle ? maxAngle : a;
-                  return a;
-                },
-                colorCol: "p2011_2021",
-                color: (v) =>
-                  Math.abs(v) < 0.02
-                    ? "gray"
-                    : v > 0
-                    ? "#d13c4bcc"
-                    : "#4288b5cc",
-                length: (v, r) => r,
-                //lengthCol: "2011",
-                //length: (v, r, s, zf) => r * gviz.sPow(v / s.max, 0.25),
-                widthCol: "TOT_P_2021",
-                width: (v, r, s, zf) => 0.8 * r * gviz.sPow(v / s.max, 0.25),
-              }),
-   */
+styles.segmentCh = [
+    new gridviz.SegmentStyle({
+        length: (c, r) => r,
+        color: (c) =>
+            Math.abs(c.p2011_2021) < 0.02
+                ? "gray"
+                : c.p2011_2021 > 0
+                    ? "#d13c4b" //cc
+                    : "#4288b5", //cc
+        orientation: (c) => {
+            let a = (c.p2011_2021 * maxAngle) / 0.3;
+            a = a < -maxAngle ? -maxAngle : a > maxAngle ? maxAngle : a;
+            return a;
+        },
+        //widthCol: "TOT_P_2021",
+        //width: (v, r, s, zf) => 0.8 * r * gviz.sPow(v / s.max, 0.25),
+    })
+]
 
