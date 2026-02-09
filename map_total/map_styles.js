@@ -8,6 +8,7 @@ const strokeStyle = new gridviz.StrokeStyle({ strokeColor: () => "#fff8", visibl
 const col = "#e54f37";
 
 
+// styles library
 const styles = {}
 
 // color style
@@ -223,22 +224,46 @@ new gviz.ShapeColorSizeStyle({
 */
 
 
-//TODO
-styles.sizeCh = [
 
+// size change
+
+styles.sizeCh = [
+    new gridviz.Style({
+        drawFun: (cells, cg, r) => {
+            //keep only cells with population change
+            cells = cells.filter((c) => c.d2011_2021);
+            if (cells.length == 0) return;
+
+            //get max population change
+            const max = d3.max(cells, (c) => Math.abs(c.d2011_2021));
+
+            //sort cells by decreasing x and increasing y
+            cells.sort((c1, c2) => (c2.y == c1.y ? c1.x - c2.x : c2.y - c1.y));
+
+            //set colors and line width
+            const ctx = cg.offscreenCtx
+            ctx.strokeStyle = "white"//"#666"
+            ctx.lineWidth = 2 * cg.view.z;
+
+            //const scalePopulation = gridviz.logarithmicScale(-3)
+            const scalePopulation = gridviz.powerScale(0.2)
+
+            for (let c of cells) {
+                // color
+                ctx.fillStyle = c.d2011_2021 > 0 ? "#d13c4bcc" : "#4288b5cc"
+                // size
+                const sG = 1.6 * r * scalePopulation(Math.abs(c.d2011_2021)/ max);
+
+                ctx.beginPath();
+                ctx.arc(c.x + r / 2, c.y + r / 2, sG * 0.5, 0, 2 * Math.PI, false);
+                ctx.stroke();
+                ctx.fill();
+            }
+        },
+        blendOperation: (z) => z <= 11 ? "multiply" : "source-over"
+    })
 ]
-/*
-            new gviz.ShapeColorSizeStyle({
-                colorCol: "d2011_2021",
-                color: (v) => (v > 0 ? "#d13c4bcc" : "#4288b5cc"),
-                sizeCol: "d2011_2021",
-                size: (v, r, s, zf) => {
-                  const max = Math.max(Math.abs(s.min), Math.abs(s.max));
-                  return 1.5 * r * gviz.sPow(Math.abs(v) / max, 0.2);
-                },
-                shape: () => "circle",
-              }),
-*/
+
 
 //TODO
 styles.segmentCh = []
