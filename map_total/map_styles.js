@@ -224,8 +224,51 @@ new gviz.ShapeColorSizeStyle({
 
 
 //TODO
-styles.sizeCh = []
+styles.sizeCh = [
+
+]
+/*
+            new gviz.ShapeColorSizeStyle({
+                colorCol: "d2011_2021",
+                color: (v) => (v > 0 ? "#d13c4bcc" : "#4288b5cc"),
+                sizeCol: "d2011_2021",
+                size: (v, r, s, zf) => {
+                  const max = Math.max(Math.abs(s.min), Math.abs(s.max));
+                  return 1.5 * r * gviz.sPow(Math.abs(v) / max, 0.2);
+                },
+                shape: () => "circle",
+              }),
+            ],
+            {
+              pixNb: 7,
+              cellInfoHTML: tooltipFunCh,
+*/
 
 //TODO
 styles.segmentCh = []
+
+/*
+            new gviz.SegmentStyle({
+                orientation: (c) => {
+                  let a = (c.p2011_2021 * maxAngle) / 0.3;
+                  a = a < -maxAngle ? -maxAngle : a > maxAngle ? maxAngle : a;
+                  return a;
+                },
+                colorCol: "p2011_2021",
+                color: (v) =>
+                  Math.abs(v) < 0.02
+                    ? "gray"
+                    : v > 0
+                    ? "#d13c4bcc"
+                    : "#4288b5cc",
+                length: (v, r) => r,
+                //lengthCol: "2011",
+                //length: (v, r, s, zf) => r * gviz.sPow(v / s.max, 0.25),
+                widthCol: "TOT_P_2021",
+                width: (v, r, s, zf) => 0.8 * r * gviz.sPow(v / s.max, 0.25),
+              }),
+            ],
+            {
+              pixNb: 10,
+   */
 

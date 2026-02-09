@@ -1,10 +1,10 @@
 /*/TODO
 
 https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
-smoothing
 add styles: sizech, segmentch, lego, colorch
 fix styles - backgrounds adaptation
 add legends
+smoothing
 fix GUI layout
 
 interpolation
@@ -102,14 +102,14 @@ map.layers = [backgroundLayerElevation, backgroundLayerRoad2, gridLayer, backgro
 const smooth = (styles) => {
     const sig = +document.getElementById('sigmaSM').value
     if (!sig) return styles
-    return new gridviz_smoothing.KernelSmoothingStyle({
+    return [new gridviz_smoothing.KernelSmoothingStyle({
         value: (c) => +c.p,
         smoothedProperty: "p",
         sigma: (r, z) => (r * sig) / 10,
-        resolutionSmoothed: (resolution, z) => z * 2,
+        resolutionSmoothed: (r, z) => r, //z * 2,
         //filterSmoothed: (value) => value > 0.0005,
         styles: styles,
-    })
+    })]
 }
 
 
@@ -121,6 +121,10 @@ const update = () => {
     const change = mapCode.includes("Ch")
 
     console.log(mapCode, year)
+
+    // test that, for smoothing
+    //console.log(styles.color[0])
+    //styles.color[0].cvWGL = undefined
 
     // set dataset
     gridLayer.dataset = change ? dataset.change : dataset[year]
