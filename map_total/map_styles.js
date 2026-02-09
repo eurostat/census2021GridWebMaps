@@ -250,7 +250,7 @@ styles.sizeCh = [
 
             for (let c of cells) {
                 // color
-                ctx.fillStyle = c.d2011_2021 > 0 ? "#d13c4bcc" : "#4288b5cc"
+                ctx.fillStyle = c.d2011_2021 > 0 ? "#d13c4b" : "#4288b5" // cc
                 // size
                 const sG = 1.6 * r * scalePopulation(Math.abs(c.d2011_2021)/ max);
 
