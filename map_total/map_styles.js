@@ -115,7 +115,7 @@ styles.size = [
             //update legends
             styles.size[0].updateLegends({ viewScale: viewScale, resolution: r, z: z, cells: cells })
         },
-        blendOperation: (z) => z <= 11 ? "multiply" : "source-over"
+        //blendOperation: (z) => z <= 11 ? "multiply" : "source-over"
     })
 ]
 
