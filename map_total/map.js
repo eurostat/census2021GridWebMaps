@@ -1,7 +1,7 @@
 /* TODO
 
 https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
-add legends
+add legends: change color, change size, change segment
 add styles: lego, colorch
 fix styles - backgrounds adaptation
 smoothing

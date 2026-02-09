@@ -60,3 +60,4 @@ styles.sizeCh[0].legends = []
 
 // segment change
 styles.segmentCh[0].legends = []
+
