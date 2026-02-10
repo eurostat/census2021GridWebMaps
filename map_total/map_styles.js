@@ -139,8 +139,8 @@ styles.pillar = [new gridviz.PillarStyle({
     height: (c, r, z, max) => (400 * z * c.p) / max,
     simple: (r, z) => z > 60,
     color: (c, r, z, max) => {
-        const t = 0.8*(1-scalePillar(c.p / max))
-        return 'rgb(255,'+(79+t*176)+','+(55+t*200)+')' //(0.1 + 0.9 * t)
+        const t = 0.8 * (1 - scalePillar(c.p / max))
+        return 'rgb(255,' + (79 + t * 176) + ',' + (55 + t * 200) + ')' //(0.1 + 0.9 * t)
     },
     viewHeightFactor: 5,
     width: (c, r) => 0.7 * r,

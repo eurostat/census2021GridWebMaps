@@ -1,8 +1,8 @@
 /* TODO
 
 https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
+add styles: colorch
 add legends: change color, change size, change segment
-add styles: lego, colorch
 fix styles - backgrounds adaptation
 smoothing
 fix GUI layout
@@ -14,6 +14,7 @@ interpolation
 map year of max population
 show 2021 JRC 100m resolution ?
 sea level rise ?
+lego ?
 */
 
 
