@@ -132,15 +132,19 @@ styles.dots = [new gridviz.DotDensityStyle({
 
 // pillar
 
-const scalePillar = gridviz.logarithmicScale(-5)
+//const scalePillar = gridviz.logarithmicScale(-5)
+const scalePillar = gridviz.logarithmicScale(-3)
 styles.pillar = [new gridviz.PillarStyle({
-    viewScale: (cells) => d3.max(cells, (cell) => +cell.p),
-    height: (cell, resolution, z, max) => (300 * z * cell.p) / max,
-    simple: () => true,
-    color: () => col,
+    viewScale: (cells) => d3.max(cells, (c) => c.p),
+    height: (c, r, z, max) => (400 * z * c.p) / max,
+    simple: (r, z) => z > 60,
+    color: (c, r, z, max) => {
+        const t = 0.8*(1-scalePillar(c.p / max))
+        return 'rgb(255,'+(79+t*176)+','+(55+t*200)+')' //(0.1 + 0.9 * t)
+    },
     viewHeightFactor: 5,
-    width: (cell, resolution) => 0.3 * resolution,
-    viewSX: -0.7,
+    width: (c, r) => 0.7 * r,
+    viewSX: 0,
     viewSY: -3,
     shadowDirection: (21 * Math.PI) / 180.0,
     shadowFactor: 0.5,

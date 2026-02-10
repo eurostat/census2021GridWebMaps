@@ -141,7 +141,7 @@ const update = () => {
     // set style
     gridLayer.styles = change ? styles[mapCode] : smooth(styles[mapCode])
 
-    gridLayer.minPixelsPerCell = mapCode == "segmentCh" ? 10 : ["size", "sizeCh", "lego"].includes(mapCode) ? 7 : mapCode == "pillar" ? 6 : mapCode == "joyplot" ? 5.5 : mapCode == "dots" ? 5 : 0.7;
+    gridLayer.minPixelsPerCell = mapCode == "segmentCh" ? 10 : ["size", "sizeCh", "lego"].includes(mapCode) ? 7 : mapCode == "pillar" ? 2.5 : mapCode == "joyplot" ? 5.5 : mapCode == "dots" ? 5 : 0.7;
     //gridLayer.blendOperation = ["size"].includes(mapCode) ? "source-over" : () => "multiply"
 
     // set backgorund to dark if necessary
@@ -149,7 +149,7 @@ const update = () => {
     for (let bck of [/*backgroundLayerRoad, backgroundLayerRoad2,*/ backgroundLayerElevation])
         bck.filterColor = mapCode == "colorDark" ? () => "#000000c0" : () => "#ffffffa0"
 
-    gridLayer.blendOperation = mapCode == "colorDark" ? () => "source-over" : (z) => z > 11 ? "source-over" : "multiply"
+    gridLayer.blendOperation = ["colorDark"].includes(mapCode) ? () => "source-over" : (z) => z > 11 ? "source-over" : "multiply"
 
     // set tooltip
     gridLayer.cellInfoHTML = change ? tooltipFunCh : tooltipFun
