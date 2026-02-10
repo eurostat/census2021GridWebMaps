@@ -186,34 +186,45 @@ styles.lego = gridviz.LegoStyle.get(
 
 
 
+// change by color
 
-styles.colorCh = [(() => {
-    const colors = []
-    const classNumber = 10;
-    for (let i = 0; i <= (classNumber - 1); i++) colors.push(d3.interpolateSpectral(i / (classNumber - 1)))
-    const scaleTPop = gridviz.powerScale(0.22)
-    const popCols = { ...colors }; popCols.na = naColor
+const colorsCh = []
+const classNumberCh = 10;
+for (let i = 0; i <= (classNumberCh - 1); i++) colorsCh.push(d3.interpolateSpectral(1 - i / (classNumberCh - 1)))
+const scaleTPopCh = gridviz.powerScale(5) //0.22
+const popColsCh = { ...colorsCh }; popColsCh.na = naColor
 
-    return new gridviz.SquareColorCategoryWebGLStyle({
+styles.colorCh = [
+    new gridviz.SquareColorCategoryWebGLStyle({
         viewScale: (cells, r) => {
-            const [min, max] = d3.extent(cells, c => c.d2011_2021)
+            let [min, max] = d3.extent(cells, c => c.d2011_2021)
+            if (min > 0) min = 0; if (max < 0) max = 0
             const rr = r * r / 1000000
             const breaks = []
-            for (let i = 1; i < classNumber; i++) {
-                let t = i / classNumber
-                t = scaleTPop(t)
+            for (let i = 1; i < classNumberCh / 2; i++) {
+                let t = 2 * i / classNumberCh
+                t = 1 - t
+                t = scaleTPopCh(t)
+                breaks.push(min * t / rr)
+            }
+            breaks.push(0)
+            for (let i = 1; i < classNumberCh / 2; i++) {
+                let t = 2 * i / classNumberCh
+                t = scaleTPopCh(t)
                 breaks.push(max * t / rr)
             }
+            console.log(breaks.length, breaks, min, max)
             return gridviz.classifier(breaks)
         },
         code: (c, r, z, classifier) => {
             const v = c.d2011_2021
-            if (v == -1 || v == undefined) return "na"
+            if (v == undefined) return "na"
             return classifier(1000000 * v / r / r)
         },
-        color: popCols,
-    })
-})(), strokeStyle]
+        color: popColsCh,
+    }),
+    strokeStyle
+]
 
 
 /*
