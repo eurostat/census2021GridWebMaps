@@ -213,7 +213,7 @@ styles.colorCh = [
                 t = scaleTPopCh(t)
                 breaks.push(max * t / rr)
             }
-            console.log(breaks.length, breaks, min, max)
+            //console.log(breaks.length, breaks, min, max)
             return gridviz.classifier(breaks)
         },
         code: (c, r, z, classifier) => {
@@ -225,28 +225,6 @@ styles.colorCh = [
     }),
     strokeStyle
 ]
-
-
-/*
-const streC = 0.22;
-
-new gviz.ShapeColorSizeStyle({
-                colorCol: "d2011_2021",
-                color: (v, r, s) => {
-                  const stre = gviz.sPow;
-                  let t = 0.5;
-                  if (s.min < 0 && v < 0) {
-                    t -= stre(v / s.min, streC) / 2;
-                  } else {
-                    t += stre(v / s.max, streC) / 2;
-                  }
-                  t = 1 - t;
-                  return d3.interpolateSpectral(t);
-                },
-              }),
-              new gviz.StrokeStyle({ maxZoom: 80 }),
-*/
-
 
 
 // size change
