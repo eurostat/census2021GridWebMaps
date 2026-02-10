@@ -1,13 +1,12 @@
 /* TODO
 
 https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
-add styles: colorch
 add legends: change color, change size, change segment
 fix styles - backgrounds adaptation
 smoothing
 fix GUI layout
 check init copyright messages - in both versions
-remove UK, and maybe others
+remove UK, and maybe others. Or add country column ?
 dark color: invert labels black/white. change borders color ?
 
 interpolation
