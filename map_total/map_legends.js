@@ -1,12 +1,12 @@
 
 //define not available legend
 const naLegend = new gridviz.ColorCategoryLegend({
-    colorLabel: [[naColor, "Data not available"]],
-    shape: "square",
+  colorLabel: [[naColor, "Data not available"]],
+  shape: "square",
 });
 const naLegendC = new gridviz.ColorCategoryLegend({
-    colorLabel: [[naColor, "Data not available"]],
-    shape: "circle",
+  colorLabel: [[naColor, "Data not available"]],
+  shape: "circle",
 });
 
 
@@ -14,30 +14,30 @@ const naLegendC = new gridviz.ColorCategoryLegend({
 // color style
 //console.log(colors)
 styles.color[0].legends = [
-    new gridviz.ColorDiscreteLegend({
-        title: "Population density, in persons/km2",
-        width: Math.min(window.innerWidth - 40, 450),
-        colors: () => colors,
-        breaks: (viewScale) => viewScale?.breaks.map((b) => gridviz.nice(b)),
-    })
+  new gridviz.ColorDiscreteLegend({
+    title: "Population density, in persons/km2",
+    width: Math.min(window.innerWidth - 40, 450),
+    colors: () => colors,
+    breaks: (viewScale) => viewScale?.breaks.map((b) => gridviz.nice(b)),
+  })
 ]
 
 // dark color style
 styles.colorDark[0].legends = [
-    new gridviz.ColorDiscreteLegend({
-        title: "Population density, in persons/km2",
-        width: Math.min(window.innerWidth - 40, 450),
-        colors: () => colorsDark,
-        breaks: (viewScale) => viewScale?.breaks.map((b) => gridviz.nice(b)),
-    })
+  new gridviz.ColorDiscreteLegend({
+    title: "Population density, in persons/km2",
+    width: Math.min(window.innerWidth - 40, 450),
+    colors: () => colorsDark,
+    breaks: (viewScale) => viewScale?.breaks.map((b) => gridviz.nice(b)),
+  })
 ]
 
 // size
 styles.size[0].legends = gridviz.sizeLegendViewScale((c) => c.p, {
-    k: [0.8, 0.25, 0.05],
-    title: 'Population',
-    fillColor: col,
-    labelFormat: d3.format(',.2r'),
+  k: [0.8, 0.25, 0.05],
+  title: 'Population',
+  fillColor: col,
+  labelFormat: d3.format(',.2r'),
 })
 
 
@@ -54,12 +54,12 @@ styles.size[0].legends = gridviz.sizeLegendViewScale((c) => c.p, {
 
 // color change
 styles.colorCh[0].legends = [
-    new gridviz.ColorDiscreteLegend({
-        title: "Population change (number of persons)",
-        width: Math.min(window.innerWidth - 40, 450),
-        colors: () => colorsCh,
-        breaks: (viewScale) => viewScale?.breaks.map((b) => Math.round(b)),
-    })
+  new gridviz.ColorDiscreteLegend({
+    title: "Population change (number of persons)",
+    width: Math.min(window.innerWidth - 40, 450),
+    colors: () => colorsCh,
+    breaks: (viewScale) => viewScale?.breaks.map((b) => Math.round(b)),
+  })
 ]
 
 
@@ -68,63 +68,20 @@ styles.colorCh[0].legends = [
 // size change
 
 const schleg = gridviz.sizeLegendViewScale((c) => c.d2011_2021, {
-    k: [0.9, 0.2, 0.01],
-    title: 'Population change',
-    fillColor: "gray",
-    shape: "circle",
-    //labelFormat: d3.format(',.2r'),
+  k: [0.9, 0.2, 0.01],
+  fillColor: "gray",
+  shape: "circle",
+  //labelFormat: d3.format(',.2r'),
 })
+
+const lgCat = new gridviz.ColorCategoryLegend({
+  title: 'Population change',
+  colorLabel: [["#d13c4b", "Increase"], ["#4288b5", "Decrease"],],
+  shape: "square",
+});
+schleg.unshift(lgCat)
+
 styles.sizeCh[0].legends = schleg
-
-
-
-
-/*
-  
-          const lgCat = new gviz.ColorCategoryLegend({
-            shape: "square",
-            colCat: [
-              ["#d13c4b", "Increase"],
-              ["#4288b5", "Decrease"],
-            ],
-          });
-
-
-//legend
-          app.layers[0].styles[0].legends.push(
-            new gviz.SizeLegend({
-              title: "Population change",
-              exaggerationFactor: 0.9,
-              shape: "circle",
-              labelUnitText: "inhabitants",
-              fillColor: "gray",
-            }).style("padding", "0px 5px")
-          );
-          app.layers[0].styles[0].legends.push(
-            new gviz.SizeLegend({
-              exaggerationFactor: 0.2,
-              shape: "circle",
-              labelUnitText: "",
-              fillColor: "gray",
-            }).style("padding", "0px 5px")
-          );
-          app.layers[0].styles[0].legends.push(
-            new gviz.SizeLegend({
-              exaggerationFactor: 0.01,
-              shape: "circle",
-              labelUnitText: "",
-              fillColor: "gray",
-            }).style("padding", "0px 5px")
-          );
-          const lgCat = new gviz.ColorCategoryLegend({
-            shape: "square",
-            colCat: [
-              ["#d13c4b", "Increase"],
-              ["#4288b5", "Decrease"],
-            ],
-          });
-          app.layers[0].styles[0].legends.push(lgCat);
-*/
 
 
 
