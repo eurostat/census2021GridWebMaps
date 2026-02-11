@@ -3,7 +3,7 @@
 
 const tooltipFun = (c, r) =>
     c.p ? "<b>" + formatLarge(c.p) + "</b> person" + (+c.p == 1 ? "" : "s") +
-        " per " + Math.round((r * r) / 1000000) + " km²" : undefined
+        " per " + ((r * r) / 1000000) + " km²" : undefined
 //+ "<br>" + c.CNTR_ID
 
 

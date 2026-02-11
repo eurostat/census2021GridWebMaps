@@ -83,6 +83,21 @@ for (let year of ["2006", "2011", "2018", "2021"]) {
     })
 }
 
+// use 100m jrc dataset
+if (jrc100) {
+    const tilesURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles/";
+    dataset["2021"] = new gridviz.MultiResolutionDataset(
+        [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000],
+        (resolution) => new gviz_par.TiledParquetGrid(map, tilesURL + "tiles_total/" + resolution + "/"), {
+        preprocess: c => {
+            if (!c.T) return false
+            c.p = c.T
+            delete c.T
+        }
+    })
+    styles.pillar[0].simple = (r, z) => z > 6
+}
+
 dataset.change = new gridviz.MultiResolutionDataset(
     [1000, 2000, 5000, 10000, 20000, 50000, 100000],
     (resolution) => new gviz_par.TiledParquetGrid(map, tilesUrl + "change/" + resolution + "/"), {
@@ -140,7 +155,7 @@ const update = () => {
             value: (c) => +c[prop],
             smoothedProperty: prop,
             sigma: (r, z) => (r * (sig + 1.5)) / 10,
-            resolutionSmoothed: mapCode.includes("color") ? (r, z) => 1.5*z : r => r,
+            resolutionSmoothed: mapCode.includes("color") ? (r, z) => 1.5 * z : r => r,
             filterSmoothed: /*change ? undefined :*/ (v) => Math.abs(v) > 0.005,
             styles: styles_,
         })]
@@ -148,6 +163,8 @@ const update = () => {
     } else gridLayer.styles = styles_
 
     //gridLayer.blendOperation = ["size"].includes(mapCode) ? "source-over" : () => "multiply"
+
+    strokeStyle.visible = sig || jrc100 ? () => false : (z) => z < 15
 
     // set backgorund to dark if necessary
     map.setBackgroundColor(mapCode == "colorDark" ? "black" : "white")
