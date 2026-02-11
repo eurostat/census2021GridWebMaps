@@ -1,7 +1,8 @@
 /* TODO
 
 https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
-remove UK, and maybe others. Or add country column ?
+remove isla of man. better deal with balkan borders.
+color change: deal with 0. or remove balkans.
 fix styles - backgrounds adaptation
 fix GUI layout
 
