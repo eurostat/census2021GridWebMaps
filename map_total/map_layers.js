@@ -47,33 +47,38 @@ const updateLayersVisibility = () => {
         backgroundLayerRoad2.visible = () => false;
         backgroundLayerElevation.visible = () => false;
     }
-    labelLayer.visible = document.getElementById("label").checked ? ()=>true : ()=>false
-    boundariesLayer.visible = document.getElementById("boundary").checked ? ()=>true : ()=>false
+    labelLayer.visible = document.getElementById("label").checked ? () => true : () => false
+    boundariesLayer.visible = document.getElementById("boundary").checked ? () => true : () => false
 }
 
 
 
 //define boundaries layer
+
+const colorBND = col => (f, zf) => {
+    const p = f.properties
+    //if (!showOth /*&& p.co == "F"*/ && p.eu != 'T' && p.cc != 'T' && p.efta != 'T' && p.oth === 'T') return
+    if (p.id >= 100000) return '#bcbcbc'
+    //return col
+    if (p.co === 'T') return col
+    if (zf < 400) return col
+    else if (zf < 1000) return p.lvl >= 3 ? '' : col
+    else if (zf < 2000) return p.lvl >= 2 ? '' : col
+    else return p.lvl >= 1 ? '' : col
+}
+
 const boundariesLayer = new gridviz.GeoJSONLayer(
     gridviz_eurostat.getEurostatBoundariesLayer({
         baseURL: nuts2jsonURL,
-        showOth: false,
-        col: "#cc6699", scale: "03M",
-        /*color: (f, zf) => {
-            const p = f.properties;
-            if (p.id >= 100000) return "#bcbcbc";
-            if (p.co === "T") return "#888";
-            if (zf < 400) return "#888";
-            else if (zf < 1000) return p.lvl >= 3 ? "" : "#888";
-            else if (zf < 2000) return p.lvl >= 2 ? "" : "#888";
-            else return p.lvl >= 1 ? "" : "#888";
-        },*/
+        scale: "03M",
+        color: colorBND("#cc6699"),
         visible: document.getElementById("boundary").checked ? undefined : () => false,
     })
 );
 
 
 //make label layer
+
 const labelLayer = new gridviz.LabelLayer(
     gridviz_eurostat.getEuronymeLabelLayer("EUR", 20, {
         ccIn: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "PL", "PT", "MT", "NL", "RO", "SE", "SK", "SI", "CH", "NO", "LI",],

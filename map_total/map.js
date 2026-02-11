@@ -1,7 +1,6 @@
 /* TODO
 
 https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
-dark color: invert labels black/white. change borders color ?
 add legends: change size, change segment
 smoothing
 fix styles - backgrounds adaptation
@@ -155,9 +154,13 @@ const update = () => {
 
     gridLayer.blendOperation = ["colorDark"].includes(mapCode) ? () => "source-over" : (z) => z > 11 ? "source-over" : "multiply"
 
+
     // change label color for dark mode
     labelLayer.color = mapCode == "colorDark" ? () => "white" : () => "black"
     labelLayer.haloColor = mapCode == "colorDark" ? () => "black" : () => "white"
+    // change boundaries color for dark mode
+    boundariesLayer.  color = mapCode == "colorDark"? colorBND("#777") : colorBND("#cc6699")
+
 
     // set tooltip
     gridLayer.cellInfoHTML = change ? tooltipFunCh : tooltipFun
