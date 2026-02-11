@@ -1,8 +1,8 @@
 /* TODO
 
 https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
-add legends: change size, change segment
 smoothing
+add legends: change size, change segment
 fix styles - backgrounds adaptation
 fix GUI layout
 remove UK, and maybe others. Or add country column ?
@@ -111,20 +111,6 @@ const gridLayer = new gridviz.GridLayer(undefined, [], {
 map.layers = [backgroundLayerElevation, backgroundLayerRoad2, gridLayer, backgroundLayerRoad, boundariesLayer, labelLayer];
 
 
-//smoothing
-const smooth = (styles) => {
-    const sig = +document.getElementById('sigmaSM').value
-    if (!sig) return styles
-    return [new gridviz_smoothing.KernelSmoothingStyle({
-        value: (c) => +c.p,
-        smoothedProperty: "p",
-        sigma: (r, z) => (r * sig) / 10,
-        resolutionSmoothed: (r, z) => r, //z * 2,
-        //filterSmoothed: (value) => value > 0.0005,
-        styles: styles,
-    })]
-}
-
 
 const update = () => {
 
@@ -132,6 +118,7 @@ const update = () => {
     const mapCode = document.querySelector('input[name="style"]:checked').value;
     const year = document.getElementById("year").value;
     const change = mapCode.includes("Ch")
+    const sig = +document.getElementById('sigmaSM').value
 
     //console.log(mapCode, year)
 
@@ -141,8 +128,22 @@ const update = () => {
 
     // set dataset
     gridLayer.dataset = change ? dataset.change : dataset[year]
+
     // set style
-    gridLayer.styles = change ? styles[mapCode] : smooth(styles[mapCode])
+    const styles_ = styles[mapCode]
+    if (sig && mapCode != "segmentCh") {
+        //smoothing
+        const prop = change ? "d2011_2021" : "p"
+        gridLayer.styles = [new gridviz_smoothing.KernelSmoothingStyle({
+            value: (c) => +c[prop],
+            smoothedProperty: prop,
+            sigma: (r, z) => (r * sig) / 10,
+            resolutionSmoothed: r => r, //z * 2,
+            //filterSmoothed: (value) => value > 0.0005,
+            styles: styles_,
+        })]
+    } else gridLayer.styles = styles_
+
 
     gridLayer.minPixelsPerCell = mapCode == "segmentCh" ? 10 : ["size", "sizeCh", "lego"].includes(mapCode) ? 7 : mapCode == "pillar" ? 2.5 : mapCode == "joyplot" ? 3.5 : mapCode == "dots" ? 5 : 0.7;
     //gridLayer.blendOperation = ["size"].includes(mapCode) ? "source-over" : () => "multiply"
@@ -159,7 +160,7 @@ const update = () => {
     labelLayer.color = mapCode == "colorDark" ? () => "white" : () => "black"
     labelLayer.haloColor = mapCode == "colorDark" ? () => "black" : () => "white"
     // change boundaries color for dark mode
-    boundariesLayer.  color = mapCode == "colorDark"? colorBND("#777") : colorBND("#cc6699")
+    boundariesLayer.color = mapCode == "colorDark" ? colorBND("#777") : colorBND("#cc6699")
 
 
     // set tooltip
