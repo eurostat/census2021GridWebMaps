@@ -124,10 +124,15 @@ const update = () => {
 
     // test that, for smoothing
     //console.log(styles.color[0])
-    //styles.color[0].cvWGL = undefined
+    styles.color[0].x = undefined
+    styles.colorDark[0].x = undefined
+    styles.colorCh[0].x = undefined
 
     // set dataset
     gridLayer.dataset = change ? dataset.change : dataset[year]
+
+    // set resolution
+    gridLayer.minPixelsPerCell = mapCode == "segmentCh" ? 10 : ["size", "sizeCh", "lego"].includes(mapCode) ? 7 : mapCode == "pillar" ? 2.5 : mapCode == "joyplot" ? 3.5 : mapCode == "dots" ? 5 : 0.7;
 
     // set style
     const styles_ = styles[mapCode]
@@ -137,15 +142,14 @@ const update = () => {
         gridLayer.styles = [new gridviz_smoothing.KernelSmoothingStyle({
             value: (c) => +c[prop],
             smoothedProperty: prop,
-            sigma: (r, z) => (r * sig) / 10,
-            resolutionSmoothed: mapCode.includes("color")? (r,z) => z : r => r,
-            filterSmoothed: (v) => Math.abs(v) > 0.0005,
+            sigma: (r, z) => (r * (sig + 1.5)) / 10,
+            resolutionSmoothed: mapCode.includes("color") ? (r, z) => 2*z : r => r,
+            filterSmoothed: change ? undefined : (v) => Math.abs(v) > 0.0005,
             styles: styles_,
         })]
+        if (mapCode.includes("color")) gridLayer.minPixelsPerCell *= 2
     } else gridLayer.styles = styles_
 
-
-    gridLayer.minPixelsPerCell = mapCode == "segmentCh" ? 10 : ["size", "sizeCh", "lego"].includes(mapCode) ? 7 : mapCode == "pillar" ? 2.5 : mapCode == "joyplot" ? 3.5 : mapCode == "dots" ? 5 : 0.7;
     //gridLayer.blendOperation = ["size"].includes(mapCode) ? "source-over" : () => "multiply"
 
     // set backgorund to dark if necessary
