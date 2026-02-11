@@ -120,25 +120,7 @@ styles.segmentCh[0].legends = [
   })
 ]
 /*
-
+implement that in style, then legend
 https://github.com/eurostat/gridviz/blob/master/examples/legends/widthLegendViewScale.html
 
-
 */
-
-
-/*
-        opts = opts || {}
-
-        //orientation
-        this.orientation = opts.orientation || 0
-        //color
-        this.color = opts.color || ((resolution, z, viewScale) => 'gray')
-        //width
-        this.width = opts.width || ((resolution, z, viewScale) => 3 * z)
-        //length
-        this.length = opts.length || ((resolution, z, viewScale) => resolution)
-
-        //label
-        this.label = opts.label || '-'
-    }*/

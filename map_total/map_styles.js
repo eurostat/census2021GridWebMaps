@@ -293,8 +293,11 @@ styles.segmentCh = [
             a = a < -maxAngle ? -maxAngle : a > maxAngle ? maxAngle : a;
             return a;
         },
-        viewScale: (cells) => d3.max(cells, c => c.p2021),
-        width: (c, r, z, max) => 0.8 * r * scaleSegmentChange(c.p2021 / max),
-        //width: (v, r, s, zf) => 0.8 * r * gviz.sPow(v / s.max, 0.25),
+        viewScale: gridviz.viewScale({
+            valueFunction: (c) => +c.p2021,
+            stretching: scaleSegmentChange,
+            maxSizeFactor: 0.8,
+        }),
+        width: (c, r, z, viewScale) => viewScale(c.p2021),
     })
 ]
