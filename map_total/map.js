@@ -1,7 +1,6 @@
 /* TODO
 
 https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
-check init copyright messages - in both versions
 add legends: change color, change size, change segment
 dark color: invert labels black/white. change borders color ?
 smoothing

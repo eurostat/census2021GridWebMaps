@@ -53,7 +53,14 @@ styles.size[0].legends = gridviz.sizeLegendViewScale((c) => c.p, {
 
 
 // color change
-styles.colorCh[0].legends = []
+styles.colorCh[0].legends = [
+    new gridviz.ColorDiscreteLegend({
+        title: "Population change (number of persons)",
+        width: Math.min(window.innerWidth - 40, 450),
+        colors: () => colorsCh,
+        breaks: (viewScale) => viewScale?.breaks.map((b) => Math.round(b)),
+    })
+]
 
 // size change
 styles.sizeCh[0].legends = []
