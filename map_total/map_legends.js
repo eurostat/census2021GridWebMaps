@@ -111,16 +111,13 @@ styles.segmentCh[0].legends = [
     label: "Strong decrease",
     color: () => "#4288b5",
     orientation: -60,
-  }),
-  new gridviz.OrientationLegend({
-    title: "Population in 2021",
-    width: (r,z,max) => 0.8 * r,
-    label: "aaaa",
-    orientation: 0,
   })
 ]
-/*
-implement that in style, then legend
-https://github.com/eurostat/gridviz/blob/master/examples/legends/widthLegendViewScale.html
-
-*/
+styles.segmentCh[0].legends.push(...gridviz.sizeLegendViewScale((cell) => +cell.p2021, {
+  k: [0.8, 0.3, 0.03],
+  title: 'Population in 2021',
+  shape: 'line',
+  color: 'black',
+  length: (resolution) => 2 * resolution,
+  labelFormat: d3.format(',.2r'),
+}))
