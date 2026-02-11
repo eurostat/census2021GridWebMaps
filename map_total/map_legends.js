@@ -85,53 +85,60 @@ styles.sizeCh[0].legends = schleg
 
 
 // segment change
-styles.segmentCh[0].legends = []
+styles.segmentCh[0].legends = [
+  new gridviz.OrientationLegend({
+    title: "Population change",
+    label: "Strong increase",
+    color: () => "#d13c4b",
+    orientation: 60,
+  }),
+  new gridviz.OrientationLegend({
+    label: "Weak increase",
+    color: () => "#d13c4b",
+    orientation: 30,
+  }),
+  new gridviz.OrientationLegend({
+    label: "Stability (<1%)",
+    color: () => "gray",
+    orientation: 0,
+  }),
+  new gridviz.OrientationLegend({
+    label: "Weak decrease",
+    color: () => "#4288b5",
+    orientation: -30,
+  }),
+  new gridviz.OrientationLegend({
+    label: "Strong decrease",
+    color: () => "#4288b5",
+    orientation: -60,
+  }),
+  new gridviz.OrientationLegend({
+    title: "Population in 2021",
+    width: (r,z,max) => 0.8 * r,
+    label: "aaaa",
+    orientation: 0,
+  })
+]
+/*
+
+https://github.com/eurostat/gridviz/blob/master/examples/legends/widthLegendViewScale.html
+
+
+*/
+
 
 /*
-          app.layers[0].styles[0].legends.push(
-            new gviz.SegmentWidthLegend({
-              title: "Population in " + year_,
-              labelUnitText: "inhab.",
-            })
-          );
+        opts = opts || {}
 
-          app.layers[0].styles[0].legends.push(
-            new gviz.SegmentOrientationLegend({
-              title: "Population change",
-              labelUnitText: "Strong increase",
-              color: "#d13c4b",
-              orientation: 60,
-            })
-          );
-          app.layers[0].styles[0].legends.push(
-            new gviz.SegmentOrientationLegend({
-              labelUnitText: "Weak increase",
-              color: "#d13c4b",
-              orientation: 30,
-            })
-          );
-          app.layers[0].styles[0].legends.push(
-            new gviz.SegmentOrientationLegend({
-              labelUnitText: "Stability (<1%)",
-              color: "gray",
-              orientation: 0,
-            })
-          );
-          app.layers[0].styles[0].legends.push(
-            new gviz.SegmentOrientationLegend({
-              labelUnitText: "Weak decrease",
-              color: "#4288b5",
-              orientation: -30,
-            })
-          );
-          app.layers[0].styles[0].legends.push(
-            new gviz.SegmentOrientationLegend({
-              labelUnitText: "Strong decrease",
-              color: "#4288b5",
-              orientation: -60,
-            })
-          );
-          //const lgCat = new gviz.ColorCategoryLegend({ title: "Population change", shape: "square", colCat: [["#d13c4b", "Increase"], ["gray", "Stable (<1%)"], ["#4288b5", "Decrease"]] })
-          //app.layers[0].styles[0].legends.push(lgCat)
-        }
-*/
+        //orientation
+        this.orientation = opts.orientation || 0
+        //color
+        this.color = opts.color || ((resolution, z, viewScale) => 'gray')
+        //width
+        this.width = opts.width || ((resolution, z, viewScale) => 3 * z)
+        //length
+        this.length = opts.length || ((resolution, z, viewScale) => resolution)
+
+        //label
+        this.label = opts.label || '-'
+    }*/
