@@ -8,13 +8,14 @@ const tooltipFun = (c, r) =>
 
 
 const tooltipFunCh = (c) =>
-    "2011: " + c.p2011 +
-    "<br>2021: " + c.p2021 +
-    "<br>" + "<b>" +
-    (c.d2011_2021 == 0
-        ? "No change"
-        : (c.d2011_2021 > 0 ? "+" : "") +
-        c.d2011_2021 +
-        " inhabitants") +
-    "</b>";
+    c.p2021 || c.p2011 ?
+        "2011: " + c.p2011 +
+        "<br>2021: " + c.p2021 +
+        "<br>" + "<b>" +
+        (c.d2011_2021 == 0
+            ? "No change"
+            : (c.d2011_2021 > 0 ? "+" : "") +
+            c.d2011_2021 +
+            " inhabitants") +
+        "</b>" : undefined;
 

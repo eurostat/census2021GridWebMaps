@@ -155,7 +155,7 @@ const update = () => {
             smoothedProperty: prop,
             sigma: (r, z) => (r * (sig + 1.5)) / 10,
             resolutionSmoothed: mapCode.includes("color") ? (r, z) => 1.5 * z : r => r,
-            filterSmoothed: /*change ? undefined :*/ (v) => Math.abs(v) > 0.005,
+            filterSmoothed: /*change ? undefined :*/ (v) => Math.abs(v) > 0.0001,
             styles: styles_,
         })]
         if (mapCode.includes("color")) gridLayer.minPixelsPerCell *= 2

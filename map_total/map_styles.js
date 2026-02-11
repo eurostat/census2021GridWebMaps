@@ -222,6 +222,7 @@ styles.colorCh = [
             return classifier(1000000 * v / r / r)
         },
         color: popColsCh,
+        filter: (c) => c.p2021 == undefined || (c.p2021 != 0 || c.p2011 != 0)
     }),
     strokeStyle
 ]
