@@ -1,8 +1,8 @@
 /* TODO
 
 https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
-add legends: change color, change size, change segment
 check init copyright messages - in both versions
+add legends: change color, change size, change segment
 dark color: invert labels black/white. change borders color ?
 smoothing
 fix styles - backgrounds adaptation
@@ -69,6 +69,12 @@ interpolate = interpolate != "" && interpolate != "false" && +interpolate != 0
 
 //
 updateLayersVisibility()
+
+
+//show/hide copyright html components
+document.getElementById('eurogeographics-copyright').style.display = document.getElementById("boundary").checked ? 'inline-block' : 'none';
+document.getElementById('tomtom-copyright').style.display =
+    document.getElementById("road").checked && document.getElementById("background").checked ? 'inline-block' : 'none';
 
 
 

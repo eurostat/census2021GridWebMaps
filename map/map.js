@@ -108,6 +108,11 @@ let jrc100 = urlParams.get("jrc100")
 updateLayersVisibility()
 
 
+//show/hide copyright html components
+document.getElementById('eurogeographics-copyright').style.display = document.getElementById("boundary").checked ? 'inline-block' : 'none';
+document.getElementById('tomtom-copyright').style.display =
+    document.getElementById("road").checked && document.getElementById("background").checked ? 'inline-block' : 'none';
+
 
 //define multi resolution datasets
 const dataset = {}

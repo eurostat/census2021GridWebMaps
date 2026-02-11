@@ -145,7 +145,7 @@ styles.pillar = [new gridviz.PillarStyle({
     viewHeightFactor: 5,
     width: (c, r) => 0.7 * r,
     viewSX: 0,
-    viewSY: -1.5,
+    viewSY: -1,
     shadowDirection: (21 * Math.PI) / 180.0,
     shadowFactor: 0.3,
     /*viewScale: (cells) => d3.max(cells, (cell) => +cell.p),
