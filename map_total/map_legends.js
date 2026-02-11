@@ -85,32 +85,44 @@ styles.sizeCh[0].legends = schleg
 
 
 // segment change
+lleg = (r, z) => Math.min(20 * z, r)
+wleg = (r, z) => 4 * z
 styles.segmentCh[0].legends = [
   new gridviz.OrientationLegend({
     title: "Population change",
     label: "Strong increase",
     color: () => "#d13c4b",
     orientation: 60,
+    length: lleg,
+    width: wleg
   }),
   new gridviz.OrientationLegend({
     label: "Weak increase",
     color: () => "#d13c4b",
     orientation: 30,
+    length: lleg,
+    width: wleg
   }),
   new gridviz.OrientationLegend({
     label: "Stability (<1%)",
     color: () => "gray",
     orientation: 0,
+    length: lleg,
+    width: wleg
   }),
   new gridviz.OrientationLegend({
     label: "Weak decrease",
     color: () => "#4288b5",
     orientation: -30,
+    length: lleg,
+    width: wleg
   }),
   new gridviz.OrientationLegend({
     label: "Strong decrease",
     color: () => "#4288b5",
     orientation: -60,
+    length: lleg,
+    width: wleg
   })
 ]
 styles.segmentCh[0].legends.push(...gridviz.sizeLegendViewScale((cell) => +cell.p2021, {
@@ -118,6 +130,6 @@ styles.segmentCh[0].legends.push(...gridviz.sizeLegendViewScale((cell) => +cell.
   title: 'Population in 2021',
   shape: 'line',
   color: 'black',
-  length: (resolution) => 2 * resolution,
+  length: (r, z) => Math.min(2 * r, 50 * z),
   labelFormat: d3.format(',.2r'),
 }))
