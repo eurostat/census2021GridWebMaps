@@ -191,7 +191,7 @@ styles.lego = gridviz.LegoStyle.get(
 const colorsCh = []
 const classNumberCh = 10;
 for (let i = 0; i <= (classNumberCh - 1); i++) colorsCh.push(d3.interpolateSpectral(1 - i / (classNumberCh - 1)))
-const scaleTPopCh = gridviz.powerScale(5) //0.22
+const scaleTPopCh = gridviz.powerScale(3.5) //0.22
 const popColsCh = { ...colorsCh }; popColsCh.na = naColor
 
 styles.colorCh = [
@@ -237,8 +237,13 @@ styles.sizeCh = [
             cells = cells.filter((c) => c.d2011_2021);
             if (cells.length == 0) return;
 
-            //get max population change
-            const max = d3.max(cells, (c) => Math.abs(c.d2011_2021));
+            //get view scale
+            const z = cg.view.z
+            const viewScale = gridviz.viewScale({
+                valueFunction: (c) => Math.abs(c.d2011_2021),
+                maxSizeFactor: 1.65,
+                stretching: scaleSizeChange,
+            })(cells, r, z)
 
             //sort cells by decreasing x and increasing y
             cells.sort((c1, c2) => (c2.y == c1.y ? c1.x - c2.x : c2.y - c1.y));
@@ -252,13 +257,16 @@ styles.sizeCh = [
                 // color
                 ctx.fillStyle = c.d2011_2021 > 0 ? "#d13c4b" : "#4288b5" // cc
                 // size
-                const sG = 1.6 * r * scaleSizeChange(Math.abs(c.d2011_2021) / max);
+                const sG = viewScale(Math.abs(c.d2011_2021))
 
                 ctx.beginPath();
                 ctx.arc(c.x + r / 2, c.y + r / 2, sG * 0.5, 0, 2 * Math.PI, false);
                 ctx.stroke();
                 ctx.fill();
             }
+
+            //update legends
+            styles.sizeCh[0].updateLegends({ viewScale: viewScale, resolution: r, z: z, cells: cells })
         },
         //blendOperation: (z) => z <= 11 ? "multiply" : "source-over"
     })

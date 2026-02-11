@@ -62,8 +62,22 @@ styles.colorCh[0].legends = [
     })
 ]
 
+
+
+
 // size change
-styles.sizeCh[0].legends = []
+
+const schleg = gridviz.sizeLegendViewScale((c) => c.d2011_2021, {
+    k: [0.9, 0.2, 0.01],
+    title: 'Population change',
+    fillColor: "gray",
+    shape: "circle",
+    //labelFormat: d3.format(',.2r'),
+})
+styles.sizeCh[0].legends = schleg
+
+
+
 
 /*
   
