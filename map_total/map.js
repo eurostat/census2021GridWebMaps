@@ -1,15 +1,13 @@
 /* TODO
 
 https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
-smoothing
+show 2021 JRC 100m resolution ?
 add legends: change size, change segment
 fix styles - backgrounds adaptation
-fix GUI layout
 remove UK, and maybe others. Or add country column ?
+fix GUI layout
 
-interpolation
 map year of max population
-show 2021 JRC 100m resolution ?
 sea level rise ?
 lego ?
 */
@@ -60,9 +58,8 @@ if (dkfh) document.getElementById("sigmaSM").value = dkfh
 // toggle options panel collapse from URL param
 if (urlParams.get("collapsed")) document.getElementById("expand-toggle-button").click();
 
-// interpolate
-let interpolate = urlParams.get("itrp")
-interpolate = interpolate != "" && interpolate != "false" && +interpolate != 0
+// show JRC 100m
+let jrc100 = urlParams.get("jrc100")
 
 
 //
