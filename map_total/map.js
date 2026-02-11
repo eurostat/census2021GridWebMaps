@@ -1,7 +1,6 @@
 /* TODO
 
 https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
-show 2021 JRC 100m resolution ?
 add legends: change size, change segment
 fix styles - backgrounds adaptation
 remove UK, and maybe others. Or add country column ?
