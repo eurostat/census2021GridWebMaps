@@ -71,9 +71,8 @@ const schleg = gridviz.sizeLegendViewScale((c) => c.d2011_2021, {
   k: [0.9, 0.2, 0.01],
   fillColor: "gray",
   shape: "circle",
-  //labelFormat: d3.format(',.2r'),
+  labelFormat: d3.format(',.2r'),
 })
-
 const lgCat = new gridviz.ColorCategoryLegend({
   title: 'Population change',
   colorLabel: [["#d13c4b", "Increase"], ["#4288b5", "Decrease"],],
