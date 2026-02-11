@@ -138,8 +138,8 @@ const update = () => {
             value: (c) => +c[prop],
             smoothedProperty: prop,
             sigma: (r, z) => (r * sig) / 10,
-            resolutionSmoothed: r => r, //z * 2,
-            //filterSmoothed: (value) => value > 0.0005,
+            resolutionSmoothed: mapCode.includes("color")? (r,z) => z : r => r,
+            filterSmoothed: (v) => Math.abs(v) > 0.0005,
             styles: styles_,
         })]
     } else gridLayer.styles = styles_
