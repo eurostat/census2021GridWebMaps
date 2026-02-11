@@ -46,7 +46,7 @@ styles.color = [
 
 const colorsDark = []
 const classNumberDark = 8;
-for (let i = 0; i <= (classNumberDark - 1); i++) colorsDark.push(d3.interpolateMagma(0.85 * i / (classNumberDark - 1)))
+for (let i = 0; i <= (classNumberDark - 1); i++) colorsDark.push(d3.interpolateMagma(0.1 + 0.9 * i / (classNumberDark - 1)))
 const popColsDark = { ...colorsDark }; popColsDark.na = naColor
 
 styles.colorDark = [
