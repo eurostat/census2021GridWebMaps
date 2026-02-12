@@ -99,16 +99,13 @@ dataset.change = new gridviz.MultiResolutionDataset(
     [1000, 2000, 5000, 10000, 20000, 50000, 100000],
     (resolution) => new gviz_par.TiledParquetGrid(map, tilesUrl + "change/" + resolution + "/"), {
     preprocess: c => {
-        //prepare 2011 -> 2021 change data
-        if (c.T2011==undefined || c.T2021==undefined) {
-            return false
-            //c.d2011_2021 = undefined
-            //c.p2011_2021 = undefined
-        }
-        //else if (!c.T2011 && c.T2021) c.d2011_2021 = +c.T2021;
-        //else if (c.T2011 && !c.T2021) c.d2011_2021 = -c.T2011;
+        // filter out those cases
+        if (c.T2011 == undefined || c.T2021 == undefined) return false
+        if (c.T2011 == 0 && c.T2021 == 0) return false
+
+        // compute change
         c.d2011_2021 = c.T2021 - c.T2011;
-        //ratio
+        // compute change ratio
         c.p2011_2021 = c.T2011 == 0 ? 999 : c.d2011_2021 / c.T2011;
     }
 })
