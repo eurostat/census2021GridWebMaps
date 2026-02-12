@@ -22,7 +22,7 @@ const popCols = { ...colors }; popCols.na = naColor
 styles.color = [
     new gridviz.SquareColorCategoryWebGLStyle({
         viewScale: (cells, r) => {
-            const max = d3.max(cells, c => c.p)
+            const max = d3.max(cells, c => c.T)
             const rr = r * r / 1000000
             const breaks = []
             for (let i = 1; i < classNumber; i++) {
@@ -33,7 +33,7 @@ styles.color = [
             return gridviz.classifier(breaks)
         },
         code: (c, r, z, classifier) => {
-            const v = c.p
+            const v = c.T
             if (v == -1 || v == undefined) return "na"
             return classifier(1000000 * v / r / r)
         },
@@ -52,7 +52,7 @@ const popColsDark = { ...colorsDark }; popColsDark.na = naColor
 styles.colorDark = [
     new gridviz.SquareColorCategoryWebGLStyle({
         viewScale: (cells, r) => {
-            const max = d3.max(cells, c => c.p)
+            const max = d3.max(cells, c => c.T)
             const rr = r * r / 1000000
             const breaks = []
             for (let i = 1; i < classNumberDark; i++) {
@@ -63,7 +63,7 @@ styles.colorDark = [
             return gridviz.classifier(breaks)
         },
         code: (c, r, z, classifier) => {
-            const v = c.p
+            const v = c.T
             if (v == -1 || v == undefined) return "na"
             return classifier(1000000 * v / r / r)
         },
@@ -80,19 +80,19 @@ styles.size = [
     new gridviz.Style({
         drawFun: (cells, cg, r) => {
             //keep only cells with population
-            cells = cells.filter((c) => c.p);
+            cells = cells.filter((c) => c.T);
             if (cells.length == 0) return;
 
             //get view scale
             const z = cg.view.z
             const viewScale = gridviz.viewScale({
-                valueFunction: (c) => c.p,
+                valueFunction: (c) => c.T,
                 maxSizeFactor: 1.65,
                 stretching: scaleSize,
             })(cells, r, z)
 
             //get max population
-            const max = d3.max(cells, (c) => +c.p);
+            const max = d3.max(cells, (c) => +c.T);
             if (!max) return;
 
             //sort cells by decreasing x and increasing y
@@ -105,7 +105,7 @@ styles.size = [
             ctx.lineWidth = 2 * z;
 
             for (let c of cells) {
-                const sG = viewScale(c.p)
+                const sG = viewScale(c.T)
                 ctx.beginPath();
                 ctx.arc(c.x + r / 2, c.y + r / 2, sG * 0.5, 0, 2 * Math.PI, false);
                 ctx.stroke();
@@ -123,8 +123,8 @@ styles.size = [
 // dots
 
 styles.dots = [new gridviz.DotDensityStyle({
-    viewScale: (cells) => d3.max(cells, c => c.p),
-    dotNumber: (c, r, z, max) => 10 * r * r / (z * z) * c.p / max,
+    viewScale: (cells) => d3.max(cells, c => c.T),
+    dotNumber: (c, r, z, max) => 10 * r * r / (z * z) * c.T / max,
     dotSize: (r, z) => 1.2 * z,
     color: () => col,
 })]
@@ -135,11 +135,11 @@ styles.dots = [new gridviz.DotDensityStyle({
 //const scalePillar = gridviz.logarithmicScale(-5)
 const scalePillar = gridviz.logarithmicScale(-3)
 styles.pillar = [new gridviz.PillarStyle({
-    viewScale: (cells) => d3.max(cells, (c) => c.p),
-    height: (c, r, z, max) => (800 * z * c.p) / max,
+    viewScale: (cells) => d3.max(cells, (c) => c.T),
+    height: (c, r, z, max) => (800 * z * c.T) / max,
     simple: (r, z) => z > 60,
     color: (c, r, z, max) => {
-        const t = 0.8 * (1 - scalePillar(c.p / max))
+        const t = 0.8 * (1 - scalePillar(c.T / max))
         return 'rgb(255,' + (79 + t * 176) + ',' + (55 + t * 200) + ')' //(0.1 + 0.9 * t)
     },
     viewHeightFactor: 5,
@@ -148,8 +148,8 @@ styles.pillar = [new gridviz.PillarStyle({
     viewSY: -1,
     shadowDirection: (21 * Math.PI) / 180.0,
     shadowFactor: 0.3,
-    /*viewScale: (cells) => d3.max(cells, (cell) => +cell.p),
-    height: (c, r, z, max) => 10 * r * scalePillar(c.p / max),
+    /*viewScale: (cells) => d3.max(cells, (cell) => +cell.T),
+    height: (c, r, z, max) => 10 * r * scalePillar(c.T / max),
     simple: () => true,
     color: () => col, // + "aa",
     viewHeightFactor: 5,
@@ -161,9 +161,9 @@ styles.pillar = [new gridviz.PillarStyle({
 })]
 
 styles.joyplot = [new gridviz.JoyPlotStyle({
-    height: (c, r, z, scale) => scale(c.p),
+    height: (c, r, z, scale) => scale(c.T),
     viewScale: gridviz.viewScale({
-        valueFunction: (c) => +c.p,
+        valueFunction: (c) => +c.T,
         maxSizeFactor: 5,
         stretching: gridviz.powerScale(0.4),
     }),
@@ -179,7 +179,7 @@ styles.joyplot = [new gridviz.JoyPlotStyle({
 
 
 styles.lego = gridviz.LegoStyle.get(
-    (cell) => cell.p,
+    (cell) => cell.T,
     [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000],
     ["#237841", "#4B9F4A", "#3CB371", "#C7D23C", "#F2CD37", "#F8BB3D", "#FFA70B", "#D09168", "#B67B50", "#7C503A", "#582A12"]
 )
@@ -222,7 +222,7 @@ styles.colorCh = [
             return classifier(1000000 * v / r / r)
         },
         color: popColsCh,
-        filter: (c) => c.p2021 == undefined || (c.p2021 != 0 || c.p2011 != 0)
+        //filter: (c) => c.T2021 == undefined || (c.T2021 != 0 || c.T2011 != 0)
     }),
     strokeStyle
 ]
@@ -294,10 +294,10 @@ styles.segmentCh = [
             return a;
         },
         viewScale: gridviz.viewScale({
-            valueFunction: (c) => +c.p2021,
+            valueFunction: (c) => +c.T2021,
             stretching: scaleSegmentChange,
             maxSizeFactor: 0.8,
         }),
-        width: (c, r, z, viewScale) => viewScale(c.p2021),
+        width: (c, r, z, viewScale) => viewScale(c.T2021),
     })
 ]

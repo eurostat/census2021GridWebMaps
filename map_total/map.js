@@ -90,8 +90,8 @@ if (jrc100) {
         (resolution) => new gviz_par.TiledParquetGrid(map, tilesURL + "tiles_total/" + resolution + "/"), {
         preprocess: c => {
             if (!c.T) return false
-            c.p = c.T
-            delete c.T
+            //c.p = c.T
+            //delete c.T
         }
     })
     styles.pillar[0].simple = (r, z) => z > 6
@@ -102,12 +102,16 @@ dataset.change = new gridviz.MultiResolutionDataset(
     (resolution) => new gviz_par.TiledParquetGrid(map, tilesUrl + "change/" + resolution + "/"), {
     preprocess: c => {
         //prepare 2011 -> 2021 change data
-        if (!c.p2011 && !c.p2021) c.d2011_2021 = 0;
-        else if (!c.p2011 && c.p2021) c.d2011_2021 = +c.p2021;
-        else if (c.p2011 && !c.p2021) c.d2011_2021 = -c.p2011;
-        else c.d2011_2021 = c.p2021 - c.p2011;
+        if (c.T2011==undefined || c.T2021==undefined) {
+            return false
+            //c.d2011_2021 = undefined
+            //c.p2011_2021 = undefined
+        }
+        //else if (!c.T2011 && c.T2021) c.d2011_2021 = +c.T2021;
+        //else if (c.T2011 && !c.T2021) c.d2011_2021 = -c.T2011;
+        c.d2011_2021 = c.T2021 - c.T2011;
         //ratio
-        c.p2011_2021 = c.p2011 == 0 ? 999 : c.d2011_2021 / c.p2011;
+        c.p2011_2021 = c.T2011 == 0 ? 999 : c.d2011_2021 / c.T2011;
     }
 })
 
@@ -149,7 +153,7 @@ const update = () => {
     const styles_ = styles[mapCode]
     if (sig && mapCode != "segmentCh") {
         //smoothing
-        const prop = change ? "d2011_2021" : "p"
+        const prop = change ? "d2011_2021" : "T"
         gridLayer.styles = [new gridviz_smoothing.KernelSmoothingStyle({
             value: (c) => +c[prop],
             smoothedProperty: prop,

@@ -33,7 +33,7 @@ styles.colorDark[0].legends = [
 ]
 
 // size
-styles.size[0].legends = gridviz.sizeLegendViewScale((c) => c.p, {
+styles.size[0].legends = gridviz.sizeLegendViewScale((c) => c.T, {
   k: [0.8, 0.25, 0.05],
   title: 'Population',
   fillColor: col,
@@ -125,7 +125,7 @@ styles.segmentCh[0].legends = [
     width: wleg
   })
 ]
-styles.segmentCh[0].legends.push(...gridviz.sizeLegendViewScale((cell) => +cell.p2021, {
+styles.segmentCh[0].legends.push(...gridviz.sizeLegendViewScale((cell) => +cell.T2021, {
   k: [0.8, 0.3, 0.03],
   title: 'Population in 2021',
   shape: 'line',
