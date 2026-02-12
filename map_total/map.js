@@ -1,8 +1,6 @@
 /* TODO
 
 https://ec.europa.eu/assets/estat/E/E4/gisco/website/grid_map/index.html
-remove isla of man. better deal with balkan borders. anodre, monaco, san marino: like balkans
-color change: deal with 0. or remove balkans.
 fix styles - backgrounds adaptation
 fix GUI layout
 
