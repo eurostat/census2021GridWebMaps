@@ -95,6 +95,7 @@ if (jrc100) {
     styles.pillar[0].simple = (r, z) => z > 6
 }
 
+
 dataset.change = new gridviz.MultiResolutionDataset(
     [1000, 2000, 5000, 10000, 20000, 50000, 100000],
     (resolution) => new gviz_par.TiledParquetGrid(map, tilesUrl + "change/" + resolution + "/"), {
