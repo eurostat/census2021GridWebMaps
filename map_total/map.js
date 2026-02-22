@@ -113,7 +113,6 @@ dataset.change = new gridviz.MultiResolutionDataset(
 
 
 
-
 //make grid layer
 const gridLayer = new gridviz.GridLayer(undefined, [], {
     visible: document.getElementById("grid").checked ? undefined : () => false,
