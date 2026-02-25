@@ -18,7 +18,7 @@ const map = new gridviz.Map(document.getElementById("map"), {
     z: DEFAULTMAPSETTINGS.z,
     zoomExtent: [5, 10000],
     onZoomFun: (e) => { updateURL(map) },
-}).setViewFromURL()
+}).setViewFromURL().addZoomButtons()
 //.addFullscreenButton()
 
 // initialise map using URL parameters

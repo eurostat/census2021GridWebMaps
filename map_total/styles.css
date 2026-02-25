@@ -150,65 +150,65 @@
 
 /* Zoom buttons */
 #gridviz-zoom-buttons-map {
-    right: 13px !important;
-    top: 60px !important;
-	background-color: unset !important;
+  right: 13px !important;
+  top: 60px !important;
+background-color: unset !important;
 }
 
 /* When NOT embedded = full version */
 body.not-embedded #gridviz-zoom-buttons-map {
-  top: 10px !important;
+top: 10px !important;
 }
 
 body.not-embedded #home-button {
-  top: 90px !important;
+top: 90px !important;
 }
 
 #zoom-in {
-    border-top-left-radius: 4px !important;
-    border-top-right-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+  border-top-right-radius: 4px !important;
 }
 
 #zoom-out {
-    border-bottom-left-radius: 4px !important;
-    border-bottom-right-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
 }
 
 #zoom-in,
 #zoom-out,
 #home-button {
-    background-color: #fff !important;
-    border: 1px solid var(--c-p) !important;
-    color: var(--c-p) !important;
-    height: 27px;
-    width: 27px;
+  background-color: #fff !important;
+  border: 1px solid var(--c-p) !important;
+  color: var(--c-p) !important;
+  height: 27px;
+  width: 27px;
 }
 
 #home-button {
-    border-radius: 4px;
-    position: absolute;
-    top: 145px;
-    right: 11px;
-    background-color: white;
-    cursor: pointer;
-    padding: 4px;
-	width: 27.5px;
+  border-radius: 4px;
+  position: absolute;
+  top: 145px;
+  right: 11px;
+  background-color: white;
+  cursor: pointer;
+  padding: 4px;
+width: 27.5px;
 }
 
 #home-button:hover .svg-home-icon {
-    fill: white;
+  fill: white;
 }
 
 #zoom-in:hover,
 #zoom-out:hover,
 #home-button:hover {
-    background-color: var(--c-p-80) !important;
-    border-color: var(--c-p-80) !important;
-    color: #fff !important;
-    padding: 5px;
-    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+  background-color: var(--c-p-80) !important;
+  border-color: var(--c-p-80) !important;
+  color: #fff !important;
+  padding: 5px;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 #zoom-in {
-    border-bottom: 0 !important;
+  border-bottom: 0 !important;
 }
