@@ -1,36 +1,35 @@
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Census 2021 map</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="" />
 
-<head>
-  <meta charset="UTF-8" />
-  <title>Census 2021 map</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="" />
+    <!-- ECL -->
+    <link rel="stylesheet" href="./eu-preset-v4.2.3/styles/optional/ecl-reset.css" media="screen" />
+    <link rel="stylesheet" href="./eu-preset-v4.2.3/styles/ecl-eu.css" media="screen" />
+    <link rel="stylesheet" href="./eu-preset-v4.2.3/styles/optional/ecl-eu-utilities.css" media="screen" />
+    <link rel="stylesheet" href="./eu-preset-v4.2.3/styles/ecl-eu-print.css" media="print" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
 
-  <!-- ECL -->
-  <link rel="stylesheet" href="./eu-preset-v4.2.3/styles/optional/ecl-reset.css" media="screen" />
-  <link rel="stylesheet" href="./eu-preset-v4.2.3/styles/ecl-eu.css" media="screen" />
-  <link rel="stylesheet" href="./eu-preset-v4.2.3/styles/optional/ecl-eu-utilities.css" media="screen" />
-  <link rel="stylesheet" href="./eu-preset-v4.2.3/styles/ecl-eu-print.css" media="print" />
-  <link rel="stylesheet" href="./styles.css" />
-</head>
-
-<!-- analytics -->
-<script defer="defer" src="https://webtools.europa.eu/load.js"></script>
-<script type="application/json">
+  <!-- analytics -->
+  <script defer="defer" src="https://webtools.europa.eu/load.js"></script>
+  <script type="application/json">
     {
       "utility": "cck",
       "url": "https://commission.europa.eu/cookies-policy_{lang}"
     }
   </script>
-<script type="application/json">
+  <script type="application/json">
     { "utility": "analytics", "siteID": "59", "sitePath": ["ec.europa.eu/eurostat"], "instance": "ec" }
   </script>
-<!-- end analytics -->
+  <!-- end analytics -->
 
-<body>
-  <main>
-    <div class="header">
-      <script type="application/json">
+  <body>
+    <main>
+      <div class="header">
+        <script type="application/json">
           {
             "utility": "globan",
             "theme": "dark",
@@ -41,321 +40,407 @@
             "zindex": 40
           }
         </script>
-    </div>
-    <div class="wrapper">
-      <div id="map" style="height: 100%; width: 100%"></div>
-
-      <!-- boring protocol stuff -->
-      <div class="footer-links" id="footer-3452">
-        <a href="https://commission.europa.eu/privacy-policy-websites-managed-european-commission_en"
-          target="_blank">Privacy policy</a>
-        |
-        <a href="https://commission.europa.eu/legal-notice_en" target="_blank">Legal notice</a>
-        |
-        <a href="https://commission.europa.eu/cookies-policy_en" target="_blank">Cookies</a>
-        |
-        <a href="https://ec.europa.eu/eurostat/web/main/help/accessibility" target="_blank">Accessibility</a>
-
-        <span id="eurogeographics-copyright" style="display: inline-block;"> | ©EuroGeographics for administrative
-          boundaries</span>
-        <span id="tomtom-copyright" style="display: inline-block;"> | ©TomTom for road transport network</span>
-
       </div>
+      <div class="wrapper">
+        <div id="map" style="height: 100%; width: 100%"></div>
 
-      <!-- home button -->
-      <div id="home-button" class="home-button">
-        <svg class="svg-home-icon" fill="#0e47cb" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink" width="25px" height="25px" viewBox="0 0 495.398 495.398"
-          xml:space="preserve">
-          <g>
+        <!-- boring protocol stuff -->
+        <div class="footer-links" id="footer-3452">
+          <a href="https://commission.europa.eu/privacy-policy-websites-managed-european-commission_en" target="_blank"
+            >Privacy policy</a
+          >
+          |
+          <a href="https://commission.europa.eu/legal-notice_en" target="_blank">Legal notice</a>
+          |
+          <a href="https://commission.europa.eu/cookies-policy_en" target="_blank">Cookies</a>
+          |
+          <a href="https://ec.europa.eu/eurostat/web/main/help/accessibility" target="_blank">Accessibility</a>
+
+          <span id="eurogeographics-copyright" style="display: inline-block">
+            | ©EuroGeographics for administrative boundaries</span
+          >
+          <span id="tomtom-copyright" style="display: inline-block"> | ©TomTom for road transport network</span>
+        </div>
+
+        <!-- home button -->
+        <div id="home-button" class="home-button">
+          <svg
+            class="svg-home-icon"
+            fill="#0e47cb"
+            version="1.1"
+            id="Capa_1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            width="25px"
+            height="25px"
+            viewBox="0 0 495.398 495.398"
+            xml:space="preserve">
             <g>
               <g>
-                <path
-                  d="M487.083,225.514l-75.08-75.08V63.704c0-15.682-12.708-28.391-28.413-28.391c-15.669,0-28.377,12.709-28.377,28.391
+                <g>
+                  <path
+                    d="M487.083,225.514l-75.08-75.08V63.704c0-15.682-12.708-28.391-28.413-28.391c-15.669,0-28.377,12.709-28.377,28.391
                v29.941L299.31,37.74c-27.639-27.624-75.694-27.575-103.27,0.05L8.312,225.514c-11.082,11.104-11.082,29.071,0,40.158
                c11.087,11.101,29.089,11.101,40.172,0l187.71-187.729c6.115-6.083,16.893-6.083,22.976-0.018l187.742,187.747
                c5.567,5.551,12.825,8.312,20.081,8.312c7.271,0,14.541-2.764,20.091-8.312C498.17,254.586,498.17,236.619,487.083,225.514z" />
-                <path d="M257.561,131.836c-5.454-5.451-14.285-5.451-19.723,0L72.712,296.913c-2.607,2.606-4.085,6.164-4.085,9.877v120.401
+                  <path
+                    d="M257.561,131.836c-5.454-5.451-14.285-5.451-19.723,0L72.712,296.913c-2.607,2.606-4.085,6.164-4.085,9.877v120.401
                c0,28.253,22.908,51.16,51.16,51.16h81.754v-126.61h92.299v126.61h81.755c28.251,0,51.159-22.907,51.159-51.159V306.79
                c0-3.713-1.465-7.271-4.085-9.877L257.561,131.836z" />
+                </g>
               </g>
             </g>
-          </g>
-        </svg>
-      </div>
+          </svg>
+        </div>
 
-      <!-- full version button -->
-      <a id="full-version-button"
-        href="https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/index.html" target="_blank"
-        class="ecl-link ecl-link--primary"><span>Full version</span>
-        <svg class="ecl-icon ecl-icon--fluid ecl-link__icon" focusable="false" aria-hidden="false" role="img">
-          <title>Links to an external domain</title>
-          <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#external"></use>
-        </svg>
-      </a>
+        <!-- full version button -->
+        <a
+          id="full-version-button"
+          href="https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/index.html"
+          target="_blank"
+          class="ecl-link ecl-link--primary"
+          ><span>Full version</span>
+          <svg class="ecl-icon ecl-icon--fluid ecl-link__icon" focusable="false" aria-hidden="false" role="img">
+            <title>Links to an external domain</title>
+            <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#external"></use>
+          </svg>
+        </a>
 
-      <!-- layer list control panel -->
-      <div id="expand-toggle" class="ecl-expandable" data-ecl-expandable="true" data-ecl-auto-init="Expandable">
-        <button id="expand-toggle-button" class="ecl-button ecl-button--ghost ecl-expandable__toggle" type="button"
-          aria-controls="expandable-content" data-ecl-expandable-toggle data-ecl-label-expanded="Options"
-          data-ecl-label-collapsed="Options" aria-expanded="true">
-          <span class="ecl-button__container">
-            <span class="ecl-button__label" data-ecl-label="true">Options</span>
-            <svg class="ecl-icon ecl-icon--fluid ecl-icon--rotate-180 ecl-button__icon" focusable="false"
-              aria-hidden="false" data-ecl-icon>
-              <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#corner-arrow"></use>
-            </svg>
-          </span>
-        </button>
-        <div id="expandable-content" class="ecl-expandable__content">
+        <!-- layer list control panel -->
+        <div id="expand-toggle" class="ecl-expandable" data-ecl-expandable="true" data-ecl-auto-init="Expandable">
+          <button
+            id="expand-toggle-button"
+            class="ecl-button ecl-button--ghost ecl-expandable__toggle"
+            type="button"
+            aria-controls="expandable-content"
+            data-ecl-expandable-toggle
+            data-ecl-label-expanded="Options"
+            data-ecl-label-collapsed="Options"
+            aria-expanded="true">
+            <span class="ecl-button__container">
+              <span class="ecl-button__label" data-ecl-label="true">Options</span>
+              <svg
+                class="ecl-icon ecl-icon--fluid ecl-icon--rotate-180 ecl-button__icon"
+                focusable="false"
+                aria-hidden="false"
+                data-ecl-icon>
+                <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#corner-arrow"></use>
+              </svg>
+            </span>
+          </button>
+          <div id="expandable-content" class="ecl-expandable__content">
+            <div id="layer-control">
+              <div class="total-pop mb-2">
+                <span class="ecl-form-label">Total population</span>
 
-          <div id="layer-control">
-
-            <label class="ecl-form-label">Total population</label>
-
-            <!-- year select-->
-            <div class="ecl-form-group">
-              <div class="ecl-select__container ecl-select__container--m">
-                <select class="ecl-select" id="year" name="year" aria-label="year" required
-                  aria-describedby="share_-helper" data-ecl-auto-init="Select">
-                  <option value="2021" selected>2021</option>
-                  <option value="2018">2018</option>
-                  <option value="2011">2011</option>
-                  <option value="2006">2006</option>
-                </select>
-                <div class="ecl-select__icon">
-                  <button class="ecl-button ecl-button--ghost ecl-button--icon-only" type="button" tabindex="-1">
-                    <span class="ecl-button__container">
-                      <span class="ecl-button__label" data-ecl-label="true">Toggle dropdown</span>
-                      <svg class="ecl-icon ecl-icon--s ecl-icon--rotate-180 ecl-button__icon" focusable="false"
-                        aria-hidden="true" data-ecl-icon>
-                        <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#corner-arrow"></use>
-                      </svg>
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-
-            <!-- gridviz style radios -->
-            <div class="ecl-radio toc-element">
-              <input id="color" name="style" class="ecl-radio__input" type="radio" value="color" checked
-                aria-describedby="helper-1" /><label class="ecl-radio__label" for="color"><span
-                  class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span
-                  class="ecl-radio__text">Colour</span></label>
-            </div>
-
-            <div class="ecl-radio toc-element">
-              <input id="colorDark" name="style" class="ecl-radio__input" type="radio" value="colorDark"
-                aria-describedby="helper-2" /><label class="ecl-radio__label" for="colorDark"><span
-                  class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span
-                  class="ecl-radio__text">Colour (dark)</span></label>
-            </div>
-            <div class="ecl-radio toc-element">
-              <input id="size" name="style" class="ecl-radio__input" type="radio" value="size" /><label
-                class="ecl-radio__label" for="size"><span class="ecl-radio__box"><span
-                    class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Circle size</span></label>
-            </div>
-
-            <div class="ecl-radio toc-element" style="display: none;">
-              <input id="dots" name="style" class="ecl-radio__input" type="radio" value="dots" /><label
-                class="ecl-radio__label" for="dots"><span class="ecl-radio__box"><span
-                    class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Dots</span></label>
-            </div>
-
-            <!-- 3d bars -->
-            <div class="ecl-radio toc-element">
-              <input id="pillar" name="style" class="ecl-radio__input" type="radio" value="pillar" /><label
-                class="ecl-radio__label" for="pillar"><span class="ecl-radio__box"><span
-                    class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">3D bars</span></label>
-            </div>
-
-            <!-- joyplot -->
-            <div class="ecl-radio toc-element">
-              <input id="joyplot" name="style" class="ecl-radio__input" type="radio" value="joyplot" /><label
-                class="ecl-radio__label" for="joyplot"><span class="ecl-radio__box"><span
-                    class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Joyplot</span></label>
-            </div>
-
-            <!-- lego -->
-            <div class="ecl-radio toc-element" style="display: none;">
-              <input id="lego" name="style" class="ecl-radio__input" type="radio" value="lego" /><label
-                class="ecl-radio__label" for="lego"><span class="ecl-radio__box"><span
-                    class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Lego</span></label>
-            </div>
-
-            <!-- 2011/2021 change -->
-            <label class="ecl-form-label">2011-2021 change</label>
-
-            <!-- colorCh -->
-            <div class="ecl-radio toc-element">
-              <input id="colorCh" name="style" class="ecl-radio__input" type="radio" value="colorCh" /><label
-                class="ecl-radio__label" for="colorCh"><span class="ecl-radio__box"><span
-                    class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Colour</span></label>
-            </div>
-
-            <!-- sizeCh -->
-            <div class="ecl-radio toc-element">
-              <input id="sizeCh" name="style" class="ecl-radio__input" type="radio" value="sizeCh" /><label
-                class="ecl-radio__label" for="sizeCh"><span class="ecl-radio__box"><span
-                    class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Circle size</span></label>
-            </div>
-
-            <!-- segmentCh -->
-            <div class="ecl-radio toc-element">
-              <input id="segmentCh" name="style" class="ecl-radio__input" type="radio" value="segmentCh" /><label
-                class="ecl-radio__label" for="segmentCh"><span class="ecl-radio__box"><span
-                    class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Segment</span></label>
-            </div>
-
-            <hr />
-
-            <div class="ecl-form-group" style="margin-top: 0rem" data-ecl-range="true" data-ecl-auto-init="Range">
-              <div style="display: flex; align-items: center">
-                Smoothing <input id="sigmaSM" data-ecl-range-input type="range"
-                  class="ecl-range ecl-range--m gridviz-slider" min="0" max="25" value="0" />
-              </div>
-            </div>
-
-            <!-- basemaps -->
-            <div>
-              <!-- City names checkbox-->
-              <div class="ecl-checkbox ecl-checkbox--single">
-                <input name="checkbox-default" class="ecl-checkbox__input" type="checkbox" id="label" checked />
-                <label for="label" class="ecl-checkbox__label">
-                  <span class="ecl-checkbox__box">
-                    <svg class="ecl-icon ecl-icon--m ecl-checkbox__icon" focusable="false" aria-hidden="true">
-                      <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#check"></use>
-                    </svg>
-                  </span>
-                  <span class="ecl-checkbox__text">City names</span>
-                </label>
-              </div>
-
-              <!-- Boundaries checkbox-->
-              <div class="ecl-checkbox ecl-checkbox--single">
-                <input name="checkbox-default" class="ecl-checkbox__input" type="checkbox" id="boundary" checked />
-                <label for="boundary" class="ecl-checkbox__label">
-                  <span class="ecl-checkbox__box">
-                    <svg class="ecl-icon ecl-icon--m ecl-checkbox__icon" focusable="false" aria-hidden="true">
-                      <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#check"></use>
-                    </svg>
-                  </span>
-                  <span class="ecl-checkbox__text">Borders</span>
-                </label>
-              </div>
-
-              <!-- stat grid checkbox-->
-              <div class="ecl-checkbox ecl-checkbox--single">
-                <input name="checkbox-default" class="ecl-checkbox__input" type="checkbox" id="grid" checked />
-                <label for="grid" class="ecl-checkbox__label">
-                  <span class="ecl-checkbox__box">
-                    <svg class="ecl-icon ecl-icon--m ecl-checkbox__icon" focusable="false" aria-hidden="true">
-                      <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#check"></use>
-                    </svg>
-                  </span>
-                  <span class="ecl-checkbox__text">Statistics grid</span>
-                </label>
-              </div>
-
-              <!-- background checkbox-->
-              <div class="ecl-checkbox ecl-checkbox--single">
-                <input name="checkbox-default" class="ecl-checkbox__input" type="checkbox" id="background" />
-                <label for="background" class="ecl-checkbox__label">
-                  <span class="ecl-checkbox__box">
-                    <svg class="ecl-icon ecl-icon--m ecl-checkbox__icon" focusable="false" aria-hidden="true">
-                      <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#check"></use>
-                    </svg>
-                  </span>
-                  <span class="ecl-checkbox__text">Background</span>
-                </label>
-
-                <div id="background_choice" style="display: none;">
-                  <!-- road -->
-                  <span class="ecl-radio">
-                    <input id="road" name="background_theme" class="ecl-radio__input" type="radio" value="road"
-                      checked />
-                    <label class="ecl-radio__label" for="road">
-                      <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
-                      <span class="ecl-radio__text">Road</span>
-                    </label>
-                  </span>
-                  <!-- elevation -->
-                  <span class="ecl-radio">
-                    <input id="elevation" name="background_theme" class="ecl-radio__input" type="radio"
-                      value="elevation" />
-                    <label class="ecl-radio__label" for="elevation">
-                      <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
-                      <span class="ecl-radio__text">Elevation</span>
-                    </label>
-                  </span>
+                <!-- year select-->
+                <div class="ecl-form-group  mt-0">
+                  <div class="ecl-select__container ecl-select__container--m">
+                    <select
+                      class="ecl-select"
+                      id="year"
+                      name="year"
+                      aria-label="year"
+                      required
+                      aria-describedby="share_-helper"
+                      data-ecl-auto-init="Select">
+                      <option value="2021" selected>2021</option>
+                      <option value="2018">2018</option>
+                      <option value="2011">2011</option>
+                      <option value="2006">2006</option>
+                    </select>
+                    <div class="ecl-select__icon" style="height:28px">
+                      <button class="ecl-button ecl-button--ghost ecl-button--icon-only" type="button" tabindex="-1">
+                        <span class="ecl-button__container" >
+                          <span class="ecl-button__label" data-ecl-label="true">Toggle dropdown</span>
+                          <svg
+                          
+                            class="ecl-icon ecl-icon--s ecl-icon--rotate-180 ecl-button__icon"
+                            focusable="false"
+                            aria-hidden="true"
+                            data-ecl-icon>
+                            <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#corner-arrow"></use>
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
+                <!-- gridviz style radios -->
+                <div class="ecl-radio toc-element mt-0">
+                  <input
+                    id="color"
+                    name="style"
+                    class="ecl-radio__input"
+                    type="radio"
+                    value="color"
+                    checked
+                    aria-describedby="helper-1" /><label class="ecl-radio__label" for="color"
+                    ><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span
+                    ><span class="ecl-radio__text">Colour</span></label
+                  >
+                </div>
+
+                <div class="ecl-radio toc-element">
+                  <input
+                    id="colorDark"
+                    name="style"
+                    class="ecl-radio__input"
+                    type="radio"
+                    value="colorDark"
+                    aria-describedby="helper-2" /><label class="ecl-radio__label" for="colorDark"
+                    ><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span
+                    ><span class="ecl-radio__text">Colour (dark)</span></label
+                  >
+                </div>
+                <div class="ecl-radio toc-element">
+                  <input id="size" name="style" class="ecl-radio__input" type="radio" value="size" /><label
+                    class="ecl-radio__label"
+                    for="size"
+                    ><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span
+                    ><span class="ecl-radio__text">Circle size</span></label
+                  >
+                </div>
+
+                <div class="ecl-radio toc-element" style="display: none">
+                  <input id="dots" name="style" class="ecl-radio__input" type="radio" value="dots" /><label
+                    class="ecl-radio__label"
+                    for="dots"
+                    ><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span
+                    ><span class="ecl-radio__text">Dots</span></label
+                  >
+                </div>
+
+                <!-- 3d bars -->
+                <div class="ecl-radio toc-element">
+                  <input id="pillar" name="style" class="ecl-radio__input" type="radio" value="pillar" /><label
+                    class="ecl-radio__label"
+                    for="pillar"
+                    ><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span
+                    ><span class="ecl-radio__text">3D bars</span></label
+                  >
+                </div>
+
+                <!-- joyplot -->
+                <div class="ecl-radio toc-element">
+                  <input id="joyplot" name="style" class="ecl-radio__input" type="radio" value="joyplot" /><label
+                    class="ecl-radio__label"
+                    for="joyplot"
+                    ><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span
+                    ><span class="ecl-radio__text">Joyplot</span></label
+                  >
+                </div>
+
+                <!-- lego -->
+                <div class="ecl-radio toc-element" style="display: none">
+                  <input id="lego" name="style" class="ecl-radio__input" type="radio" value="lego" /><label
+                    class="ecl-radio__label"
+                    for="lego"
+                    ><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span
+                    ><span class="ecl-radio__text">Lego</span></label
+                  >
+                </div>
+              </div>
+
+              <!-- 2011/2021 change -->
+              <div class="11-21-change">
+                <span class="ecl-form-label">2011-2021 change</span>
+
+                <!-- colorCh -->
+                <div class="ecl-radio toc-element mt-0">
+                  <input id="colorCh" name="style" class="ecl-radio__input" type="radio" value="colorCh" /><label
+                    class="ecl-radio__label"
+                    for="colorCh"
+                    ><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span
+                    ><span class="ecl-radio__text">Colour</span></label
+                  >
+                </div>
+
+                <!-- sizeCh -->
+                <div class="ecl-radio toc-element">
+                  <input id="sizeCh" name="style" class="ecl-radio__input" type="radio" value="sizeCh" /><label
+                    class="ecl-radio__label"
+                    for="sizeCh"
+                    ><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span
+                    ><span class="ecl-radio__text">Circle size</span></label
+                  >
+                </div>
+
+                <!-- segmentCh -->
+                <div class="ecl-radio toc-element">
+                  <input id="segmentCh" name="style" class="ecl-radio__input" type="radio" value="segmentCh" /><label
+                    class="ecl-radio__label"
+                    for="segmentCh"
+                    ><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span
+                    ><span class="ecl-radio__text">Segment</span></label
+                  >
+                </div>
+              </div>
+
+              <hr />
+
+              <div>
+                <div class="ecl-form-group mb-1" data-ecl-range="true" data-ecl-auto-init="Range">
+                  <div style="display: flex; align-items: center">
+                    <span class="ecl-checkbox__label">Smoothing</span>
+                    <input
+                      id="sigmaSM"
+                      data-ecl-range-input
+                      type="range"
+                      class="ecl-range ecl-range--m gridviz-slider"
+                      min="0"
+                      max="25"
+                      value="0" />
+                  </div>
+                </div>
+
+                <!-- basemaps -->
+                <div>
+                  <!-- City names checkbox-->
+                  <div class="ecl-checkbox ecl-checkbox--single">
+                    <input name="checkbox-default" class="ecl-checkbox__input" type="checkbox" id="label" checked />
+                    <label for="label" class="ecl-checkbox__label">
+                      <span class="ecl-checkbox__box">
+                        <svg class="ecl-icon ecl-icon--m ecl-checkbox__icon" focusable="false" aria-hidden="true">
+                          <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#check"></use>
+                        </svg>
+                      </span>
+                      <span class="ecl-checkbox__text">City names</span>
+                    </label>
+                  </div>
+
+                  <!-- Boundaries checkbox-->
+                  <div class="ecl-checkbox ecl-checkbox--single">
+                    <input name="checkbox-default" class="ecl-checkbox__input" type="checkbox" id="boundary" checked />
+                    <label for="boundary" class="ecl-checkbox__label">
+                      <span class="ecl-checkbox__box">
+                        <svg class="ecl-icon ecl-icon--m ecl-checkbox__icon" focusable="false" aria-hidden="true">
+                          <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#check"></use>
+                        </svg>
+                      </span>
+                      <span class="ecl-checkbox__text">Borders</span>
+                    </label>
+                  </div>
+
+                  <!-- stat grid checkbox-->
+                  <div class="ecl-checkbox ecl-checkbox--single">
+                    <input name="checkbox-default" class="ecl-checkbox__input" type="checkbox" id="grid" checked />
+                    <label for="grid" class="ecl-checkbox__label">
+                      <span class="ecl-checkbox__box">
+                        <svg class="ecl-icon ecl-icon--m ecl-checkbox__icon" focusable="false" aria-hidden="true">
+                          <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#check"></use>
+                        </svg>
+                      </span>
+                      <span class="ecl-checkbox__text">Statistics grid</span>
+                    </label>
+                  </div>
+
+                  <!-- background checkbox-->
+                  <div class="ecl-checkbox ecl-checkbox--single">
+                    <input name="checkbox-default" class="ecl-checkbox__input" type="checkbox" id="background" />
+                    <label for="background" class="ecl-checkbox__label">
+                      <span class="ecl-checkbox__box">
+                        <svg class="ecl-icon ecl-icon--m ecl-checkbox__icon" focusable="false" aria-hidden="true">
+                          <use xlink:href="./eu-preset-v4.2.3/images/icons/sprites/icons.svg#check"></use>
+                        </svg>
+                      </span>
+                      <span class="ecl-checkbox__text">Background</span>
+                    </label>
+
+                    <div id="background_choice" style="display: none">
+                      <!-- road -->
+                      <span class="ecl-radio">
+                        <input
+                          id="road"
+                          name="background_theme"
+                          class="ecl-radio__input"
+                          type="radio"
+                          value="road"
+                          checked />
+                        <label class="ecl-radio__label" for="road">
+                          <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
+                          <span class="ecl-radio__text">Road</span>
+                        </label>
+                      </span>
+                      <!-- elevation -->
+                      <span class="ecl-radio">
+                        <input
+                          id="elevation"
+                          name="background_theme"
+                          class="ecl-radio__input"
+                          type="radio"
+                          value="elevation" />
+                        <label class="ecl-radio__label" for="elevation">
+                          <span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span>
+                          <span class="ecl-radio__text">Elevation</span>
+                        </label>
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </main>
+    </main>
 
-  <!-- ECL -->
-  <script src="./eu-preset-v4.2.3/scripts/pikaday.js"></script>
-  <script src="./eu-preset-v4.2.3/scripts/ecl-eu.js"></script>
-  <script>
-    ECL.autoInit();
-  </script>
-  <!-- /ECL -->
+    <!-- ECL -->
+    <script src="./eu-preset-v4.2.3/scripts/pikaday.js"></script>
+    <script src="./eu-preset-v4.2.3/scripts/ecl-eu.js"></script>
+    <script>
+      ECL.autoInit();
+    </script>
+    <!-- /ECL -->
 
-  <!-- only show full version button in iframe -->
-  <script>
-    function checkElementWidth() {
-      const mapElement = document.getElementById("map");
-      const isInIframe = window.self !== window.top;
+    <!-- only show full version button in iframe -->
+    <script>
+      function checkElementWidth() {
+        const mapElement = document.getElementById("map");
+        const isInIframe = window.self !== window.top;
 
-      if (mapElement) {
-        const mapWidth = mapElement.getBoundingClientRect().width;
-        const fullVersionButton = document.getElementById("full-version-button");
-        const homeButton = document.getElementById("home-button");
-        //zoom buttons
-        const zoomButtons = document.querySelector("#map > div:nth-child(3)");
-        if (isInIframe && mapWidth < 800) {
-          fullVersionButton.style.display = "block";
-          if (zoomButtons) zoomButtons.style.setProperty("top", "60px", "important");
-        } else {
-          fullVersionButton.style.display = "none";
-          //homeButton.style.display = "none"
-          if (zoomButtons) zoomButtons.style.setProperty("top", "10px", "important");
+        if (mapElement) {
+          const mapWidth = mapElement.getBoundingClientRect().width;
+          const fullVersionButton = document.getElementById("full-version-button");
+          const homeButton = document.getElementById("home-button");
+          //zoom buttons
+          const zoomButtons = document.querySelector("#map > div:nth-child(3)");
+          if (isInIframe && mapWidth < 800) {
+            fullVersionButton.style.display = "block";
+            if (zoomButtons) zoomButtons.style.setProperty("top", "60px", "important");
+          } else {
+            fullVersionButton.style.display = "none";
+            //homeButton.style.display = "none"
+            if (zoomButtons) zoomButtons.style.setProperty("top", "10px", "important");
+          }
         }
       }
-    }
 
-    // Check initially
-    checkElementWidth();
-
-    document.addEventListener("DOMContentLoaded", function () {
-      // Check after load
+      // Check initially
       checkElementWidth();
 
-      // Check on resize
-      window.addEventListener("resize", checkElementWidth);
-    });
-  </script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Check after load
+        checkElementWidth();
 
-  <script src="gridviz@3.0.33x.js"></script>
-  <script src="gridviz-parquet@1.1.1.js"></script>
-  <script src="gridviz-eurostat@2.2.2.js"></script>
-  <script src="gridviz-smoothing@3.0.3.js"></script>
-  <script src="d3@7.js"></script>
+        // Check on resize
+        window.addEventListener("resize", checkElementWidth);
+      });
+    </script>
 
-  <script src="map_tooltip.js"></script>
-  <script src="map_styles.js"></script>
-  <script src="map_legends.js"></script>
-  <script src="map_aux.js"></script>
-  <script src="map_layers.js"></script>
-  <script src="map.js"></script>
-  <script src="map_events.js"></script>
-</body>
+    <script src="gridviz@3.0.33x.js"></script>
+    <script src="gridviz-parquet@1.1.1.js"></script>
+    <script src="gridviz-eurostat@2.2.2.js"></script>
+    <script src="gridviz-smoothing@3.0.3.js"></script>
+    <script src="d3@7.js"></script>
 
+    <script src="map_tooltip.js"></script>
+    <script src="map_styles.js"></script>
+    <script src="map_legends.js"></script>
+    <script src="map_aux.js"></script>
+    <script src="map_layers.js"></script>
+    <script src="map.js"></script>
+    <script src="map_events.js"></script>
+  </body>
 </html>
