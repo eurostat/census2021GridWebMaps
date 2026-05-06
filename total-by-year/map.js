@@ -75,30 +75,22 @@ const dataset = {}
 for (let year of ["2006", "2011", "2018", "2021"]) {
     dataset[year] = new gridviz.MultiResolutionDataset(
         [1000, 2000, 5000, 10000, 20000, 50000, 100000],
-        (resolution) => new gviz_par.TiledParquetGrid(map, tilesUrl + year + "/" + resolution + "/"), {
-        /*preprocess: c => {}*/
-    })
+        (resolution) => new gviz_par.TiledParquetGrid(map, tilesUrl + "total/v1/" + year + "/" + resolution + "/"))
 }
 
 // use 100m jrc dataset
 if (jrc100) {
-    const tilesURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles/";
     dataset["2021"] = new gridviz.MultiResolutionDataset(
         [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000],
-        (resolution) => new gviz_par.TiledParquetGrid(map, tilesURL + "tiles_total/" + resolution + "/"), {
-        preprocess: c => {
-            if (!c.T) return false
-            //c.p = c.T
-            //delete c.T
-        }
-    })
+        (resolution) => new gviz_par.TiledParquetGrid(map, "https://ec.europa.eu/eurostat/cache/GISCO/tiled-grids/census/2021/v1/total/" + resolution + "/"), { preprocess: c => c.T }
+	)
     styles.pillar[0].simple = (r, z) => z > 6
 }
 
 
 dataset.change = new gridviz.MultiResolutionDataset(
     [1000, 2000, 5000, 10000, 20000, 50000, 100000],
-    (resolution) => new gviz_par.TiledParquetGrid(map, tilesUrl + "change/" + resolution + "/"), {
+    (resolution) => new gviz_par.TiledParquetGrid(map, tilesUrl + "total/v1/change/" + resolution + "/"), {
     preprocess: c => {
         // filter out those cases
         if (c.T2011 == undefined || c.T2021 == undefined) return false

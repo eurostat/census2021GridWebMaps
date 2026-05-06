@@ -1,7 +1,7 @@
 
-const tilesURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/website/census_2021_grid_map/tiles/";
-const nuts2jsonURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/nuts2json/v2/";
-const euronymURL = "https://ec.europa.eu/assets/estat/E/E4/gisco/pub/euronym/v3/UTF_LATIN/";
+const tilesUrl = "https://ec.europa.eu/eurostat/cache/GISCO/tiled-grids/census/";
+const nuts2jsonURL = "https://ec.europa.eu/eurostat/cache/GISCO/pub/nuts2json/v2/";
+const euronymURL = "https://ec.europa.eu/eurostat/cache/GISCO/pub/euronym/v3/UTF_LATIN/";
 const bgLayerURLElevation = 'https://ec.europa.eu/eurostat/cache/GISCO/mbkg/elevation/'
 const bgLayerURLRoad = 'https://ec.europa.eu/eurostat/cache/GISCO/mbkg/road/'
 
@@ -13,7 +13,7 @@ const backgroundLayerElevation = new gridviz.BackgroundLayer({
     origin: [0, 6000000],
     nbPix: 256,
     pixelationCoefficient: 1,
-    filterColor: () => "#fff8",
+    //filterColor: () => "#fff2",
 })
 
 const backgroundLayerRoad = new gridviz.BackgroundLayer({
@@ -22,7 +22,7 @@ const backgroundLayerRoad = new gridviz.BackgroundLayer({
     origin: [0, 6000000],
     nbPix: 512,
     pixelationCoefficient: 0.55,
-    filterColor: (z) => z > 200 ? "#fff8" : "#fff4",
+    //filterColor: (z) => z > 200 ? "#fff8" : "#fff4",
     blendOperation: () => "multiply",
 })
 
@@ -45,33 +45,38 @@ const updateLayersVisibility = () => {
         backgroundLayerRoad2.visible = () => false;
         backgroundLayerElevation.visible = () => false;
     }
-    labelLayer.visible = document.getElementById("label").checked ? ()=>true : ()=>false
-    boundariesLayer.visible = document.getElementById("boundary").checked ? ()=>true : ()=>false
+    labelLayer.visible = document.getElementById("label").checked ? () => true : () => false
+    boundariesLayer.visible = document.getElementById("boundary").checked ? () => true : () => false
 }
 
 
 
 //define boundaries layer
+
+const colorBND = col => (f, zf) => {
+    const p = f.properties
+    //if (!showOth /*&& p.co == "F"*/ && p.eu != 'T' && p.cc != 'T' && p.efta != 'T' && p.oth === 'T') return
+    if (p.id >= 100000) return '#bcbcbc'
+    //return col
+    if (p.co === 'T') return col
+    if (zf < 400) return col
+    else if (zf < 1000) return p.lvl >= 3 ? '' : col
+    else if (zf < 2000) return p.lvl >= 2 ? '' : col
+    else return p.lvl >= 1 ? '' : col
+}
+
 const boundariesLayer = new gridviz.GeoJSONLayer(
     gridviz_eurostat.getEurostatBoundariesLayer({
         baseURL: nuts2jsonURL,
-        showOth: false,
-        col: "#cc6699", scale: "03M",
-        /*color: (f, zf) => {
-            const p = f.properties;
-            if (p.id >= 100000) return "#bcbcbc";
-            if (p.co === "T") return "#888";
-            if (zf < 400) return "#888";
-            else if (zf < 1000) return p.lvl >= 3 ? "" : "#888";
-            else if (zf < 2000) return p.lvl >= 2 ? "" : "#888";
-            else return p.lvl >= 1 ? "" : "#888";
-        },*/
+        scale: "03M",
+        color: colorBND("#cc6699"),
         visible: document.getElementById("boundary").checked ? undefined : () => false,
     })
 );
 
 
 //make label layer
+
 const labelLayer = new gridviz.LabelLayer(
     gridviz_eurostat.getEuronymeLabelLayer("EUR", 20, {
         ccIn: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "PL", "PT", "MT", "NL", "RO", "SE", "SK", "SI", "CH", "NO", "LI",],

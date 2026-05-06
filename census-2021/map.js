@@ -1,4 +1,5 @@
 //TODO
+//deploy !
 
 // add expalanation message ?
 
@@ -108,18 +109,13 @@ let jrc100 = urlParams.get("jrc100")
 updateLayersVisibility()
 
 
-//show/hide copyright html components
-document.getElementById('eurogeographics-copyright').style.display = document.getElementById("boundary").checked ? 'inline-block' : 'none';
-document.getElementById('tomtom-copyright').style.display =
-    document.getElementById("road").checked && document.getElementById("background").checked ? 'inline-block' : 'none';
-
 
 //define multi resolution datasets
 const dataset = {}
 for (let theme of ["total", "age", "sex", "emp", "mob", "pob", "all"]) {
     dataset[theme] = new gridviz.MultiResolutionDataset(
         theme == "total" && jrc100? [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000] : [1000, 2000, 5000, 10000, 20000, 50000, 100000],
-        (resolution) => new gviz_par.TiledParquetGrid(map, tilesURL + "tiles_" + theme + "/" + resolution + "/"), {
+        (resolution) => new gviz_par.TiledParquetGrid(map, tilesURL + theme + "/" + resolution + "/"), {
         preprocess: c => {
             if (!c.T) return false
             preprocess[theme](c)
